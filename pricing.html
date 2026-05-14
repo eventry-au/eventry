@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Your Event — Eventry</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d0d0d; --ink-muted: #5a5a5a; --ink-faint: #9a9a9a;
+    --surface: #f5f3ef; --white: #ffffff; --accent: #e8572a;
+    --accent-light: #fdf0eb; --border: #e2dfd8; --border-strong: #c8c4bc;
+    --card-radius: 16px; --pill-radius: 100px;
+    --gold: #c8860a; --gold-light: #fdf8ee;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+
+  nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 14px; color: var(--ink-muted); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--ink); }
+
+  .hero { background: var(--ink); color: var(--white); padding: 4rem 2rem 3.5rem; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 120%, #e8572a22 0%, transparent 70%); pointer-events: none; }
+  .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 1rem; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: #aaa; font-size: 16px; font-weight: 300; max-width: 520px; margin: 0 auto; }
+
+  .pricing-wrap { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 4rem; }
+
+  .plan-card { background: var(--white); border-radius: var(--card-radius); border: 1px solid var(--border); padding: 2rem; display: flex; flex-direction: column; }
+  .plan-card.featured-plan { border: 2px solid var(--gold); background: var(--gold-light); position: relative; }
+  .popular-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 16px; border-radius: var(--pill-radius); white-space: nowrap; }
+
+  .plan-icon { font-size: 32px; margin-bottom: 1rem; }
+  .plan-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 0.25rem; }
+  .plan-tagline { font-size: 13px; color: var(--ink-muted); margin-bottom: 1.5rem; }
+  .plan-price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 0.5rem; }
+  .price-num { font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800; line-height: 1; }
+  .price-period { font-size: 13px; color: var(--ink-muted); }
+  .price-note { font-size: 11px; color: var(--ink-faint); margin-bottom: 1.75rem; }
+
+  .features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; flex: 1; }
+  .features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
+  .feat-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+  .feat-icon.yes { background: #e8f5e9; color: #2e7d32; }
+  .feat-icon.gold { background: #fff3e0; color: var(--gold); }
+  .feat-icon.no { background: #f5f5f5; color: #bbb; }
+  .feat-text { color: var(--ink-muted); line-height: 1.4; }
+  .feat-text strong { color: var(--ink); font-weight: 500; }
+
+  .plan-btn { display: block; text-align: center; padding: 14px; border-radius: var(--pill-radius); font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; text-decoration: none; cursor: pointer; border: none; transition: all 0.15s; }
+  .plan-btn.free-btn { background: var(--surface); border: 1px solid var(--border-strong); color: var(--ink); }
+  .plan-btn.free-btn:hover { background: var(--ink); color: var(--white); }
+  .plan-btn.featured-btn { background: var(--ink); color: var(--white); }
+  .plan-btn.featured-btn:hover { background: var(--gold); }
+  .plan-btn.coming-soon { background: var(--surface); color: var(--ink-faint); border: 1px dashed var(--border-strong); cursor: default; font-size: 13px; }
+
+  .compare-section { margin-bottom: 4rem; }
+  .compare-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 2rem; }
+  .compare-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--card-radius); overflow: hidden; border: 1px solid var(--border); }
+  .compare-table th { background: var(--ink); color: var(--white); padding: 14px 20px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; text-align: center; }
+  .compare-table th:first-child { text-align: left; }
+  .compare-table th.gold-col { background: var(--gold); }
+  .compare-table td { padding: 12px 20px; border-bottom: 1px solid var(--border); font-size: 14px; text-align: center; color: var(--ink-muted); }
+  .compare-table td:first-child { text-align: left; color: var(--ink); font-weight: 500; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--surface); }
+  .tick { color: #2e7d32; font-size: 16px; }
+  .gold-tick { color: var(--gold); font-size: 16px; }
+  .cross { color: #ccc; font-size: 16px; }
+
+  .faq-section { margin-bottom: 4rem; }
+  .faq-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 2rem; }
+  .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .faq-q { padding: 1rem 1.25rem; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; user-select: none; }
+  .faq-q:hover { background: var(--surface); }
+  .faq-arrow { font-size: 12px; color: var(--ink-faint); transition: transform 0.2s; }
+  .faq-a { display: none; padding: 0 1.25rem 1rem; font-size: 14px; color: var(--ink-muted); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 1rem; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+  .cta-banner { background: var(--ink); border-radius: var(--card-radius); padding: 3rem 2rem; text-align: center; color: var(--white); }
+  .cta-banner h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.5px; }
+  .cta-banner p { color: #aaa; font-size: 15px; margin-bottom: 2rem; font-weight: 300; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .cta-btn { padding: 13px 28px; border-radius: var(--pill-radius); font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; text-decoration: none; cursor: pointer; border: none; transition: all 0.15s; }
+  .cta-btn.primary { background: var(--accent); color: var(--white); }
+  .cta-btn.primary:hover { background: #c94420; }
+  .cta-btn.secondary { background: transparent; border: 1px solid #444; color: #ccc; }
+  .cta-btn.secondary:hover { border-color: #888; color: var(--white); }
+
+  @media (max-width: 640px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="eventry.html" class="logo">Even<span>try</span></a>
+  <ul class="nav-links">
+    <li><a href="eventry.html">Browse Events</a></li>
+    <li><a href="#">Organisers</a></li>
+    <li><a href="submit.html">List an Event</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">For Event Organisers</p>
+  <h1>Get your event in front of<br><em>thousands of athletes</em></h1>
+  <p>Eventry connects active Australians with sporting events across the country. List for free or boost your visibility with a Featured listing.</p>
+</div>
+
+<div class="pricing-wrap">
+
+  <!-- PRICING CARDS -->
+  <div class="pricing-grid">
+
+    <!-- FREE -->
+    <div class="plan-card">
+      <div class="plan-icon">📋</div>
+      <div class="plan-name">Standard Listing</div>
+      <div class="plan-tagline">Everything you need to get discovered</div>
+      <div class="plan-price">
+        <span class="price-num">Free</span>
+      </div>
+      <div class="price-note">Always free. No credit card required.</div>
+      <ul class="features">
+        <li><span class="feat-icon yes">✓</span><span class="feat-text"><strong>Listed on Eventry</strong> — visible to all visitors</span></li>
+        <li><span class="feat-icon yes">✓</span><span class="feat-text"><strong>All disciplines shown</strong> — unlimited categories & distances</span></li>
+        <li><span class="feat-icon yes">✓</span><span class="feat-text"><strong>Direct registration link</strong> — sends participants straight to your site</span></li>
+        <li><span class="feat-icon yes">✓</span><span class="feat-text"><strong>Sport & location filters</strong> — found by the right athletes</span></li>
+        <li><span class="feat-icon yes">✓</span><span class="feat-text"><strong>Reviewed within 24 hours</strong></span></li>
+        <li><span class="feat-icon no">—</span><span class="feat-text" style="color:#ccc">Featured badge</span></li>
+        <li><span class="feat-icon no">—</span><span class="feat-text" style="color:#ccc">Priority placement in results</span></li>
+        <li><span class="feat-icon no">—</span><span class="feat-text" style="color:#ccc">Social media promotion</span></li>
+        <li><span class="feat-icon no">—</span><span class="feat-text" style="color:#ccc">Event analytics</span></li>
+      </ul>
+      <a href="submit.html" class="plan-btn free-btn">List your event free →</a>
+    </div>
+
+    <!-- FEATURED -->
+    <div class="plan-card featured-plan">
+      <div class="popular-badge">⭐ Most popular</div>
+      <div class="plan-icon">🚀</div>
+      <div class="plan-name">Featured Listing</div>
+      <div class="plan-tagline">Maximum visibility for your event</div>
+      <div class="plan-price">
+        <span class="price-num">$49</span>
+        <span class="price-period">per event</span>
+      </div>
+      <div class="price-note" style="color:var(--gold)">⚡ Launching soon — currently complimentary</div>
+      <ul class="features">
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>Everything in Standard</strong></span></li>
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>Featured badge</strong> — stands out in search results</span></li>
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>Top of results</strong> — shown above standard listings</span></li>
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>Orange highlight border</strong> — impossible to miss</span></li>
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>Social media shoutout</strong> — shared to Eventry's audience</span></li>
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>Priority review</strong> — live within 4 hours</span></li>
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>Event analytics</strong> — views & clicks tracked</span></li>
+        <li><span class="feat-icon gold">✓</span><span class="feat-text"><strong>30-day featured window</strong> — or until event date</span></li>
+      </ul>
+      <a href="submit.html" class="plan-btn coming-soon">Payment coming soon — contact us to feature</a>
+    </div>
+
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="compare-section">
+    <div class="compare-title">Full comparison</div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Standard</th>
+          <th class="gold-col">Featured</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Listed on Eventry</td><td><span class="tick">✓</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>All disciplines & distances</td><td><span class="tick">✓</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Direct registration link</td><td><span class="tick">✓</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Sport & location filters</td><td><span class="tick">✓</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Review time</td><td>24 hours</td><td><span style="color:var(--gold);font-weight:500">4 hours</span></td></tr>
+        <tr><td>Featured badge on card</td><td><span class="cross">—</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Top of search results</td><td><span class="cross">—</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Highlighted card border</td><td><span class="cross">—</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Social media promotion</td><td><span class="cross">—</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Views & clicks analytics</td><td><span class="cross">—</span></td><td><span class="gold-tick">✓</span></td></tr>
+        <tr><td>Featured window</td><td><span class="cross">—</span></td><td><span style="color:var(--gold);font-weight:500">30 days</span></td></tr>
+        <tr><td>Price per event</td><td><strong>Free</strong></td><td><strong style="color:var(--gold)">$49 AUD</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="faq-title">Frequently asked questions</div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How long does it take for my event to go live? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Standard listings are reviewed and published within 24 hours. Featured listings are prioritised and go live within 4 hours. You'll receive an email confirmation once your event is live.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I list an event with multiple distances and categories? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Absolutely — this is one of Eventry's core features. You can add as many disciplines as your event offers. For example, a triathlon festival can list a Sprint, Olympic, Ironman 70.3, Kids Tri, and Aquathlon all under the one event listing, each with their own distance, price, and registration link.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What if my event is a unique multi-sport format? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">We support fully custom multi-leg events through our "Other" sport type. You can build any combination of legs in any order — kayak → run → swim → cycle → abseil — with individual distances for each leg. Each leg supports metres, kilometres, and miles.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I edit my event after it's been listed? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes. Email us at hello@eventry.au with your event name and the changes needed. We'll update it within 24 hours. Full self-service editing is coming soon.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Is Featured really complimentary right now? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes — while we're building our audience, we're offering Featured listings at no cost to select organisers. Get in touch at hello@eventry.au and we'll discuss featuring your event. Once paid Featured launches, existing complimentary listings will be honoured until their expiry date.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Do you support events outside Australia? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Eventry is currently focused on Australian events. If you have an international event that attracts Australian participants, get in touch and we'll discuss options.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">When will online payment for Featured listings be available? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">We're working on integrating online payments. In the meantime, contact us at hello@eventry.au to arrange a Featured listing. We'll invoice you directly.</div>
+    </div>
+  </div>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <h2>Ready to reach more athletes?</h2>
+    <p>Join the organisers already listing on Eventry. Free to get started, no credit card needed.</p>
+    <div class="cta-btns">
+      <a href="submit.html" class="cta-btn primary">List your event free →</a>
+      <a href="mailto:hello@eventry.au" class="cta-btn secondary">Contact us about Featured</a>
+    </div>
+  </div>
+
+</div>
+
+<footer style="background:var(--ink);color:#888;text-align:center;padding:2rem;font-size:13px;margin-top:0">
+  <p>© 2025 Eventry. Australia's sports events directory. &nbsp;·&nbsp; <a href="submit.html" style="color:var(--accent);text-decoration:none">List your event</a> &nbsp;·&nbsp; <a href="mailto:hello@eventry.au" style="color:var(--accent);text-decoration:none">Contact</a></p>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Your Event — Eventry</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d0d0d;
+    --ink-muted: #5a5a5a;
+    --ink-faint: #9a9a9a;
+    --surface: #f5f3ef;
+    --white: #ffffff;
+    --accent: #e8572a;
+    --accent-light: #fdf0eb;
+    --border: #e2dfd8;
+    --border-strong: #c8c4bc;
+    --card-radius: 16px;
+    --pill-radius: 100px;
+    --success: #2e7d32;
+    --success-light: #f1f8f1;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+
+  nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .nav-back { font-size: 13px; color: var(--ink-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+  .nav-back:hover { color: var(--accent); }
+
+  .page-hero { background: var(--ink); color: var(--white); padding: 3rem 2rem 2.5rem; text-align: center; }
+  .page-hero p.eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .page-hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 0.75rem; }
+  .page-hero h1 em { font-style: normal; color: var(--accent); }
+  .page-hero p.sub { color: #aaa; font-size: 15px; font-weight: 300; max-width: 480px; margin: 0 auto; }
+
+  .form-wrap { max-width: 780px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+  .form-section { background: var(--white); border-radius: var(--card-radius); border: 1px solid var(--border); padding: 1.75rem; margin-bottom: 1.5rem; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .section-num { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--white); font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+  .section-sub { font-size: 12px; color: var(--ink-muted); margin-left: auto; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-grid.full { grid-template-columns: 1fr; }
+  .form-grid.thirds { grid-template-columns: 1fr 1fr 1fr; }
+  .col-span-2 { grid-column: span 2; }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 12px; font-weight: 500; color: var(--ink-muted); letter-spacing: 0.3px; }
+  .field label .req { color: var(--accent); margin-left: 2px; }
+  .field input, .field select, .field textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,87,42,0.1); background: var(--white); }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field input::placeholder, .field textarea::placeholder { color: var(--ink-faint); }
+
+  .field-hint { font-size: 11px; color: var(--ink-faint); margin-top: 2px; }
+
+  /* DISCIPLINE CARD */
+  .discipline-card { border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; background: var(--surface); position: relative; }
+  .discipline-card.first { border-color: var(--accent); background: var(--accent-light); }
+  .disc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .disc-num { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); }
+  .disc-remove { background: none; border: 1px solid var(--border-strong); border-radius: 6px; padding: 4px 10px; font-size: 12px; color: var(--ink-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .disc-remove:hover { border-color: #c00; color: #c00; background: #fff5f5; }
+
+  /* SPORT FIELDS */
+  .sport-fields { margin-top: 1rem; }
+  .legs-container { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .leg-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: end; }
+  .leg-row.custom { grid-template-columns: 1fr 1fr 1fr auto; }
+
+  /* UNIT TOGGLE */
+  .distance-field { display: flex; flex-direction: column; gap: 5px; }
+  .distance-field label { font-size: 12px; font-weight: 500; color: var(--ink-muted); }
+  .distance-input-wrap { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; }
+  .distance-input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,87,42,0.1); background: var(--white); }
+  .distance-input-wrap input { border: none; background: transparent; border-radius: 0; box-shadow: none; flex: 1; min-width: 0; padding: 10px 10px; }
+  .distance-input-wrap input:focus { border: none; box-shadow: none; }
+  .unit-toggle { display: flex; border-left: 1px solid var(--border); flex-shrink: 0; }
+  .unit-btn { border: none; background: transparent; padding: 6px 9px; font-size: 11px; font-weight: 600; color: var(--ink-faint); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; white-space: nowrap; }
+  .unit-btn:not(:last-child) { border-right: 1px solid var(--border); }
+  .unit-btn.active { background: var(--ink); color: var(--white); }
+  .unit-btn:first-child.active { border-radius: 0; }
+
+  /* CUSTOM LEG BUILDER */
+  .custom-legs-label { font-size: 12px; font-weight: 500; color: var(--ink-muted); margin-bottom: 6px; display: block; }
+  .add-leg-btn { background: none; border: 1px dashed var(--border-strong); border-radius: 8px; padding: 8px 14px; font-size: 13px; color: var(--ink-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; width: 100%; margin-top: 8px; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .add-leg-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .remove-leg { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; cursor: pointer; color: var(--ink-faint); font-size: 13px; transition: all 0.15s; align-self: flex-end; height: 38px; }
+  .remove-leg:hover { border-color: #c00; color: #c00; }
+
+  /* ADD DISCIPLINE */
+  .add-disc-btn { width: 100%; padding: 14px; border: 2px dashed var(--border-strong); border-radius: 12px; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--ink-muted); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .add-disc-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  /* PRICE ROW */
+  .price-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: end; }
+  .free-toggle { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); cursor: pointer; font-size: 13px; color: var(--ink-muted); user-select: none; transition: all 0.15s; }
+  .free-toggle input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .free-toggle.checked { border-color: var(--success); background: var(--success-light); color: var(--success); font-weight: 500; }
+
+  /* LOGO UPLOAD */
+  .upload-area { border: 2px dashed var(--border-strong); border-radius: 10px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.15s; background: var(--surface); }
+  .upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
+  .upload-area p { font-size: 13px; color: var(--ink-muted); }
+  .upload-area p strong { color: var(--accent); }
+  .upload-area input { display: none; }
+  .upload-preview { display: none; align-items: center; gap: 12px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--white); }
+  .upload-preview img { width: 48px; height: 48px; object-fit: contain; border-radius: 6px; border: 1px solid var(--border); }
+  .upload-preview span { font-size: 13px; color: var(--ink-muted); flex: 1; }
+  .upload-preview button { background: none; border: none; color: var(--ink-faint); cursor: pointer; font-size: 18px; }
+
+  /* SUBMIT */
+  .submit-section { text-align: center; padding: 1rem 0; }
+  .submit-btn { background: var(--ink); color: var(--white); border: none; border-radius: var(--pill-radius); padding: 16px 48px; font-size: 16px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s, transform 0.1s; display: inline-flex; align-items: center; gap: 10px; }
+  .submit-btn:hover { background: var(--accent); }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-note { font-size: 12px; color: var(--ink-faint); margin-top: 1rem; }
+
+  /* SUCCESS */
+  .success-msg { display: none; background: var(--success-light); border: 1px solid var(--success); border-radius: var(--card-radius); padding: 2rem; text-align: center; margin-bottom: 2rem; }
+  .success-msg h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--success); margin-bottom: 0.5rem; }
+  .success-msg p { font-size: 14px; color: var(--ink-muted); }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid.thirds { grid-template-columns: 1fr; }
+    .col-span-2 { grid-column: span 1; }
+    .leg-row { grid-template-columns: 1fr 1fr; }
+    .leg-row .remove-leg { grid-column: span 2; }
+    .leg-row.custom { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="eventry.html" class="logo">Even<span>try</span></a>
+  <a href="eventry.html" class="nav-back">← Back to events</a>
+</nav>
+
+<div class="page-hero">
+  <p class="eyebrow">For Event Organisers</p>
+  <h1>List your event on <em>Eventry</em></h1>
+  <p class="sub">Free to list. Reach thousands of active Australians looking for their next sporting challenge.</p>
+</div>
+
+<div class="form-wrap">
+  <div class="success-msg" id="successMsg">
+    <h3>🎉 Event submitted successfully!</h3>
+    <p>Thanks for listing your event on Eventry. We'll review your submission and have it live within 24 hours. You'll receive a confirmation at the email address provided.</p>
+  </div>
+
+  <form id="eventForm" onsubmit="handleSubmit(event)">
+
+    <!-- SECTION 1: ORGANISER -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-title">Organiser details</div>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Organisation name <span class="req">*</span></label>
+          <input type="text" name="org_name" placeholder="e.g. Max Adventures" required />
+        </div>
+        <div class="field">
+          <label>Contact name <span class="req">*</span></label>
+          <input type="text" name="contact_name" placeholder="Your full name" required />
+        </div>
+        <div class="field">
+          <label>Contact email <span class="req">*</span></label>
+          <input type="email" name="contact_email" placeholder="you@yourorg.com.au" required />
+        </div>
+        <div class="field">
+          <label>Contact phone</label>
+          <input type="tel" name="contact_phone" placeholder="0400 000 000" />
+        </div>
+        <div class="field">
+          <label>Website</label>
+          <input type="url" name="website" placeholder="https://yourwebsite.com.au" />
+        </div>
+        <div class="field">
+          <label>Organisation logo</label>
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('logoInput').click()">
+            <input type="file" id="logoInput" accept="image/*" onchange="previewLogo(event)" />
+            <p><strong>Click to upload</strong> your logo</p>
+            <p style="font-size:11px; margin-top:4px;">PNG or JPG, max 2MB</p>
+          </div>
+          <div class="upload-preview" id="uploadPreview">
+            <img id="logoPreviewImg" src="" alt="Logo preview" />
+            <span id="logoFileName"></span>
+            <button type="button" onclick="removeLogo()">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: EVENT DETAILS -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div class="section-title">Event details</div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-span-2">
+          <label>Event name <span class="req">*</span></label>
+          <input type="text" name="event_name" placeholder="e.g. Blue Mountains Ultra Trail" required />
+        </div>
+        <div class="field col-span-2">
+          <label>Event description <span class="req">*</span></label>
+          <textarea name="description" placeholder="Tell participants what makes this event special — the course, the scenery, the vibe..." required></textarea>
+        </div>
+        <div class="field">
+          <label>Event date <span class="req">*</span></label>
+          <input type="date" name="event_date" required />
+        </div>
+        <div class="field">
+          <label>Event end date <span class="req">*</span></label>
+          <input type="date" name="event_end_date" required />
+          <span class="field-hint">Same as start date if single day</span>
+        </div>
+        <div class="field">
+          <label>Suburb / Town <span class="req">*</span></label>
+          <input type="text" name="location" placeholder="e.g. Katoomba" required />
+        </div>
+        <div class="field">
+          <label>State <span class="req">*</span></label>
+          <select name="state" required>
+            <option value="">Select state...</option>
+            <option>NSW</option><option>VIC</option><option>QLD</option>
+            <option>WA</option><option>SA</option><option>TAS</option>
+            <option>ACT</option><option>NT</option>
+          </select>
+        </div>
+        <div class="field col-span-2">
+          <label>Venue / Address</label>
+          <input type="text" name="venue" placeholder="e.g. Echo Point Car Park, Katoomba NSW 2780" />
+        </div>
+        <div class="field col-span-2">
+          <label>Event website / Registration URL <span class="req">*</span></label>
+          <input type="url" name="event_url" placeholder="https://youreventregistration.com" required />
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: DISCIPLINES -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div class="section-title">Disciplines & distances</div>
+        <span class="section-sub">Add one or more</span>
+      </div>
+      <p style="font-size:13px; color:var(--ink-muted); margin-bottom:1.25rem;">Each discipline is a separate race/category within your event. E.g. a triathlon festival might have a Sprint Tri, Olympic Tri, and a Kids Aquathlon.</p>
+
+      <div id="disciplinesContainer"></div>
+
+      <button type="button" class="add-disc-btn" onclick="addDiscipline()">
+        + Add another discipline
+      </button>
+    </div>
+
+    <!-- SECTION 4: ADDITIONAL INFO -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div class="section-title">Additional information</div>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Min age</label>
+          <input type="number" name="min_age" placeholder="e.g. 16" min="0" max="120" />
+        </div>
+        <div class="field">
+          <label>Max participants</label>
+          <input type="number" name="max_participants" placeholder="e.g. 500" />
+        </div>
+        <div class="field col-span-2">
+          <label>Is this event beginner friendly?</label>
+          <select name="beginner_friendly">
+            <option value="">Not specified</option>
+            <option value="yes">Yes — suitable for beginners</option>
+            <option value="no">No — experienced participants only</option>
+            <option value="mixed">Mixed — some disciplines for beginners</option>
+          </select>
+        </div>
+        <div class="field col-span-2">
+          <label>Additional notes</label>
+          <textarea name="notes" placeholder="Any extra details — parking, gear requirements, cut-off times, course info..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-section">
+      <button type="submit" class="submit-btn">
+        Submit event for review
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <p class="submit-note">Your event will be reviewed and published within 24 hours. We'll email you once it's live.</p>
+    </div>
+
+  </form>
+</div>
+
+<script>
+const SPORTS = [
+  { value: '', label: 'Select sport...' },
+  { value: 'running', label: '🏃 Running (Road & Trail)' },
+  { value: 'cycling_road', label: '🚴 Cycling — Road & Gravel' },
+  { value: 'cycling_mtb', label: '🚵 Cycling — MTB' },
+  { value: 'triathlon', label: '🏊 Triathlon' },
+  { value: 'duathlon', label: '🤸 Duathlon' },
+  { value: 'openwater', label: '🌊 Open Water Swimming' },
+  { value: 'paddling', label: '🚣 Paddling / Kayaking' },
+  { value: 'obstacle', label: '🧗 Obstacle Racing' },
+  { value: 'hiking', label: '🥾 Hiking / Trekking' },
+  { value: 'fitness', label: '🏋️ Fitness / CrossFit' },
+  { value: 'equestrian', label: '🏇 Equestrian' },
+  { value: 'snow', label: '⛷️ Snow Sports' },
+  { value: 'other', label: '⭐ Other / Custom' },
+];
+
+const CRAFT_TYPES = ['Kayak', 'Canoe', 'SUP (Stand-Up Paddle)', 'Outrigger', 'Dragon Boat', 'Surfski', 'Other'];
+const FITNESS_FORMATS = ['Competition (scored)', 'AMRAP', 'For Time', 'Team event', 'Individual', 'Other'];
+const EQUESTRIAN_DISCIPLINES = ['Show Jumping', 'Dressage', 'Cross Country', 'Eventing', 'Endurance', 'Polo Cross', 'Other'];
+const SNOW_DISCIPLINES = ['Slalom', 'Giant Slalom', 'Downhill', 'Cross Country Skiing', 'Snowboard Cross', 'Ski Touring', 'Other'];
+const CUSTOM_ACTIVITIES = ['Run', 'Cycle', 'Swim', 'Kayak', 'Canoe', 'SUP', 'Hike', 'Climb', 'Abseil', 'Horse Ride', 'Ski', 'Snowboard', 'Row', 'Obstacle Course', 'Other'];
+
+let discCount = 0;
+
+function distanceField(label, name, defaultUnit = 'km', allowedUnits = ['m', 'km', 'miles']) {
+  const units = allowedUnits.map(u =>
+    `<button type="button" class="unit-btn${u === defaultUnit ? ' active' : ''}" data-unit="${u}" onclick="setUnit(this)">${u}</button>`
+  ).join('');
+  return `
+    <div class="distance-field">
+      <label>${label}</label>
+      <div class="distance-input-wrap">
+        <input type="number" name="${name}_val" placeholder="0" min="0" step="any" />
+        <div class="unit-toggle">${units}</div>
+        <input type="hidden" name="${name}_unit" value="${defaultUnit}" />
+      </div>
+    </div>`;
+}
+
+function setUnit(btn) {
+  const toggle = btn.closest('.unit-toggle');
+  toggle.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const wrap = btn.closest('.distance-input-wrap');
+  wrap.querySelector('input[type="hidden"]').value = btn.dataset.unit;
+}
+
+function sportFields(sport, dIdx) {
+  if (!sport) return '';
+  const p = `d${dIdx}`;
+  switch(sport) {
+    case 'running':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_run_dist`, 'km')}
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. 42km Marathon, Kids 5km" /></div>
+      </div>`;
+
+    case 'cycling_road':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_cycle_dist`, 'km')}
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Gran Fondo 160km" /></div>
+      </div>`;
+
+    case 'cycling_mtb':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_mtb_dist`, 'km')}
+        ${distanceField('Elevation gain (optional)', `${p}_mtb_elev`, 'm', ['m'])}
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Enduro Expert" /></div>
+      </div>`;
+
+    case 'triathlon':
+      return `<div style="margin-top:10px">
+        <div class="form-grid thirds">
+          ${distanceField('Swim <span class="req">*</span>', `${p}_swim`, 'm')}
+          ${distanceField('Bike <span class="req">*</span>', `${p}_bike`, 'km')}
+          ${distanceField('Run <span class="req">*</span>', `${p}_run`, 'km')}
+        </div>
+        <div class="form-grid" style="margin-top:8px">
+          <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Sprint, Olympic, Ironman 70.3" /></div>
+        </div>
+      </div>`;
+
+    case 'duathlon':
+      return `<div style="margin-top:10px">
+        <div class="form-grid thirds">
+          ${distanceField('Run 1 <span class="req">*</span>', `${p}_run1`, 'km')}
+          ${distanceField('Bike <span class="req">*</span>', `${p}_bike`, 'km')}
+          ${distanceField('Run 2 <span class="req">*</span>', `${p}_run2`, 'km')}
+        </div>
+        <div class="form-grid" style="margin-top:8px">
+          <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Sprint Duathlon" /></div>
+        </div>
+      </div>`;
+
+    case 'openwater':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_ow_dist`, 'm')}
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. 2.5km Ocean Swim" /></div>
+      </div>`;
+
+    case 'paddling':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_pad_dist`, 'km')}
+        <div class="field"><label>Craft type</label><select name="${p}_craft">${CRAFT_TYPES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. 10km Solo Kayak" /></div>
+      </div>`;
+
+    case 'obstacle':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_obs_dist`, 'km')}
+        <div class="field"><label>Number of obstacles (optional)</label><input type="number" name="${p}_obstacles" placeholder="e.g. 25" min="0" /></div>
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Beast, Sprint, Super" /></div>
+      </div>`;
+
+    case 'hiking':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_hike_dist`, 'km')}
+        ${distanceField('Elevation gain (optional)', `${p}_hike_elev`, 'm', ['m'])}
+        <div class="field"><label>Number of days (optional)</label><input type="number" name="${p}_days" placeholder="e.g. 3" min="1" /></div>
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. 3-Day Alpine Trek" /></div>
+      </div>`;
+
+    case 'fitness':
+      return `<div class="form-grid" style="margin-top:10px">
+        <div class="field"><label>Format</label><select name="${p}_fitness_format">${FITNESS_FORMATS.map(f=>`<option>${f}</option>`).join('')}</select></div>
+        <div class="field"><label>Duration (mins, optional)</label><input type="number" name="${p}_duration" placeholder="e.g. 60" min="1" /></div>
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Rx Division, Scaled" /></div>
+      </div>`;
+
+    case 'equestrian':
+      return `<div class="form-grid" style="margin-top:10px">
+        <div class="field"><label>Discipline</label><select name="${p}_eq_disc">${EQUESTRIAN_DISCIPLINES.map(d=>`<option>${d}</option>`).join('')}</select></div>
+        ${distanceField('Distance (optional)', `${p}_eq_dist`, 'km')}
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Open Grade, Amateur" /></div>
+      </div>`;
+
+    case 'snow':
+      return `<div class="form-grid" style="margin-top:10px">
+        <div class="field"><label>Discipline</label><select name="${p}_snow_disc">${SNOW_DISCIPLINES.map(d=>`<option>${d}</option>`).join('')}</select></div>
+        ${distanceField('Distance (optional)', `${p}_snow_dist`, 'km')}
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Open Men, U18" /></div>
+      </div>`;
+
+    case 'other':
+      return `<div style="margin-top:10px">
+        <div class="form-grid" style="margin-bottom:10px">
+          <div class="field col-span-2">
+            <label>Event type name <span class="req">*</span></label>
+            <input type="text" name="${p}_other_name" placeholder="e.g. Bush to Beach Adventure Race" required />
+          </div>
+        </div>
+        <span class="custom-legs-label">Legs / stages — add in race order:</span>
+        <div class="legs-container" id="legs_${dIdx}"></div>
+        <button type="button" class="add-leg-btn" onclick="addLeg(${dIdx})">+ Add a leg</button>
+        <div class="form-grid" style="margin-top:10px">
+          <div class="field"><label>Category name (optional)</label><input type="text" name="${p}_cat_name" placeholder="e.g. Elite, Team of 4" /></div>
+        </div>
+      </div>`;
+
+    default: return '';
+  }
+}
+
+function addLeg(dIdx) {
+  const container = document.getElementById(`legs_${dIdx}`);
+  const legIdx = container.children.length + 1;
+  const p = `d${dIdx}_leg${legIdx}`;
+  const div = document.createElement('div');
+  div.className = 'leg-row custom';
+  div.innerHTML = `
+    <div class="field">
+      <label>Activity</label>
+      <select name="${p}_activity">
+        ${CUSTOM_ACTIVITIES.map(a=>`<option>${a}</option>`).join('')}
+        <option value="custom">Custom...</option>
+      </select>
+    </div>
+    <div class="field" id="${p}_custom_wrap" style="display:none">
+      <label>Custom activity</label>
+      <input type="text" name="${p}_custom" placeholder="e.g. Abseil" />
+    </div>
+    ${distanceField(`Distance`, `${p}_dist`, 'km')}
+    <button type="button" class="remove-leg" onclick="this.closest('.leg-row').remove()" title="Remove leg">✕</button>
+  `;
+  div.querySelector(`select[name="${p}_activity"]`).addEventListener('change', function() {
+    document.getElementById(`${p}_custom_wrap`).style.display = this.value === 'custom' ? 'flex' : 'none';
+  });
+  container.appendChild(div);
+}
+
+function addDiscipline() {
+  discCount++;
+  const idx = discCount;
+  const isFirst = idx === 1;
+  const container = document.getElementById('disciplinesContainer');
+  const div = document.createElement('div');
+  div.className = `discipline-card${isFirst ? ' first' : ''}`;
+  div.id = `disc_${idx}`;
+
+  const sportOptions = SPORTS.map(s =>
+    `<option value="${s.value}">${s.label}</option>`
+  ).join('');
+
+  div.innerHTML = `
+    <div class="disc-header">
+      <span class="disc-num">Discipline ${idx}</span>
+      ${!isFirst ? `<button type="button" class="disc-remove" onclick="removeDiscipline(${idx})">Remove</button>` : ''}
+    </div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Sport / discipline type <span class="req">*</span></label>
+        <select name="d${idx}_sport" id="sport_${idx}" onchange="updateSportFields(${idx})" ${isFirst ? 'required' : ''}>
+          ${sportOptions}
+        </select>
+      </div>
+      <div class="price-row">
+        <div class="field">
+          <label>Entry fee (AUD)</label>
+          <input type="number" name="d${idx}_price" id="price_${idx}" placeholder="0.00" min="0" step="0.01" />
+        </div>
+        <label class="free-toggle" id="free_${idx}" onclick="toggleFree(${idx})">
+          <input type="checkbox" id="freecheck_${idx}" name="d${idx}_free" /> Free entry
+        </label>
+      </div>
+      <div class="field">
+        <label>Registration link (if different from main)</label>
+        <input type="url" name="d${idx}_reg_link" placeholder="https://..." />
+      </div>
+      <div class="field">
+        <label>Age group / category</label>
+        <input type="text" name="d${idx}_age" placeholder="e.g. Open, U18, Masters 40+" />
+      </div>
+    </div>
+    <div class="sport-fields" id="sportfields_${idx}"></div>
+  `;
+  container.appendChild(div);
+}
+
+function removeDiscipline(idx) {
+  const el = document.getElementById(`disc_${idx}`);
+  if (el) el.remove();
+}
+
+function updateSportFields(idx) {
+  const sport = document.getElementById(`sport_${idx}`).value;
+  document.getElementById(`sportfields_${idx}`).innerHTML = sportFields(sport, idx);
+  if (sport === 'other') addLeg(idx);
+}
+
+function toggleFree(idx) {
+  const cb = document.getElementById(`freecheck_${idx}`);
+  const label = document.getElementById(`free_${idx}`);
+  const priceInput = document.getElementById(`price_${idx}`);
+  cb.checked = !cb.checked;
+  if (cb.checked) {
+    label.classList.add('checked');
+    priceInput.value = '0';
+    priceInput.disabled = true;
+  } else {
+    label.classList.remove('checked');
+    priceInput.disabled = false;
+    priceInput.value = '';
+  }
+}
+
+function previewLogo(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('logoPreviewImg').src = ev.target.result;
+    document.getElementById('logoFileName').textContent = file.name;
+    document.getElementById('uploadArea').style.display = 'none';
+    document.getElementById('uploadPreview').style.display = 'flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeLogo() {
+  document.getElementById('logoInput').value = '';
+  document.getElementById('uploadArea').style.display = 'block';
+  document.getElementById('uploadPreview').style.display = 'none';
+}
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5LNMivIm3qrjOkLsGfmBZI2jb35SU3RQYMQ_EqJQfinbxZIC-EHcIHclv_lfzaLFgfw/exec';
+
+function collectDisciplines() {
+  const disciplines = [];
+  document.querySelectorAll('.discipline-card').forEach(card => {
+    const idx = card.id.replace('disc_', '');
+    const sport = document.getElementById(`sport_${idx}`)?.value;
+    if (!sport) return;
+    const get = name => {
+      const el = card.querySelector(`[name="${name}"]`);
+      return el ? el.value : '';
+    };
+    const p = `d${idx}`;
+    let dist_value = '', dist_unit = 'km', dist_display = '', legs = '';
+
+    if (sport === 'running') {
+      dist_value = get(`${p}_run_dist_val`);
+      dist_unit = get(`${p}_run_dist_unit`) || 'km';
+    } else if (sport === 'cycling_road') {
+      dist_value = get(`${p}_cycle_dist_val`);
+      dist_unit = get(`${p}_cycle_dist_unit`) || 'km';
+    } else if (sport === 'cycling_mtb') {
+      dist_value = get(`${p}_mtb_dist_val`);
+      dist_unit = get(`${p}_mtb_dist_unit`) || 'km';
+    } else if (sport === 'triathlon') {
+      const swim = get(`${p}_swim_val`) + (get(`${p}_swim_unit`) || 'm');
+      const bike = get(`${p}_bike_val`) + (get(`${p}_bike_unit`) || 'km');
+      const run = get(`${p}_run_val`) + (get(`${p}_run_unit`) || 'km');
+      dist_display = `${swim} / ${bike} / ${run}`;
+    } else if (sport === 'duathlon') {
+      const r1 = get(`${p}_run1_val`) + (get(`${p}_run1_unit`) || 'km');
+      const bk = get(`${p}_bike_val`) + (get(`${p}_bike_unit`) || 'km');
+      const r2 = get(`${p}_run2_val`) + (get(`${p}_run2_unit`) || 'km');
+      dist_display = `${r1} / ${bk} / ${r2}`;
+    } else if (sport === 'openwater') {
+      dist_value = get(`${p}_ow_dist_val`);
+      dist_unit = get(`${p}_ow_dist_unit`) || 'm';
+    } else if (sport === 'paddling') {
+      dist_value = get(`${p}_pad_dist_val`);
+      dist_unit = get(`${p}_pad_dist_unit`) || 'km';
+    } else if (sport === 'obstacle') {
+      dist_value = get(`${p}_obs_dist_val`);
+      dist_unit = get(`${p}_obs_dist_unit`) || 'km';
+    } else if (sport === 'hiking') {
+      dist_value = get(`${p}_hike_dist_val`);
+      dist_unit = get(`${p}_hike_dist_unit`) || 'km';
+    } else if (sport === 'other') {
+      const legRows = card.querySelectorAll('.leg-row');
+      const legArr = [];
+      legRows.forEach((row, li) => {
+        const activity = row.querySelector('select')?.value || '';
+        const custom = row.querySelector(`[name*="_custom"]`)?.value || '';
+        const distVal = row.querySelector('input[type="number"]')?.value || '';
+        const distUnt = row.querySelector('input[type="hidden"]')?.value || 'km';
+        legArr.push({ activity: activity === 'custom' ? custom : activity, dist_value: distVal, dist_unit: distUnt });
+      });
+      legs = JSON.stringify(legArr);
+      dist_display = legArr.map(l => `${l.activity} ${l.dist_value}${l.dist_unit}`).join(' → ');
+    }
+
+    if (dist_value && !dist_display) {
+      dist_display = dist_unit === 'miles'
+        ? `${dist_value} miles (${(parseFloat(dist_value) * 1.60934).toFixed(1)}km)`
+        : `${dist_value}${dist_unit}`;
+    }
+
+    const isFree = card.querySelector(`#freecheck_${idx}`)?.checked;
+    disciplines.push({
+      sport,
+      disc_name: get(`${p}_cat_name`),
+      dist_value, dist_unit, dist_display, legs,
+      price: isFree ? 0 : (parseFloat(get(`${p}_price`)) || 0),
+      free_entry: isFree ? 'TRUE' : 'FALSE',
+      reg_link: get(`${p}_reg_link`),
+      age_group: get(`${p}_age`)
+    });
+  });
+  return disciplines;
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.querySelector('.submit-btn');
+  btn.innerHTML = 'Submitting... <span style="opacity:0.6">please wait</span>';
+  btn.disabled = true;
+
+  const form = document.getElementById('eventForm');
+  const fd = new FormData(form);
+  const payload = {
+    org_name: fd.get('org_name'),
+    org_email: fd.get('contact_email'),
+    org_phone: fd.get('contact_phone'),
+    org_website: fd.get('website'),
+    contact_name: fd.get('contact_name'),
+    event_name: fd.get('event_name'),
+    event_date: fd.get('event_date'),
+    event_end_date: fd.get('event_end_date'),
+    location: fd.get('location'),
+    state: fd.get('state'),
+    venue: fd.get('venue'),
+    event_url: fd.get('event_url'),
+    description: fd.get('description'),
+    beginner_friendly: fd.get('beginner_friendly'),
+    min_age: fd.get('min_age'),
+    max_participants: fd.get('max_participants'),
+    notes: fd.get('notes'),
+    disciplines: collectDisciplines()
+  };
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    document.getElementById('eventForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch(err) {
+    btn.innerHTML = 'Submit event for review →';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again or email us at hello@eventry.au');
+  }
+}
+
+addDiscipline();
+</script>
+</body>
+</html>
