@@ -771,7 +771,9 @@ async function loadLiveEvents() {
         id: e.submission_id,
         name: e.event_name,
         sport: e.disciplines?.[0]?.sport || 'Other',
-        date: typeof e.event_date === 'string' ? e.event_date : new Date(e.event_date).toISOString().split('T')[0],
+        date: e.event_date ? (typeof e.event_date === 'number' 
+          ? new Date((e.event_date - 25569) * 86400 * 1000).toISOString().split('T')[0]
+          : String(e.event_date).split('T')[0]) : '',
         location: `${e.location}, ${e.state}`,
         state: e.state,
         organiser: e.org_name,
@@ -857,7 +859,27 @@ function clearFilters() {
 }
 
 function formatDate(dateStr) {
-  const d = new Date(dateStr + 'T00:00:00');
+  if (!dateStr) return 'Date TBC';
+  // Handle Google Sheets date formats: "2026-05-28", "28/05/2026", "May 28, 2026" etc
+  let d;
+  if (typeof dateStr === 'number') {
+    // Google Sheets serial date number
+    d = new Date((dateStr - 25569) * 86400 * 1000);
+  } else if (typeof dateStr === 'string') {
+    // Try YYYY-MM-DD first
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      d = new Date(dateStr + 'T00:00:00');
+    } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+      // DD/MM/YYYY
+      const parts = dateStr.split('/');
+      d = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T00:00:00`);
+    } else {
+      d = new Date(dateStr);
+    }
+  } else {
+    d = new Date(dateStr);
+  }
+  if (isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
