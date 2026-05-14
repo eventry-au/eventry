@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organiser Guide — Eventry</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d0d0d; --ink-muted: #5a5a5a; --ink-faint: #9a9a9a;
+    --surface: #f5f3ef; --white: #ffffff; --accent: #e8572a;
+    --accent-light: #fdf0eb; --border: #e2dfd8; --border-strong: #c8c4bc;
+    --card-radius: 16px; --pill-radius: 100px;
+    --success: #2e7d32; --success-light: #f1f8f1;
+    --info: #1565c0; --info-light: #e3f2fd;
+    --warn: #e65100; --warn-light: #fff3e0;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); font-size: 15px; line-height: 1.7; }
+
+  /* NAV */
+  nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 14px; color: var(--ink-muted); text-decoration: none; font-weight: 500; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero { background: var(--ink); color: var(--white); padding: 3.5rem 2rem 3rem; text-align: center; }
+  .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: #aaa; font-size: 16px; font-weight: 300; max-width: 560px; margin: 0 auto 2rem; }
+  .hero-steps { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+  .hero-step { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #888; }
+  .hero-step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* LAYOUT */
+  .page-wrap { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; display: grid; grid-template-columns: 240px 1fr; gap: 3rem; align-items: start; }
+
+  /* SIDEBAR */
+  .sidebar { position: sticky; top: 80px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1rem; }
+  .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .sidebar-nav a { display: block; padding: 7px 12px; border-radius: 8px; font-size: 13px; color: var(--ink-muted); text-decoration: none; transition: all 0.15s; font-weight: 500; }
+  .sidebar-nav a:hover { background: var(--white); color: var(--accent); }
+  .sidebar-nav a.active { background: var(--accent-light); color: var(--accent); }
+  .sidebar-nav .sub { padding-left: 24px; font-size: 12px; color: var(--ink-faint); }
+  .sidebar-divider { height: 1px; background: var(--border); margin: 8px 0; }
+
+  /* CONTENT */
+  .content section { margin-bottom: 3rem; scroll-margin-top: 80px; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .content h2 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 1rem; line-height: 1.2; }
+  .content h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 0.75rem; margin-top: 1.5rem; }
+  .content p { color: var(--ink-muted); margin-bottom: 1rem; }
+  .content p:last-child { margin-bottom: 0; }
+
+  /* CARDS */
+  .card { background: var(--white); border-radius: var(--card-radius); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 0.5rem; }
+
+  /* CALLOUTS */
+  .callout { border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; gap: 12px; align-items: flex-start; }
+  .callout.tip { background: var(--success-light); border: 1px solid #c8e6c9; }
+  .callout.info { background: var(--info-light); border: 1px solid #bbdefb; }
+  .callout.warn { background: var(--warn-light); border: 1px solid #ffe0b2; }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
+  .callout-body strong { color: var(--ink); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 1rem; }
+  .step { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--white); font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .step-desc { font-size: 14px; color: var(--ink-muted); }
+
+  /* FIELD GUIDE */
+  .field-guide { display: flex; flex-direction: column; gap: 1px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .field-row { display: grid; grid-template-columns: 180px 1fr auto; gap: 0; background: var(--white); }
+  .field-row:not(:last-child) { border-bottom: 1px solid var(--border); }
+  .field-name { padding: 12px 14px; font-size: 13px; font-weight: 600; color: var(--ink); background: var(--surface); border-right: 1px solid var(--border); }
+  .field-desc { padding: 12px 14px; font-size: 13px; color: var(--ink-muted); }
+  .field-req { padding: 12px 14px; font-size: 11px; font-weight: 600; display: flex; align-items: center; }
+  .req-badge { background: var(--accent-light); color: var(--accent); padding: 2px 8px; border-radius: 4px; }
+  .opt-badge { background: var(--surface); color: var(--ink-faint); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); }
+
+  /* SPORT GRID */
+  .sport-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+  .sport-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+  .sport-card-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .sport-card-fields { font-size: 12px; color: var(--ink-muted); line-height: 1.6; }
+
+  /* EXAMPLE BOX */
+  .example-box { background: var(--ink); color: var(--white); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; font-family: monospace; font-size: 13px; line-height: 1.8; }
+  .example-box .comment { color: #888; }
+  .example-box .label { color: #e8572a; font-weight: 600; }
+  .example-box .value { color: #7dd3fc; }
+  .example-label { font-size: 12px; font-weight: 600; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+  /* UNIT TABLE */
+  table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 1rem; font-size: 14px; }
+  th { background: var(--ink); color: var(--white); padding: 10px 14px; text-align: left; font-family: 'Syne', sans-serif; font-size: 13px; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--ink-muted); }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 500; color: var(--ink); }
+
+  /* FAQ */
+  .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+  .faq-q { padding: 1rem 1.25rem; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; user-select: none; }
+  .faq-q:hover { background: var(--surface); }
+  .faq-arrow { font-size: 11px; color: var(--ink-faint); transition: transform 0.2s; }
+  .faq-a { display: none; padding: 0 1.25rem 1rem; font-size: 14px; color: var(--ink-muted); border-top: 1px solid var(--border); padding-top: 1rem; line-height: 1.7; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+  /* CTA */
+  .cta-box { background: var(--ink); border-radius: var(--card-radius); padding: 2.5rem; text-align: center; color: var(--white); }
+  .cta-box h3 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 0.75rem; }
+  .cta-box p { color: #aaa; font-size: 14px; margin-bottom: 1.5rem; font-weight: 300; }
+  .cta-btn { display: inline-block; background: var(--accent); color: var(--white); padding: 12px 28px; border-radius: var(--pill-radius); font-size: 14px; font-weight: 500; text-decoration: none; transition: background 0.15s; }
+  .cta-btn:hover { background: #c94420; }
+
+  /* PROGRESS TRACKER */
+  .progress-track { background: var(--white); border: 1px solid var(--border); border-radius: var(--card-radius); padding: 1.5rem; margin-bottom: 2rem; }
+  .progress-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 1rem; }
+  .progress-items { display: flex; flex-direction: column; gap: 8px; }
+  .progress-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-muted); }
+  .progress-item .check { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .progress-item.done .check { background: var(--success); border-color: var(--success); color: white; }
+
+  @media (max-width: 768px) {
+    .page-wrap { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .field-row { grid-template-columns: 1fr; }
+    .field-name { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Even<span>try</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Browse Events</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="submit.html">List an Event</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">Organiser Documentation</p>
+  <h1>How to list your event<br>on <em>Eventry</em></h1>
+  <p>Everything you need to know — from submitting your first event to managing multiple disciplines and custom multi-sport races.</p>
+  <div class="hero-steps">
+    <div class="hero-step"><div class="hero-step-num">1</div> Fill in the form</div>
+    <div class="hero-step"><div class="hero-step-num">2</div> We review & approve</div>
+    <div class="hero-step"><div class="hero-step-num">3</div> Your event goes live</div>
+    <div class="hero-step"><div class="hero-step-num">4</div> Athletes find & register</div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">On this page</div>
+    <ul class="sidebar-nav">
+      <li><a href="#getting-started">Getting started</a></li>
+      <li><a href="#section1" class="sub">1. Organiser details</a></li>
+      <li><a href="#section2" class="sub">2. Event details</a></li>
+      <li><a href="#section3" class="sub">3. Disciplines</a></li>
+      <li><a href="#section4" class="sub">4. Additional info</a></li>
+      <div class="sidebar-divider"></div>
+      <li><a href="#sports">Sport types & fields</a></li>
+      <li><a href="#distances">Distances & units</a></li>
+      <li><a href="#other">Custom "Other" events</a></li>
+      <li><a href="#featured">Featured listings</a></li>
+      <div class="sidebar-divider"></div>
+      <li><a href="#after">After you submit</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- GETTING STARTED -->
+    <section id="getting-started">
+      <div class="section-label">Overview</div>
+      <h2>Getting started</h2>
+      <p>Eventry is Australia's sports events directory — a single place where athletes can discover, filter, and register for sporting events across the country. Listing your event is free and takes about 5 minutes.</p>
+
+      <div class="progress-track">
+        <div class="progress-title">What you'll need before you start</div>
+        <div class="progress-items">
+          <div class="progress-item done"><div class="check">✓</div> Your organisation name and contact details</div>
+          <div class="progress-item done"><div class="check">✓</div> Event name, date, and location</div>
+          <div class="progress-item done"><div class="check">✓</div> A short description of the event</div>
+          <div class="progress-item done"><div class="check">✓</div> Details of each discipline/category (distances, prices)</div>
+          <div class="progress-item done"><div class="check">✓</div> Your registration URL (your existing booking page)</div>
+          <div class="progress-item done"><div class="check">✓</div> Your organisation logo (PNG or JPG)</div>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-icon">ℹ️</div>
+        <div class="callout-body"><strong>Your registration link stays yours.</strong> Eventry doesn't process registrations — we send athletes directly to your existing registration page (e.g. EntryCentral, EventBrite, your own site). You keep full control of your bookings.</div>
+      </div>
+    </section>
+
+    <!-- SECTION 1 -->
+    <section id="section1">
+      <div class="section-label">Step 1 of 4</div>
+      <h2>Organiser details</h2>
+      <p>This section is about your organisation — not the event itself. Fill this in once and it will be used across all your listings.</p>
+
+      <div class="field-guide">
+        <div class="field-row">
+          <div class="field-name">Organisation name</div>
+          <div class="field-desc">Your trading name as you want it to appear on Eventry. E.g. "Max Adventures" or "H Events"</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Contact name</div>
+          <div class="field-desc">The person we contact if we have questions about this listing. Not shown publicly.</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Contact email</div>
+          <div class="field-desc">We'll send approval confirmation here. Not shown publicly.</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Contact phone</div>
+          <div class="field-desc">For urgent queries only. Not shown publicly.</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Website</div>
+          <div class="field-desc">Your organisation's main website. Shown on your organiser profile.</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Logo</div>
+          <div class="field-desc">PNG or JPG, max 2MB. Shown on every event card. Square logos work best. If none uploaded, we'll use your initials.</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section id="section2">
+      <div class="section-label">Step 2 of 4</div>
+      <h2>Event details</h2>
+      <p>The core details of your event. If you run a festival with multiple race days, treat the whole festival as one event and add each race as a discipline in Step 3.</p>
+
+      <div class="field-guide">
+        <div class="field-row">
+          <div class="field-name">Event name</div>
+          <div class="field-desc">The official name of your event. E.g. "Noosa Triathlon Festival" or "Blue Mountains Ultra Trail"</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Description</div>
+          <div class="field-desc">2–4 sentences describing what makes your event special. Mention the course, scenery, atmosphere, or what participants can expect. This is your sales pitch — make it compelling!</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Start date</div>
+          <div class="field-desc">The first day of your event.</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">End date</div>
+          <div class="field-desc">Same as start date for single-day events. For multi-day festivals, enter the last day.</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Suburb / Town</div>
+          <div class="field-desc">The town or suburb where the event is held. E.g. "Noosa Heads" or "Katoomba"</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">State</div>
+          <div class="field-desc">Select the Australian state or territory.</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Venue / Address</div>
+          <div class="field-desc">The specific venue or start line address. E.g. "Noosa Main Beach, Hastings Street, Noosa Heads QLD 4567"</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Registration URL</div>
+          <div class="field-desc">The link where athletes register. This can be your own site, EntryCentral, EventBrite, or any booking platform. Must start with https://</div>
+          <div class="field-req"><span class="req-badge">Required</span></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">✏️</div>
+        <div class="callout-body"><strong>Description tip:</strong> The best descriptions answer three questions — What is the event? Where does it take place? Why should I enter? Example: <em>"The Blue Mountains Ultra is a point-to-point trail run through some of Australia's most dramatic canyon country. Starting at Echo Point and finishing at Leura Falls, runners experience 2,500m of elevation change through world heritage wilderness. Known for its fierce community spirit and stunning photography opportunities."</em></div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section id="section3">
+      <div class="section-label">Step 3 of 4</div>
+      <h2>Disciplines & distances</h2>
+      <p>This is where Eventry differs from other directories. Instead of one event = one listing, you can add every race category, distance, and format your event offers. Each is called a <strong>discipline</strong>.</p>
+
+      <div class="callout info">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body"><strong>What counts as a discipline?</strong> Each separately-priced or separately-distanced category. For example: a running event with a 5km, 10km, 21km, and 42km has <strong>4 disciplines</strong>. A triathlon festival with a Sprint, Olympic, and Kids Tri has <strong>3 disciplines</strong>.</div>
+      </div>
+
+      <h3>Adding your first discipline</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Select the sport type</div>
+            <div class="step-desc">Choose from the dropdown — Running, Cycling, Triathlon, Open Water Swimming, etc. The distance fields will automatically change to match the sport.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Enter the distance(s)</div>
+            <div class="step-desc">Each sport shows the relevant distance fields. Select the unit (m, km, or miles) using the toggle buttons next to each field.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Enter the entry fee</div>
+            <div class="step-desc">Enter the price in AUD. If the discipline is free to enter, tick the "Free entry" checkbox instead.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Add a category name</div>
+            <div class="step-desc">Give this discipline a name athletes will recognise — e.g. "Sprint Triathlon", "42km Marathon", "Kids 5km Dash".</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Add more disciplines</div>
+            <div class="step-desc">Click "Add another discipline" to repeat for each category your event offers. There's no limit.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPORTS -->
+    <section id="sports">
+      <div class="section-label">Reference</div>
+      <h2>Sport types & their fields</h2>
+      <p>Each sport type shows different distance fields. Here's what to expect for each:</p>
+
+      <div class="sport-grid">
+        <div class="sport-card">
+          <div class="sport-card-name">🏃 Running</div>
+          <div class="sport-card-fields">Distance (m/km/miles)<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🚴 Cycling — Road</div>
+          <div class="sport-card-fields">Distance (m/km/miles)<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🚵 Cycling — MTB</div>
+          <div class="sport-card-fields">Distance (m/km/miles)<br>Elevation gain (m) optional<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🏊 Triathlon</div>
+          <div class="sport-card-fields">Swim distance<br>Bike distance<br>Run distance<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🤸 Duathlon</div>
+          <div class="sport-card-fields">Run 1 distance<br>Bike distance<br>Run 2 distance<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🌊 Open Water Swim</div>
+          <div class="sport-card-fields">Distance (m/km/miles)<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🚣 Paddling</div>
+          <div class="sport-card-fields">Distance (m/km/miles)<br>Craft type<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🧗 Obstacle Racing</div>
+          <div class="sport-card-fields">Distance (m/km/miles)<br>No. of obstacles optional<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🥾 Hiking</div>
+          <div class="sport-card-fields">Distance (m/km/miles)<br>Elevation gain optional<br>Number of days optional<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🏋️ Fitness</div>
+          <div class="sport-card-fields">Format (AMRAP, For Time etc.)<br>Duration (mins) optional<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">🏇 Equestrian</div>
+          <div class="sport-card-fields">Discipline type<br>Distance optional<br>Category name</div>
+        </div>
+        <div class="sport-card">
+          <div class="sport-card-name">⛷️ Snow Sports</div>
+          <div class="sport-card-fields">Discipline type<br>Distance optional<br>Category name</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISTANCES -->
+    <section id="distances">
+      <div class="section-label">Reference</div>
+      <h2>Distances & units</h2>
+      <p>Every distance field has a three-way unit toggle. Select the unit that matches how your event is advertised.</p>
+
+      <table>
+        <thead>
+          <tr><th>Unit</th><th>When to use</th><th>How it displays on site</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>m (metres)</td><td>Swim legs, short obstacle courses, sprint distances under 1km</td><td>750m, 400m, 1500m</td></tr>
+          <tr><td>km (kilometres)</td><td>Standard Australian distances — most road, trail, and cycle events</td><td>42km, 100km, 5km</td></tr>
+          <tr><td>miles</td><td>Events specifically advertised in miles — 100-miler ultras, US-origin races</td><td>100 miles (160.9km)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body"><strong>Miles tip:</strong> Only use miles if your event is genuinely advertised in miles (e.g. a 100 Mile race). If your event is 160km, enter it as 160km — not 99.4 miles. When miles are selected, the km equivalent is automatically shown in brackets on the event listing.</div>
+      </div>
+    </section>
+
+    <!-- OTHER EVENTS -->
+    <section id="other">
+      <div class="section-label">Advanced</div>
+      <h2>Custom "Other" events</h2>
+      <p>For unique multi-sport events that don't fit a standard format — adventure races, expedition events, custom relays — select <strong>"Other / Custom"</strong> as the sport type. This unlocks a fully custom leg builder.</p>
+
+      <div class="callout warn">
+        <div class="callout-icon">⭐</div>
+        <div class="callout-body"><strong>What qualifies as "Other"?</strong> Any event with a unique combination of activities — kayak + run + swim + cycle, horse ride + hike + abseil, or any sequence that doesn't match the standard Triathlon or Duathlon formats.</div>
+      </div>
+
+      <h3>How to build a custom event</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Select "Other / Custom" from the sport dropdown</div>
+            <div class="step-desc">The standard distance fields will be replaced by the custom leg builder.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Name your event type</div>
+            <div class="step-desc">Give it a descriptive name athletes will understand — e.g. "Bush to Beach Adventure Race" or "Red Centre Multi-Sport Challenge"</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Add legs in race order</div>
+            <div class="step-desc">Click "Add a leg" for each stage. Select the activity type and enter the distance with unit. Add as many legs as your race has — there's no limit.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Use "Custom" for unique activities</div>
+            <div class="step-desc">If your activity isn't in the dropdown (e.g. "Abseil", "Sand Boarding", "Cave Crawl"), select "Custom" from the activity dropdown and type it in.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Worked example — Red Centre Adventure Race</h3>
+      <p>Here's how you'd enter a unique 8-leg adventure race:</p>
+
+      <div class="example-label">How to fill in the form</div>
+      <div class="example-box">
+        <span class="comment">// Event type name</span><br>
+        <span class="label">Event type:</span> <span class="value">Red Centre Adventure Race</span><br><br>
+        <span class="comment">// Legs in race order</span><br>
+        <span class="label">Leg 1:</span> <span class="value">Kayak — 8 km</span><br>
+        <span class="label">Leg 2:</span> <span class="value">Run — 12 km</span><br>
+        <span class="label">Leg 3:</span> <span class="value">Cycle — 45 km</span><br>
+        <span class="label">Leg 4:</span> <span class="value">Swim — 1500 m</span><br>
+        <span class="label">Leg 5:</span> <span class="value">Hike — 8 km</span><br>
+        <span class="label">Leg 6:</span> <span class="value">Abseil (Custom) — 80 m</span><br>
+        <span class="label">Leg 7:</span> <span class="value">Cycle — 30 km</span><br>
+        <span class="label">Leg 8:</span> <span class="value">Run — 5 km</span><br><br>
+        <span class="comment">// How it displays on the site</span><br>
+        <span class="value">Kayak 8km → Run 12km → Cycle 45km → Swim 1500m → Hike 8km → Abseil 80m → Cycle 30km → Run 5km</span>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body"><strong>Each leg has its own unit toggle.</strong> So you can mix metres (for the swim), kilometres (for the run and cycle), and even miles for legs specifically advertised that way — all within the same event.</div>
+      </div>
+
+      <h3>Multiple categories within a custom event</h3>
+      <p>If your adventure race has an Elite category and a Teams category with different distances, add them as separate disciplines — click "Add another discipline", select "Other / Custom" again, and build the legs for the second category.</p>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section id="section4">
+      <div class="section-label">Step 4 of 4</div>
+      <h2>Additional information</h2>
+      <p>Optional but helpful details that improve your listing for the right athletes.</p>
+
+      <div class="field-guide">
+        <div class="field-row">
+          <div class="field-name">Min age</div>
+          <div class="field-desc">Minimum participant age. E.g. 16 for most endurance events, 18 for some ultras.</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Max participants</div>
+          <div class="field-desc">Total field size across all disciplines. Helps athletes know if they need to enter early.</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Beginner friendly</div>
+          <div class="field-desc">Whether your event is suitable for first-timers. Helps beginners self-select into your event.</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field-name">Additional notes</div>
+          <div class="field-desc">Anything else athletes should know — gear requirements, cut-off times, parking, mandatory equipment, course briefing details.</div>
+          <div class="field-req"><span class="opt-badge">Optional</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED -->
+    <section id="featured">
+      <div class="section-label">Boost your listing</div>
+      <h2>Featured listings</h2>
+      <p>A Featured listing gives your event maximum visibility on Eventry — shown at the top of results with a highlighted border and Featured badge.</p>
+
+      <div class="card">
+        <div class="card-title">⭐ What Featured includes</div>
+        <table style="margin-top:1rem">
+          <thead><tr><th>Feature</th><th>Standard (Free)</th><th>Featured ($49)</th></tr></thead>
+          <tbody>
+            <tr><td>Listed on Eventry</td><td>✅</td><td>✅</td></tr>
+            <tr><td>All disciplines shown</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Top of search results</td><td>—</td><td>✅</td></tr>
+            <tr><td>Featured badge</td><td>—</td><td>✅</td></tr>
+            <tr><td>Social media shoutout</td><td>—</td><td>✅</td></tr>
+            <tr><td>Priority review (4hrs)</td><td>—</td><td>✅</td></tr>
+            <tr><td>Analytics</td><td>—</td><td>✅</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-icon">⚡</div>
+        <div class="callout-body"><strong>Currently complimentary.</strong> While we build our audience, Featured listings are available at no cost to select organisers. Contact us at <a href="mailto:hello@eventry.au" style="color:var(--accent)">hello@eventry.au</a> to have your event featured.</div>
+      </div>
+    </section>
+
+    <!-- AFTER SUBMIT -->
+    <section id="after">
+      <div class="section-label">What happens next</div>
+      <h2>After you submit</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Submission received</div>
+            <div class="step-desc">Your event lands in our review queue immediately. You'll see a confirmation message on screen.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">We review your listing</div>
+            <div class="step-desc">We check for completeness, accuracy, and that it meets our community guidelines. Standard listings are reviewed within 24 hours. Featured within 4 hours.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Approval email sent</div>
+            <div class="step-desc">You'll receive an email at your contact address once your event is live — with a direct link to your listing.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Athletes find and register</div>
+            <div class="step-desc">Your event is now searchable and filterable on Eventry. The Register button links directly to your registration page.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Need to make changes after submission?</h3>
+      <p>Email <a href="mailto:hello@eventry.au" style="color:var(--accent)">hello@eventry.au</a> with your event name and the changes needed. We'll update it within 24 hours. Full self-service editing is coming soon.</p>
+
+      <h3>Need to remove your event?</h3>
+      <p>Email <a href="mailto:hello@eventry.au" style="color:var(--accent)">hello@eventry.au</a> and we'll remove it promptly. Events are also automatically archived after their end date.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="section-label">Help</div>
+      <h2>Frequently asked questions</h2>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I list multiple events at once? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Yes — submit each event separately through the form. There's no limit on how many events you can list. If you have a large calendar of events, email us at hello@eventry.au and we can discuss a bulk upload process.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What's the difference between an event and a discipline? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">An <strong>event</strong> is the overarching race day or festival — e.g. "Noosa Triathlon Festival". A <strong>discipline</strong> is each separately-priced category within that event — e.g. Sprint Tri ($155), Olympic Tri ($195), Kids Tri ($45). One event can have unlimited disciplines.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do I need to use Eventry's registration system? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">No — Eventry doesn't process registrations. You provide your existing registration URL (EntryCentral, EventBrite, your own website, etc.) and we link directly to it. Athletes register through your normal process.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">My event has different prices for early bird vs full price — which do I enter? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Enter the standard (full) entry price. You can mention early bird pricing in the Additional Notes field. We recommend keeping the price current — if early bird has closed, update it to the current price by emailing hello@eventry.au.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I list an event that happens every year? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Yes — list this year's event now. When next year's date is confirmed, submit a new listing for the upcoming edition. We'll archive the old one automatically after the event date passes.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What if my event spans multiple locations? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Enter the start location as the primary location. You can describe the full course route in the event description or Additional Notes field.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">My event is in miles — should I convert to km? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">No — if your event is genuinely advertised in miles (e.g. a 100 Mile ultramarathon), select "miles" as the unit. Eventry will automatically show the km equivalent in brackets. Only use miles if that's how the race is actually promoted.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How do I get a Featured listing? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">During our launch phase, Featured listings are available at no cost to select organisers. Email hello@eventry.au to discuss featuring your event. Online payment for Featured listings is coming soon.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">I submitted but haven't heard back — what should I do? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Check your spam folder first. If you still haven't received a confirmation after 24 hours, email hello@eventry.au with your event name and we'll look into it.</div>
+      </div>
+
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h3>Ready to list your event?</h3>
+      <p>Free to list. Takes about 5 minutes. Reaches thousands of active Australians.</p>
+      <a href="submit.html" class="cta-btn">Submit your event →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer style="background:var(--ink);color:#888;text-align:center;padding:2rem;font-size:13px;">
+  <p>© 2025 Eventry. Australia's sports events directory. &nbsp;·&nbsp; <a href="submit.html" style="color:var(--accent);text-decoration:none">List your event</a> &nbsp;·&nbsp; <a href="mailto:hello@eventry.au" style="color:var(--accent);text-decoration:none">hello@eventry.au</a></p>
+</footer>
+
+<script>
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+// Highlight active sidebar link on scroll
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  links.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

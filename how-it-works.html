@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — Eventry</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0d0d0d; --ink-muted: #5a5a5a; --ink-faint: #9a9a9a;
+    --surface: #f5f3ef; --white: #ffffff; --accent: #e8572a;
+    --accent-light: #fdf0eb; --border: #e2dfd8; --border-strong: #c8c4bc;
+    --card-radius: 16px; --pill-radius: 100px;
+    --success: #2e7d32; --success-light: #f1f8f1;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); font-size: 15px; line-height: 1.7; }
+
+  nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 14px; color: var(--ink-muted); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta { background: var(--ink); color: var(--white) !important; padding: 8px 18px; border-radius: var(--pill-radius); font-size: 13px !important; }
+  .nav-cta:hover { background: var(--accent) !important; }
+
+  /* HERO */
+  .hero { background: var(--ink); color: var(--white); padding: 4rem 2rem 3.5rem; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 120%, #e8572a22 0%, transparent 70%); pointer-events: none; }
+  .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 1rem; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: #aaa; font-size: 16px; font-weight: 300; max-width: 520px; margin: 0 auto 2.5rem; }
+
+  /* STEPS HERO */
+  .steps-hero { display: flex; justify-content: center; gap: 0; flex-wrap: wrap; max-width: 700px; margin: 0 auto; }
+  .step-hero { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; min-width: 140px; padding: 0 1rem; position: relative; }
+  .step-hero:not(:last-child)::after { content: '→'; position: absolute; right: -8px; top: 20px; color: #444; font-size: 18px; }
+  .step-hero-num { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: white; font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .step-hero-label { font-size: 13px; color: #888; text-align: center; line-height: 1.3; }
+
+  /* MAIN */
+  .main { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+  /* SECTION */
+  .section { margin-bottom: 4rem; scroll-margin-top: 80px; }
+  .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .section h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 1rem; line-height: 1.2; }
+  .section p { color: var(--ink-muted); margin-bottom: 1rem; max-width: 680px; }
+
+  /* CARD MOCKUP */
+  .card-mockup { background: var(--white); border-radius: var(--card-radius); border: 1px solid var(--border); overflow: hidden; max-width: 380px; margin: 1.5rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .mockup-header { padding: 1.25rem 1.25rem 0.75rem; }
+  .mockup-badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: var(--pill-radius); background: #fff3e0; color: #e65100; margin-bottom: 0.75rem; }
+  .mockup-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 0.75rem; }
+  .mockup-meta { display: flex; flex-direction: column; gap: 5px; }
+  .mockup-row { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--ink-muted); }
+  .mockup-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .mockup-org { display: flex; align-items: center; gap: 8px; }
+  .mockup-logo { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); color: white; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .mockup-orgname { font-size: 12px; color: var(--ink-muted); font-weight: 500; }
+  .mockup-price { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+  .mockup-disc { font-size: 11px; color: var(--ink-faint); }
+  .mockup-btn { background: var(--ink); color: white; border-radius: var(--pill-radius); padding: 7px 16px; font-size: 12px; font-weight: 500; text-decoration: none; }
+
+  /* ANNOTATION */
+  .annotation-wrap { display: grid; grid-template-columns: 380px 1fr; gap: 2rem; align-items: start; margin: 1.5rem 0 2rem; }
+  .annotations { display: flex; flex-direction: column; gap: 1rem; padding-top: 0.5rem; }
+  .annotation { display: flex; gap: 10px; align-items: flex-start; }
+  .ann-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .ann-text { font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
+  .ann-text strong { color: var(--ink); }
+
+  /* FILTER DEMO */
+  .filter-demo { background: var(--white); border-radius: var(--card-radius); border: 1px solid var(--border); padding: 1.5rem; margin: 1.5rem 0; }
+  .filter-demo-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 1rem; }
+  .demo-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.25rem; }
+  .demo-pill { padding: 6px 14px; border-radius: var(--pill-radius); border: 1px solid var(--border); background: var(--surface); font-size: 13px; font-weight: 500; color: var(--ink-muted); }
+  .demo-pill.active { background: var(--accent); border-color: var(--accent); color: white; }
+  .demo-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .demo-filter { padding: 7px 14px; border-radius: var(--pill-radius); border: 1px solid var(--border); background: var(--surface); font-size: 12px; color: var(--ink-muted); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 1.25rem; margin: 1.5rem 0; }
+  .step { display: flex; gap: 1rem; align-items: flex-start; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+  .step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: white; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .step-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
+
+  /* CALLOUT */
+  .callout { border-radius: 12px; padding: 1rem 1.25rem; margin: 1.25rem 0; display: flex; gap: 12px; align-items: flex-start; }
+  .callout.tip { background: var(--success-light); border: 1px solid #c8e6c9; }
+  .callout.info { background: var(--accent-light); border: 1px solid #f5cfc4; }
+  .callout-icon { font-size: 18px; flex-shrink: 0; }
+  .callout-body { font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
+  .callout-body strong { color: var(--ink); }
+
+  /* SPORT GRID */
+  .sport-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin: 1.5rem 0; }
+  .sport-tile { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; text-align: center; }
+  .sport-emoji { font-size: 24px; margin-bottom: 6px; }
+  .sport-name { font-size: 13px; font-weight: 500; color: var(--ink-muted); }
+
+  /* FAQ */
+  .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+  .faq-q { padding: 1rem 1.25rem; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; user-select: none; }
+  .faq-q:hover { background: var(--surface); }
+  .faq-arrow { font-size: 11px; color: var(--ink-faint); transition: transform 0.2s; }
+  .faq-a { display: none; padding: 0 1.25rem 1rem; font-size: 14px; color: var(--ink-muted); border-top: 1px solid var(--border); padding-top: 1rem; line-height: 1.7; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+  /* CTA */
+  .cta-section { background: var(--ink); border-radius: var(--card-radius); padding: 3rem 2rem; text-align: center; color: var(--white); margin-top: 2rem; }
+  .cta-section h2 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.5px; }
+  .cta-section p { color: #aaa; font-size: 15px; margin-bottom: 2rem; font-weight: 300; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .cta-btn { padding: 14px 28px; border-radius: var(--pill-radius); font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; text-decoration: none; transition: all 0.15s; }
+  .cta-btn.primary { background: var(--accent); color: white; }
+  .cta-btn.primary:hover { background: #c94420; }
+  .cta-btn.secondary { background: transparent; border: 1px solid #444; color: #ccc; }
+  .cta-btn.secondary:hover { border-color: #888; color: white; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 3rem 0; }
+
+  @media (max-width: 700px) {
+    .annotation-wrap { grid-template-columns: 1fr; }
+    .steps-hero { gap: 1rem; }
+    .step-hero::after { display: none; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Even<span>try</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Browse Events</a></li>
+    <li><a href="pricing.html">Organisers</a></li>
+    <li><a href="index.html" class="nav-cta">Find an Event</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="eyebrow">For Participants</p>
+  <h1>Find your next<br><em>sporting challenge</em></h1>
+  <p>Eventry is Australia's sports events directory. One place to discover, compare, and register for events across every sport — from fun runs to ultramarathons, ocean swims to adventure races.</p>
+  <div class="steps-hero">
+    <div class="step-hero">
+      <div class="step-hero-num">1</div>
+      <div class="step-hero-label">Browse & filter events</div>
+    </div>
+    <div class="step-hero">
+      <div class="step-hero-num">2</div>
+      <div class="step-hero-label">Find the right one for you</div>
+    </div>
+    <div class="step-hero">
+      <div class="step-hero-num">3</div>
+      <div class="step-hero-label">Click Register</div>
+    </div>
+    <div class="step-hero">
+      <div class="step-hero-num">4</div>
+      <div class="step-hero-label">Complete on organiser's site</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- WHAT IS EVENTRY -->
+  <div class="section" id="what">
+    <div class="section-eyebrow">What is Eventry?</div>
+    <h2>Australia's sports events in one place</h2>
+    <p>Finding sporting events used to mean searching dozens of different websites, Facebook pages, and club newsletters. Eventry brings them all together — a single directory where you can search, filter, and discover events across every sport and every state.</p>
+    <p>We don't run events ourselves. We connect you with the organisers who do — and send you straight to their registration page when you're ready to enter.</p>
+
+    <div class="sport-grid">
+      <div class="sport-tile"><div class="sport-emoji">🏃</div><div class="sport-name">Running</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🚴</div><div class="sport-name">Cycling</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🏊</div><div class="sport-name">Triathlon</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🌊</div><div class="sport-name">Open Water Swimming</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🚣</div><div class="sport-name">Paddling</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🧗</div><div class="sport-name">Obstacle Racing</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🥾</div><div class="sport-name">Hiking</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🚵</div><div class="sport-name">MTB</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🏋️</div><div class="sport-name">Fitness</div></div>
+      <div class="sport-tile"><div class="sport-emoji">🏇</div><div class="sport-name">Equestrian</div></div>
+      <div class="sport-tile"><div class="sport-emoji">⛷️</div><div class="sport-name">Snow Sports</div></div>
+      <div class="sport-tile"><div class="sport-emoji">⭐</div><div class="sport-name">& more</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FINDING EVENTS -->
+  <div class="section" id="finding">
+    <div class="section-eyebrow">Step 1</div>
+    <h2>Finding the right event</h2>
+    <p>Eventry gives you several ways to narrow down events to exactly what you're looking for.</p>
+
+    <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin:1.5rem 0 0.75rem">Sport pills — filter by sport</h3>
+    <p>At the top of the events page, click any sport to instantly show only those events. Click "All Sports" to reset.</p>
+
+    <div class="filter-demo">
+      <div class="filter-demo-title">Sport filter</div>
+      <div class="demo-pills">
+        <div class="demo-pill">All Sports</div>
+        <div class="demo-pill active">🏃 Running</div>
+        <div class="demo-pill">🚴 Cycling</div>
+        <div class="demo-pill">🏊 Triathlon</div>
+        <div class="demo-pill">🌊 Open Water Swimming</div>
+        <div class="demo-pill">🧗 Obstacle Racing</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin:1.5rem 0 0.75rem">Refine filters — narrow it down further</h3>
+    <p>Use the filter bar to refine by state, organiser, price range, and date. You can combine multiple filters at once.</p>
+
+    <div class="filter-demo">
+      <div class="filter-demo-title">Filter bar</div>
+      <div class="demo-filters">
+        <div class="demo-filter">State: NSW</div>
+        <div class="demo-filter">Organiser: All</div>
+        <div class="demo-filter">Price: Under $100</div>
+        <div class="demo-filter">From: 01/08/2026</div>
+        <div class="demo-filter">To: 31/12/2026</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin:1.5rem 0 0.75rem">Search — find by name or location</h3>
+    <p>Use the search bar at the top of the page to search by event name, location, or sport. Results update as you type.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Tip:</strong> Try searching your nearest town or city to find all events in your area — e.g. "Sydney", "Melbourne", or "Gold Coast".</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- READING A CARD -->
+  <div class="section" id="cards">
+    <div class="section-eyebrow">Step 2</div>
+    <h2>Reading an event card</h2>
+    <p>Every event is displayed as a card. Here's what each part tells you:</p>
+
+    <div class="annotation-wrap">
+      <div class="card-mockup">
+        <div class="mockup-header">
+          <div class="mockup-badge">Running</div>
+          <div class="mockup-name">Blue Mountains Ultra Trail</div>
+          <div class="mockup-meta">
+            <div class="mockup-row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              16 Aug 2026
+            </div>
+            <div class="mockup-row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Katoomba, NSW
+            </div>
+          </div>
+        </div>
+        <div class="mockup-footer">
+          <div class="mockup-org">
+            <div class="mockup-logo">MA</div>
+            <div class="mockup-orgname">Max Adventures</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div>
+              <div class="mockup-price">From $95</div>
+              <div class="mockup-disc">4 disciplines</div>
+            </div>
+            <a class="mockup-btn" href="#">View →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations">
+        <div class="annotation">
+          <div class="ann-num">1</div>
+          <div class="ann-text"><strong>Sport badge</strong> — the category this event falls under. Click it to filter for similar events.</div>
+        </div>
+        <div class="annotation">
+          <div class="ann-num">2</div>
+          <div class="ann-text"><strong>Event name</strong> — the official name of the race or festival.</div>
+        </div>
+        <div class="annotation">
+          <div class="ann-num">3</div>
+          <div class="ann-text"><strong>Date</strong> — when the event takes place.</div>
+        </div>
+        <div class="annotation">
+          <div class="ann-num">4</div>
+          <div class="ann-text"><strong>Location</strong> — the town/suburb and state.</div>
+        </div>
+        <div class="annotation">
+          <div class="ann-num">5</div>
+          <div class="ann-text"><strong>Organiser</strong> — who runs the event. Click their name to see all their events.</div>
+        </div>
+        <div class="annotation">
+          <div class="ann-num">6</div>
+          <div class="ann-text"><strong>From $X</strong> — the lowest entry price across all disciplines. The event may have cheaper or more expensive options.</div>
+        </div>
+        <div class="annotation">
+          <div class="ann-num">7</div>
+          <div class="ann-text"><strong>Disciplines</strong> — how many race categories are available. E.g. "4 disciplines" means 4 distance/format options.</div>
+        </div>
+        <div class="annotation">
+          <div class="ann-num">8</div>
+          <div class="ann-text"><strong>View →</strong> — click to see full event details including all disciplines, distances, and the Register button.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">⭐</div>
+      <div class="callout-body"><strong>Featured events</strong> have an orange border and a "Featured" badge at the top of the card. These events have been highlighted by Eventry — they're great options worth checking out.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DISCIPLINES -->
+  <div class="section" id="disciplines">
+    <div class="section-eyebrow">Good to know</div>
+    <h2>Events with multiple disciplines</h2>
+    <p>Many events on Eventry offer more than one race format or distance. This is especially common for running festivals, triathlon events, and adventure races.</p>
+    <p>For example, a single triathlon festival might offer:</p>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:1.25rem 0;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr style="background:var(--ink);color:white;">
+            <th style="padding:10px 16px;text-align:left;font-family:'Syne',sans-serif;">Discipline</th>
+            <th style="padding:10px 16px;text-align:left;font-family:'Syne',sans-serif;">Distance</th>
+            <th style="padding:10px 16px;text-align:left;font-family:'Syne',sans-serif;">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 16px;font-weight:500">Kids Tri</td><td style="padding:10px 16px;color:var(--ink-muted)">100m / 2km / 1km</td><td style="padding:10px 16px;color:var(--ink-muted)">$45</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 16px;font-weight:500">Sprint</td><td style="padding:10px 16px;color:var(--ink-muted)">750m / 20km / 5km</td><td style="padding:10px 16px;color:var(--ink-muted)">$155</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 16px;font-weight:500">Olympic</td><td style="padding:10px 16px;color:var(--ink-muted)">1.5km / 40km / 10km</td><td style="padding:10px 16px;color:var(--ink-muted)">$195</td></tr>
+          <tr><td style="padding:10px 16px;font-weight:500">Ironman 70.3</td><td style="padding:10px 16px;color:var(--ink-muted)">1.9km / 90km / 21.1km</td><td style="padding:10px 16px;color:var(--ink-muted)">$275</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>When you click View on an event card, you'll see all available disciplines so you can choose the one that suits your level and goals.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">🏅</div>
+      <div class="callout-body"><strong>New to events?</strong> Look for events with a beginner-friendly tag, or choose the shortest discipline in a multi-distance event. Most organisers welcome first-timers and will have support on course.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- REGISTERING -->
+  <div class="section" id="register">
+    <div class="section-eyebrow">Step 3</div>
+    <h2>How to register</h2>
+    <p>Eventry doesn't process registrations directly — we connect you with the event organiser's own registration system. Here's how it works:</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Find your event on Eventry</div>
+          <div class="step-desc">Use the search and filters to find the event and discipline that suits you.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Click "View →" on the event card</div>
+          <div class="step-desc">This opens the full event detail page showing all disciplines, distances, prices, and event information.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Choose your discipline and click "Register"</div>
+          <div class="step-desc">Select the distance or category you want to enter and click the Register button.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Complete registration on the organiser's site</div>
+          <div class="step-desc">You'll be taken directly to the organiser's registration page — EntryCentral, EventBrite, or their own website. Complete your entry there as normal.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body"><strong>Payment and confirmation</strong> are handled by the event organiser — not Eventry. If you have questions about your registration, entry fee, or race day logistics, contact the organiser directly using the details on their website.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FAQ -->
+  <div class="section" id="faq">
+    <div class="section-eyebrow">Help</div>
+    <h2>Frequently asked questions</h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Is Eventry free to use? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes — Eventry is completely free for participants. We're a discovery platform. Finding and browsing events costs nothing. You pay the event organiser directly when you register.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Do I need to create an account? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">No account needed to browse events on Eventry. You only create an account when registering for an event — and that's on the organiser's own platform, not Eventry.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How do I know if an event still has spots available? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Eventry shows event details as provided by the organiser. To check real-time availability, click Register and you'll see current availability on the organiser's registration page. Popular events can sell out quickly — if you're keen, enter early.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">I registered for an event — who do I contact with questions? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Contact the event organiser directly. Their website and contact details are linked on the event listing. Eventry doesn't manage registrations, payments, or race day logistics.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I search for events near me? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes — use the State filter to narrow events to your state, or type your town or city into the search bar. Location-based search (using your GPS) is coming in a future update.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">An event I'm looking for isn't on Eventry — what can I do? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">We're constantly adding new events. If there's an event you'd like to see listed, let us know at hello@eventry.au — or better yet, point the organiser to our listing page at eventry.au/pricing so they can add it themselves.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What does "Featured" mean on an event card? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Featured events are highlighted listings that appear at the top of search results. They're great events worth checking out — organisers choose to feature them to reach more participants.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">I'm a beginner — are there events suitable for me? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Absolutely. Many events on Eventry have beginner-friendly categories — shorter distances, fun runs, kids' races, and introductory formats. Look for events tagged as "beginner friendly" or choose the shortest discipline in any multi-distance event. Every champion started somewhere!</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I suggest improvements to Eventry? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">We'd love to hear from you. Email us at hello@eventry.au with any feedback, suggestions, or features you'd like to see. We're building Eventry for the Australian sporting community — your input shapes what we build next.</div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Ready to find your next event?</h2>
+    <p>Thousands of athletes across Australia are already discovering events on Eventry.</p>
+    <div class="cta-btns">
+      <a href="index.html" class="cta-btn primary">Browse events →</a>
+      <a href="mailto:hello@eventry.au" class="cta-btn secondary">Contact us</a>
+    </div>
+  </div>
+
+</div>
+
+<footer style="background:var(--ink);color:#888;text-align:center;padding:2rem;font-size:13px;margin-top:0">
+  <p>© 2025 Eventry. Australia's sports events directory. &nbsp;·&nbsp; <a href="pricing.html" style="color:var(--accent);text-decoration:none">List your event</a> &nbsp;·&nbsp; <a href="mailto:hello@eventry.au" style="color:var(--accent);text-decoration:none">hello@eventry.au</a></p>
+</footer>
+
+<script>
+function toggleFaq(el) { el.classList.toggle('open'); }
+</script>
+</body>
+</html>
