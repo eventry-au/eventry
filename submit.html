@@ -318,7 +318,20 @@
 </div>
 
 <script>
-const SPORTS = [
+const SPORT_SUBTYPES = {
+  'running': ['Road','Trail','Ultra','Track','Cross Country','Fun Run','Vertical/Vert km'],
+  'cycling_road': ['Road','Gravel','Criterium','Cyclocross','Track'],
+  'cycling_mtb': ['XCO','XCM','Downhill','Enduro','4X','E-MTB'],
+  'triathlon': ['Sprint','Olympic','70.3 Half','Full Ironman','Aquathlon','SwimRun','Xterra'],
+  'duathlon': ['Sprint','Standard','Long'],
+  'openwater': ['Ocean','River','Lake','Pool Open Water'],
+  'paddling': ['Kayak','Canoe','SUP','Outrigger','Dragon Boat','Surfski','Rafting'],
+  'obstacle': ['Sprint','Super','Beast','OCR','Mud Run','Adventure Race'],
+  'hiking': ['Day Hike','Multi-Day','Fastpacking','Peak Bagging'],
+  'fitness': ['CrossFit','Functional Fitness','HYROX','Strongman','Powerlifting'],
+  'equestrian': ['Show Jumping','Dressage','Cross Country','Eventing','Endurance','Polo Cross'],
+  'snow': ['Alpine','Cross Country','Snowboard','Ski Touring','Telemark'],
+};
   { value: '', label: 'Select sport...' },
   { value: 'running', label: '🏃 Running (Road & Trail)' },
   { value: 'cycling_road', label: '🚴 Cycling — Road & Gravel' },
@@ -534,6 +547,12 @@ function addDiscipline() {
           ${sportOptions}
         </select>
       </div>
+      <div class="field" id="subtype_wrap_${idx}" style="display:none">
+        <label>Sub-type</label>
+        <select name="d${idx}_subtype" id="subtype_${idx}">
+          <option value="">Select sub-type...</option>
+        </select>
+      </div>
       <div class="price-row">
         <div class="field">
           <label>Entry fee (AUD)</label>
@@ -566,6 +585,19 @@ function updateSportFields(idx) {
   const sport = document.getElementById(`sport_${idx}`).value;
   document.getElementById(`sportfields_${idx}`).innerHTML = sportFields(sport, idx);
   if (sport === 'other') addLeg(idx);
+
+  // Update subtype dropdown
+  const subtypeWrap = document.getElementById(`subtype_wrap_${idx}`);
+  const subtypeSelect = document.getElementById(`subtype_${idx}`);
+  const subtypes = SPORT_SUBTYPES[sport];
+  if (subtypes && subtypes.length > 0) {
+    subtypeSelect.innerHTML = `<option value="">Select sub-type...</option>` +
+      subtypes.map(s => `<option value="${s}">${s}</option>`).join('');
+    subtypeWrap.style.display = 'flex';
+  } else {
+    subtypeWrap.style.display = 'none';
+    subtypeSelect.innerHTML = '';
+  }
 }
 
 function toggleFree(idx) {
@@ -672,6 +704,7 @@ function collectDisciplines() {
     const isFree = card.querySelector(`#freecheck_${idx}`)?.checked;
     disciplines.push({
       sport,
+      subtype: document.getElementById(`subtype_${idx}`)?.value || '',
       disc_name: get(`${p}_cat_name`),
       dist_value, dist_unit, dist_display, legs,
       price: isFree ? 0 : (parseFloat(get(`${p}_price`)) || 0),

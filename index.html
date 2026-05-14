@@ -306,6 +306,18 @@
     color: var(--white);
   }
 
+  /* SUBTYPE PILLS */
+  .subtype-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+  .subtype-pills:empty { margin-bottom: 1.5rem; }
+  .pill.subtype { font-size: 12px; padding: 4px 12px; background: var(--surface); border-color: var(--border); color: var(--ink-faint); }
+  .pill.subtype:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .pill.subtype.active { background: var(--accent); border-color: var(--accent); color: var(--white); }
+
   /* RESULTS HEADER */
   .results-header {
     display: flex;
@@ -590,7 +602,13 @@
     <div class="pill" data-sport="Hiking" onclick="toggleSport(this)">🥾 Hiking</div>
     <div class="pill" data-sport="Cycling MTB" onclick="toggleSport(this)">🚵 MTB</div>
     <div class="pill" data-sport="Fitness" onclick="toggleSport(this)">🏋️ Fitness</div>
+    <div class="pill" data-sport="Equestrian" onclick="toggleSport(this)">🏇 Equestrian</div>
+    <div class="pill" data-sport="Snow Sports" onclick="toggleSport(this)">⛷️ Snow Sports</div>
+    <div class="pill" data-sport="Other" onclick="toggleSport(this)">⭐ Other</div>
   </div>
+
+  <!-- SUBTYPE PILLS — shown when a sport is selected -->
+  <div class="subtype-pills" id="subtypePills"></div>
 
   <!-- FILTER BAR -->
   <div class="filter-section">
@@ -684,82 +702,97 @@ const ORG_COLORS = {
 };
 
 const events = [
-  { id:1, name:"Blue Mountains Ultra Trail", sport:"Running", date:"2025-08-16", location:"Katoomba, NSW", state:"NSW", organiser:"Max Adventures", link:"#", featured:true, disciplines:[
+  { id:1, name:"Blue Mountains Ultra Trail", sport:"Running", subtype:"Ultra", date:"2025-08-16", location:"Katoomba, NSW", state:"NSW", organiser:"Max Adventures", link:"#", featured:true, disciplines:[
     {name:"100km Ultra",dist:"100km",price:195},{name:"50km Trail",dist:"50km",price:145},{name:"22km Trail",dist:"22km",price:95},{name:"10km Fun Run",dist:"10km",price:55}
   ]},
-  { id:2, name:"Sydney Harbour Open Water Classic", sport:"Open Water Swimming", date:"2025-09-06", location:"Balmoral Beach, NSW", state:"NSW", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
+  { id:2, name:"Sydney Harbour Open Water Classic", sport:"Open Water Swimming", subtype:"Ocean", date:"2025-09-06", location:"Balmoral Beach, NSW", state:"NSW", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
     {name:"5km Ocean Swim",dist:"5km",price:95},{name:"2.5km",dist:"2.5km",price:75},{name:"1km",dist:"1km",price:55}
   ]},
-  { id:3, name:"Gibb River Road Cycle Challenge", sport:"Cycling", date:"2025-07-20", location:"Kimberley, WA", state:"WA", organiser:"H Events", link:"#", featured:true, disciplines:[
+  { id:3, name:"Gibb River Road Cycle Challenge", sport:"Cycling", subtype:"Road", date:"2025-07-20", location:"Kimberley, WA", state:"WA", organiser:"H Events", link:"#", featured:true, disciplines:[
     {name:"160km Gran Fondo",dist:"160km",price:195},{name:"100km",dist:"100km",price:145},{name:"50km",dist:"50km",price:95}
   ]},
-  { id:4, name:"Melbourne Spring Triathlon", sport:"Triathlon", date:"2025-10-12", location:"St Kilda, VIC", state:"VIC", organiser:"H Events", link:"#", featured:false, disciplines:[
+  { id:4, name:"Melbourne Spring Triathlon", sport:"Triathlon", subtype:"Olympic", date:"2025-10-12", location:"St Kilda, VIC", state:"VIC", organiser:"H Events", link:"#", featured:false, disciplines:[
     {name:"Olympic",dist:"1.5km/40km/10km",price:130},{name:"Sprint",dist:"750m/20km/5km",price:110}
   ]},
-  { id:5, name:"Kokoda Trail Trek", sport:"Hiking", date:"2025-08-03", location:"Gold Coast, QLD", state:"QLD", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
+  { id:5, name:"Kokoda Trail Trek", sport:"Hiking", subtype:"Multi-Day", date:"2025-08-03", location:"Gold Coast, QLD", state:"QLD", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
     {name:"3-Day Trek",dist:"96km",price:120},{name:"Day Hike",dist:"28km",price:85}
   ]},
-  { id:6, name:"Hunter Valley Gravel Grind", sport:"Cycling", date:"2025-09-28", location:"Cessnock, NSW", state:"NSW", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
+  { id:6, name:"Hunter Valley Gravel Grind", sport:"Cycling", subtype:"Gravel", date:"2025-09-28", location:"Cessnock, NSW", state:"NSW", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
     {name:"120km",dist:"120km",price:80},{name:"60km",dist:"60km",price:60}
   ]},
-  { id:7, name:"Bondi to Manly Ocean Swim", sport:"Open Water Swimming", date:"2025-11-01", location:"Bondi Beach, NSW", state:"NSW", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
+  { id:7, name:"Bondi to Manly Ocean Swim", sport:"Open Water Swimming", subtype:"Ocean", date:"2025-11-01", location:"Bondi Beach, NSW", state:"NSW", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
     {name:"Full 22km",dist:"22km",price:95},{name:"Half 11km",dist:"11km",price:55}
   ]},
-  { id:8, name:"Spartan Race Gold Coast", sport:"Obstacle Racing", date:"2025-07-27", location:"Mudgeeraba, QLD", state:"QLD", organiser:"H Events", link:"#", featured:false, disciplines:[
+  { id:8, name:"Spartan Race Gold Coast", sport:"Obstacle Racing", subtype:"Beast", date:"2025-07-27", location:"Mudgeeraba, QLD", state:"QLD", organiser:"H Events", link:"#", featured:false, disciplines:[
     {name:"Beast 21km",dist:"21km",price:139},{name:"Super 13km",dist:"13km",price:119},{name:"Sprint 5km",dist:"5km",price:99},{name:"Kids Race",dist:"1km",price:45}
   ]},
-  { id:9, name:"Snowy Mountains MTB Enduro", sport:"Cycling MTB", date:"2025-10-05", location:"Thredbo, NSW", state:"NSW", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
+  { id:9, name:"Snowy Mountains MTB Enduro", sport:"Cycling MTB", subtype:"Enduro", date:"2025-10-05", location:"Thredbo, NSW", state:"NSW", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
     {name:"Expert",dist:"50km",price:175},{name:"Sport",dist:"30km",price:145},{name:"Beginner",dist:"15km",price:95}
   ]},
-  { id:10, name:"Perth City to Surf", sport:"Running", date:"2025-08-10", location:"Perth, WA", state:"WA", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
+  { id:10, name:"Perth City to Surf", sport:"Running", subtype:"Road", date:"2025-08-10", location:"Perth, WA", state:"WA", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
     {name:"12km",dist:"12km",price:55},{name:"4km Family",dist:"4km",price:35},{name:"Kids Dash",dist:"500m",price:0}
   ]},
-  { id:11, name:"Hawkesbury River Canoe Classic", sport:"Paddling", date:"2025-10-25", location:"Windsor, NSW", state:"NSW", organiser:"AquaSport Events", link:"#", featured:true, disciplines:[
+  { id:11, name:"Hawkesbury River Canoe Classic", sport:"Paddling", subtype:"Canoe", date:"2025-10-25", location:"Windsor, NSW", state:"NSW", organiser:"AquaSport Events", link:"#", featured:true, disciplines:[
     {name:"Solo 111km",dist:"111km",price:110},{name:"Doubles 111km",dist:"111km",price:80},{name:"55km Short",dist:"55km",price:70}
   ]},
-  { id:12, name:"Adelaide Tour de Vines", sport:"Cycling", date:"2025-11-15", location:"Barossa Valley, SA", state:"SA", organiser:"H Events", link:"#", featured:false, disciplines:[
+  { id:12, name:"Adelaide Tour de Vines", sport:"Cycling", subtype:"Road", date:"2025-11-15", location:"Barossa Valley, SA", state:"SA", organiser:"H Events", link:"#", featured:false, disciplines:[
     {name:"200km Gran Fondo",dist:"200km",price:145},{name:"100km",dist:"100km",price:115},{name:"50km",dist:"50km",price:80}
   ]},
-  { id:13, name:"Cradle Mountain Trail Run", sport:"Running", date:"2025-09-14", location:"Cradle Mountain, TAS", state:"TAS", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
+  { id:13, name:"Cradle Mountain Trail Run", sport:"Running", subtype:"Trail", date:"2025-09-14", location:"Cradle Mountain, TAS", state:"TAS", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
     {name:"65km Ultra",dist:"65km",price:130},{name:"32km",dist:"32km",price:95},{name:"15km",dist:"15km",price:75}
   ]},
-  { id:14, name:"Brisbane Sunrise Swim", sport:"Open Water Swimming", date:"2025-07-19", location:"Shorncliffe, QLD", state:"QLD", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
+  { id:14, name:"Brisbane Sunrise Swim", sport:"Open Water Swimming", subtype:"River", date:"2025-07-19", location:"Shorncliffe, QLD", state:"QLD", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
     {name:"5km",dist:"5km",price:55},{name:"2km",dist:"2km",price:40},{name:"500m",dist:"500m",price:30}
   ]},
-  { id:15, name:"Fitzroy Island Duathlon", sport:"Triathlon", date:"2025-08-23", location:"Fitzroy Island, QLD", state:"QLD", organiser:"H Events", link:"#", featured:false, disciplines:[
+  { id:15, name:"Fitzroy Island Duathlon", sport:"Triathlon", subtype:"Duathlon", date:"2025-08-23", location:"Fitzroy Island, QLD", state:"QLD", organiser:"H Events", link:"#", featured:false, disciplines:[
     {name:"Standard",dist:"5km/30km/5km",price:125},{name:"Sprint",dist:"2.5km/15km/2.5km",price:95}
   ]},
-  { id:16, name:"Grampians Trail Running Festival", sport:"Running", date:"2025-10-18", location:"Halls Gap, VIC", state:"VIC", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
+  { id:16, name:"Grampians Trail Running Festival", sport:"Running", subtype:"Trail", date:"2025-10-18", location:"Halls Gap, VIC", state:"VIC", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
     {name:"50km",dist:"50km",price:110},{name:"25km",dist:"25km",price:85},{name:"10km",dist:"10km",price:70},{name:"5km",dist:"5km",price:50}
   ]},
-  { id:17, name:"Whitsunday SUP Race", sport:"Paddling", date:"2025-09-20", location:"Airlie Beach, QLD", state:"QLD", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
+  { id:17, name:"Whitsunday SUP Race", sport:"Paddling", subtype:"SUP", date:"2025-09-20", location:"Airlie Beach, QLD", state:"QLD", organiser:"Max Adventures", link:"#", featured:false, disciplines:[
     {name:"20km Elite",dist:"20km",price:75},{name:"10km Open",dist:"10km",price:55}
   ]},
-  { id:18, name:"City2Surf Fun Run", sport:"Running", date:"2025-08-10", location:"Sydney, NSW", state:"NSW", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
+  { id:18, name:"City2Surf Fun Run", sport:"Running", subtype:"Road", date:"2025-08-10", location:"Sydney, NSW", state:"NSW", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
     {name:"14km",dist:"14km",price:75},{name:"14km Community",dist:"14km",price:0}
   ]},
-  { id:19, name:"Functional Fitness Open", sport:"Fitness", date:"2025-11-08", location:"Melbourne, VIC", state:"VIC", organiser:"H Events", link:"#", featured:false, disciplines:[
+  { id:19, name:"Functional Fitness Open", sport:"Fitness", subtype:"Functional Fitness", date:"2025-11-08", location:"Melbourne, VIC", state:"VIC", organiser:"H Events", link:"#", featured:false, disciplines:[
     {name:"Rx Division",dist:"3 workouts",price:85},{name:"Scaled",dist:"3 workouts",price:65},{name:"Masters 40+",dist:"3 workouts",price:65}
   ]},
-  { id:20, name:"Great Ocean Road Half Marathon", sport:"Running", date:"2025-09-07", location:"Apollo Bay, VIC", state:"VIC", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
+  { id:20, name:"Great Ocean Road Half Marathon", sport:"Running", subtype:"Road", date:"2025-09-07", location:"Apollo Bay, VIC", state:"VIC", organiser:"Trail Nation", link:"#", featured:false, disciplines:[
     {name:"Half Marathon",dist:"21.1km",price:95},{name:"10km",dist:"10km",price:80},{name:"5km",dist:"5km",price:60}
   ]},
-  { id:21, name:"Murray River Kayak Classic", sport:"Paddling", date:"2025-10-11", location:"Echuca, VIC", state:"VIC", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
+  { id:21, name:"Murray River Kayak Classic", sport:"Paddling", subtype:"Kayak", date:"2025-10-11", location:"Echuca, VIC", state:"VIC", organiser:"AquaSport Events", link:"#", featured:false, disciplines:[
     {name:"404km Solo",dist:"404km",price:110},{name:"202km",dist:"202km",price:85},{name:"80km",dist:"80km",price:70}
   ]},
-  { id:22, name:"Darwin Dry Season Duathlon", sport:"Triathlon", date:"2025-07-13", location:"Darwin, NT", state:"NT", organiser:"H Events", link:"#", featured:false, disciplines:[
+  { id:22, name:"Darwin Dry Season Duathlon", sport:"Triathlon", subtype:"Duathlon", date:"2025-07-13", location:"Darwin, NT", state:"NT", organiser:"H Events", link:"#", featured:false, disciplines:[
     {name:"Standard",dist:"5km/30km/5km",price:90},{name:"Sprint",dist:"2.5km/15km/2.5km",price:70}
   ]},
-  { id:23, name:"ACT Alpine Hike Challenge", sport:"Hiking", date:"2025-11-22", location:"Kosciuszko NP, ACT", state:"ACT", organiser:"Summit Events", link:"#", featured:false, disciplines:[
+  { id:23, name:"ACT Alpine Hike Challenge", sport:"Hiking", subtype:"Multi-Day", date:"2025-11-22", location:"Kosciuszko NP, ACT", state:"ACT", organiser:"Summit Events", link:"#", featured:false, disciplines:[
     {name:"3-Day",dist:"75km",price:65},{name:"Day Walk",dist:"22km",price:40}
   ]},
-  { id:24, name:"Noosa Triathlon Festival", sport:"Triathlon", date:"2025-10-26", location:"Noosa, QLD", state:"QLD", organiser:"Max Adventures", link:"#", featured:true, disciplines:[
+  { id:24, name:"Noosa Triathlon Festival", sport:"Triathlon", subtype:"Olympic", date:"2025-10-26", location:"Noosa, QLD", state:"QLD", organiser:"Max Adventures", link:"#", featured:true, disciplines:[
     {name:"Ironman 70.3",dist:"1.9km/90km/21.1km",price:275},{name:"Olympic",dist:"1.5km/40km/10km",price:195},{name:"Sprint",dist:"750m/20km/5km",price:155},{name:"Aquathlon",dist:"1km swim/5km run",price:95},{name:"Kids Tri",dist:"100m/2km/1km",price:45}
   ]},
 ];
 
+const SPORT_SUBTYPES = {
+  'Running': ['Road','Trail','Ultra','Track','Cross Country','Fun Run','Vertical/Vert km'],
+  'Cycling': ['Road','Gravel','Track','Criterium','Cyclocross','MTB XCO','MTB XCM','MTB DH','MTB Enduro','MTB 4X','BMX'],
+  'Cycling MTB': ['XCO','XCM','Downhill','Enduro','4X','E-MTB'],
+  'Triathlon': ['Sprint','Olympic','70.3 Half','Full Ironman','Duathlon','Aquathlon','SwimRun','Xterra'],
+  'Open Water Swimming': ['Ocean','River','Lake','Pool Open Water'],
+  'Paddling': ['Kayak','Canoe','SUP','Outrigger','Dragon Boat','Surfski','Rafting'],
+  'Obstacle Racing': ['Sprint','Super','Beast','OCR','Mud Run','Adventure Race'],
+  'Hiking': ['Day Hike','Multi-Day','Fastpacking','Peak Bagging'],
+  'Fitness': ['CrossFit','Functional Fitness','HYROX','Strongman','Powerlifting'],
+  'Equestrian': ['Show Jumping','Dressage','Cross Country','Eventing','Endurance','Polo Cross'],
+  'Snow Sports': ['Alpine','Cross Country','Snowboard','Ski Touring','Telemark'],
+};
+
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5LNMivIm3qrjOkLsGfmBZI2jb35SU3RQYMQ_EqJQfinbxZIC-EHcIHclv_lfzaLFgfw/exec';
 let activeSport = 'all';
+let activeSubtype = 'all';
 let _allEvents = [];
 
 async function loadLiveEvents() {
@@ -771,6 +804,7 @@ async function loadLiveEvents() {
         id: e.submission_id,
         name: e.event_name,
         sport: e.disciplines?.[0]?.sport || 'Other',
+        subtype: e.disciplines?.[0]?.subtype || '',
         date: e.event_date ? (typeof e.event_date === 'number' 
           ? new Date((e.event_date - 25569) * 86400 * 1000).toISOString().split('T')[0]
           : String(e.event_date).split('T')[0]) : '',
@@ -804,10 +838,32 @@ async function initSite() {
 }
 
 function toggleSport(el) {
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pill:not(.subtype)').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   activeSport = el.dataset.sport;
+  activeSubtype = 'all';
+  renderSubtypes(activeSport);
   applyFilters();
+}
+
+function toggleSubtype(el) {
+  document.querySelectorAll('.pill.subtype').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  activeSubtype = el.dataset.subtype;
+  applyFilters();
+}
+
+function renderSubtypes(sport) {
+  const container = document.getElementById('subtypePills');
+  const subtypes = SPORT_SUBTYPES[sport];
+  if (!subtypes || sport === 'all') {
+    container.innerHTML = '';
+    return;
+  }
+  container.innerHTML = `
+    <div class="pill subtype active" data-subtype="all" onclick="toggleSubtype(this)">All ${sport}</div>
+    ${subtypes.map(s => `<div class="pill subtype" data-subtype="${s}" onclick="toggleSubtype(this)">${s}</div>`).join('')}
+  `;
 }
 
 function applyFilters() {
@@ -821,6 +877,7 @@ function applyFilters() {
 
   let filtered = _allEvents.filter(e => {
     if (activeSport !== 'all' && e.sport !== activeSport) return false;
+    if (activeSubtype !== 'all' && e.subtype !== activeSubtype) return false;
     if (state && e.state !== state) return false;
     if (organiser && e.organiser !== organiser) return false;
     if (price === 'free' && !e.disciplines.some(d => d.price === 0)) return false;
@@ -853,8 +910,10 @@ function clearFilters() {
   document.getElementById('dateTo').value = '';
   document.getElementById('sortSelect').value = 'date';
   activeSport = 'all';
+  activeSubtype = 'all';
   document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
   document.querySelector('[data-sport="all"]').classList.add('active');
+  document.getElementById('subtypePills').innerHTML = '';
   applyFilters();
 }
 
@@ -902,19 +961,19 @@ function renderEvents(list) {
     const minPrice = Math.min(...e.disciplines.map(d => d.price));
     const maxPrice = Math.max(...e.disciplines.map(d => d.price));
     const discCount = e.disciplines.length;
+    const badgeLabel = e.subtype ? `${e.sport} · ${e.subtype}` : e.sport;
     const priceDisplay = minPrice === 0 && maxPrice === 0
       ? '<span class="price-tag free">Free</span>'
       : minPrice === 0
         ? '<span class="price-tag">Free – <span style="font-size:13px">$' + maxPrice + '</span></span>'
         : '<span class="price-tag">From $' + minPrice + '</span>';
-    const discLabel = `<span style="font-size:12px;color:var(--ink-muted)">${discCount} ${discCount === 1 ? 'discipline' : 'disciplines'}</span>`;
     const delay = Math.min(i * 0.04, 0.4);
 
     return `
     <div class="event-card${e.featured ? ' featured' : ''}" style="animation-delay:${delay}s">
       ${e.featured ? '<div class="featured-badge">Featured</div>' : ''}
       <div class="card-header">
-        <span class="sport-badge ${sportClass}">${e.sport}</span>
+        <span class="sport-badge ${sportClass}">${badgeLabel}</span>
       </div>
       <div class="card-body">
         <div class="event-name">${e.name}</div>
