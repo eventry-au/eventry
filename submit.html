@@ -27,6 +27,8 @@
   nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
   .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--ink); text-decoration: none; }
   .logo span { color: var(--accent); }
+  .logo { display: flex; flex-direction: column; line-height: 1; gap: 2px; }
+  .logo-tagline { font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); font-family: 'DM Sans', sans-serif; }
   .nav-back { font-size: 13px; color: var(--ink-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; font-weight: 500; }
   .nav-back:hover { color: var(--accent); }
 
@@ -153,7 +155,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Even<span>try</span></a>
+  <a href="index.html" class="logo">Even<span>try</span><span class="logo-tagline">Event · Entry</span></a>
   <a href="index.html" class="nav-back">← Back to events</a>
 </nav>
 
@@ -558,14 +560,20 @@ function addDiscipline() {
           <option value="">Select sub-type...</option>
         </select>
       </div>
+    </div>
+    <div class="sport-fields" id="sportfields_${idx}"></div>
+    <div class="form-grid" style="margin-top:0.75rem">
       <div class="price-row">
         <div class="field">
           <label>Entry fee (AUD)</label>
           <input type="number" name="d${idx}_price" id="price_${idx}" placeholder="0.00" min="0" step="0.01" />
         </div>
-        <label class="free-toggle" id="free_${idx}" onclick="toggleFree(${idx})">
-          <input type="checkbox" id="freecheck_${idx}" name="d${idx}_free" /> Free entry
-        </label>
+        <div class="field">
+          <label style="opacity:0">.</label>
+          <label class="free-toggle" id="free_${idx}" style="cursor:pointer">
+            <input type="checkbox" id="freecheck_${idx}" name="d${idx}_free" onchange="handleFreeToggle(${idx})" style="cursor:pointer;width:16px;height:16px;accent-color:var(--accent)" /> Free entry
+          </label>
+        </div>
       </div>
       <div class="field">
         <label>Registration link (if different from main)</label>
@@ -576,7 +584,6 @@ function addDiscipline() {
         <input type="text" name="d${idx}_age" placeholder="e.g. Open, U18, Masters 40+" />
       </div>
     </div>
-    <div class="sport-fields" id="sportfields_${idx}"></div>
   `;
   container.appendChild(div);
 }
@@ -605,11 +612,10 @@ function updateSportFields(idx) {
   }
 }
 
-function toggleFree(idx) {
+function handleFreeToggle(idx) {
   const cb = document.getElementById(`freecheck_${idx}`);
   const label = document.getElementById(`free_${idx}`);
   const priceInput = document.getElementById(`price_${idx}`);
-  cb.checked = !cb.checked;
   if (cb.checked) {
     label.classList.add('checked');
     priceInput.value = '0';
@@ -730,23 +736,23 @@ async function handleSubmit(e) {
   const form = document.getElementById('eventForm');
   const fd = new FormData(form);
   const payload = {
-    org_name: fd.get('org_name'),
-    org_email: fd.get('contact_email'),
-    org_phone: fd.get('contact_phone'),
-    org_website: fd.get('website'),
-    contact_name: fd.get('contact_name'),
-    event_name: fd.get('event_name'),
+    org_name: (fd.get('org_name') || '').trim(),
+    org_email: (fd.get('contact_email') || '').trim(),
+    org_phone: (fd.get('contact_phone') || '').trim(),
+    org_website: (fd.get('website') || '').trim(),
+    contact_name: (fd.get('contact_name') || '').trim(),
+    event_name: (fd.get('event_name') || '').trim(),
     event_date: fd.get('event_date'),
     event_end_date: fd.get('event_end_date'),
-    location: fd.get('location'),
+    location: (fd.get('location') || '').trim(),
     state: fd.get('state'),
-    venue: fd.get('venue'),
-    event_url: fd.get('event_url'),
-    description: fd.get('description'),
+    venue: (fd.get('venue') || '').trim(),
+    event_url: (fd.get('event_url') || '').trim(),
+    description: (fd.get('description') || '').trim(),
     beginner_friendly: fd.get('beginner_friendly'),
     min_age: fd.get('min_age'),
     max_participants: fd.get('max_participants'),
-    notes: fd.get('notes'),
+    notes: (fd.get('notes') || '').trim(),
     disciplines: collectDisciplines()
   };
 

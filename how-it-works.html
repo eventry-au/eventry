@@ -19,6 +19,8 @@
   nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
   .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--ink); text-decoration: none; }
   .logo span { color: var(--accent); }
+  .logo { display: flex; flex-direction: column; line-height: 1; gap: 2px; }
+  .logo-tagline { font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); font-family: 'DM Sans', sans-serif; }
   .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a { font-size: 14px; color: var(--ink-muted); text-decoration: none; font-weight: 500; transition: color 0.15s; }
   .nav-links a:hover { color: var(--accent); }
@@ -151,7 +153,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Even<span>try</span></a>
+  <a href="index.html" class="logo">Even<span>try</span><span class="logo-tagline">Event · Entry</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Browse Events</a></li>
     <li><a href="pricing.html">Organisers</a></li>
