@@ -55,8 +55,15 @@
     display: flex;
     flex-direction: column;
     line-height: 1;
-    gap: 2px;
+    gap: 3px;
   }
+
+  .logo-name {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .logo-name .orange { color: var(--accent); }
 
   .logo span { color: var(--accent); }
 
@@ -67,6 +74,8 @@
     text-transform: uppercase;
     color: var(--ink-faint);
     font-family: 'DM Sans', sans-serif;
+    display: block;
+    white-space: nowrap;
   }
 
   /* ROTATING TAGLINE */
@@ -749,7 +758,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Even<span>try</span><span class="logo-tagline">Event · Entry</span></a>
+  <a href="index.html" class="logo"><span class="logo-name">Even<span class="orange">try</span></span><span class="logo-tagline">Event · Entry</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Browse Events</a></li>
     <li><a href="how-it-works.html">How It Works</a></li>
