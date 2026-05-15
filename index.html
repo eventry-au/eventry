@@ -205,14 +205,58 @@
     padding: 2.5rem 2rem;
   }
 
+  /* FILTER TOGGLE ROW — visible on all screens */
+  .filter-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 10px;
+  }
+  .filter-toggle-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 16px; border-radius: var(--pill-radius);
+    border: 1px solid var(--border-strong); background: var(--white);
+    font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    color: var(--ink); cursor: pointer; transition: all 0.15s;
+  }
+  .filter-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-toggle-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .filter-count { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+  .filter-clear-mobile { font-size: 12px; color: var(--ink-faint); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 8px 0; }
+  .filter-clear-mobile:hover { color: var(--accent); }
+  .filter-apply-btn { display: none; width: 100%; margin-top: 1rem; padding: 12px; background: var(--ink); color: var(--white); border: none; border-radius: var(--pill-radius); font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; }
+  .filter-apply-btn:hover { background: var(--accent); }
+
   /* FILTER BAR */
   .filter-section {
     background: var(--white);
     border-radius: var(--card-radius);
     border: 1px solid var(--border);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    display: none;
   }
+
+  .filter-section.open { display: block; }
+
+  .filter-apply-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 11px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--pill-radius);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .filter-apply-btn:hover { background: var(--accent); }
 
   .filter-title {
     font-size: 12px;
@@ -629,9 +673,24 @@
     nav .nav-links { display: none; }
     .stats-bar { gap: 1.5rem; }
     .events-grid { grid-template-columns: 1fr; }
-    .filter-row { flex-direction: column; align-items: flex-start; }
-    .filter-row select, .filter-row .date-input { width: 100%; }
-    .clear-btn { margin-left: 0; }
+
+    /* Compact filter dropdowns on mobile */
+    .filter-row { flex-direction: column; align-items: stretch; gap: 8px; }
+    .filter-label { font-size: 11px; margin-bottom: -4px; }
+    select, .date-input { width: 100%; }
+    .clear-btn { display: none; }
+    .filter-title { display: none; }
+
+    /* Compact cards on mobile */
+    .card-header { padding: 0.875rem 1rem 0.5rem; }
+    .card-body { padding: 0 1rem 0.75rem; }
+    .event-name { font-size: 15px; }
+    .meta-row { font-size: 12px; }
+    .card-footer { padding: 0.75rem 1rem; }
+    .org-name { font-size: 11px; }
+    .price-tag { font-size: 13px; }
+    .register-btn { padding: 6px 12px; font-size: 11px; }
+
     .hero h1 { font-size: 2.2rem; }
     .hero p { font-size: 14px; }
     .search-wrap { max-width: 100%; }
@@ -717,8 +776,17 @@
   <div class="subtype-pills" id="subtypePills"></div>
 
   <!-- FILTER BAR -->
-  <div class="filter-section">
-    <div class="filter-title">Refine Results</div>
+  <div class="filter-toggle-row">
+    <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilters()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      Filters <span class="filter-count" id="filterCount" style="display:none"></span>
+    </button>
+    <button class="filter-clear-mobile" id="filterClearMobile" onclick="clearFilters()" style="display:none">
+      ✕ Clear filters
+    </button>
+  </div>
+
+  <div class="filter-section" id="filterSection">
     <div class="filter-row">
       <span class="filter-label">State</span>
       <select id="stateFilter" onchange="applyFilters()">
@@ -757,22 +825,25 @@
       <span class="filter-label">To</span>
       <input type="date" class="date-input" id="dateTo" onchange="applyFilters()" />
 
+      <span class="filter-label">Sort by</span>
+      <select id="sortSelect" onchange="applyFilters()">
+        <option value="featured-date">Featured first, then soonest</option>
+        <option value="date">Date (soonest first)</option>
+        <option value="price-asc">Price (low to high)</option>
+        <option value="price-desc">Price (high to low)</option>
+        <option value="name">Name (A–Z)</option>
+      </select>
+
       <button class="clear-btn" onclick="clearFilters()">Clear all filters</button>
     </div>
+    <button class="filter-apply-btn" onclick="toggleFilters()">
+      Apply & Close ✓
+    </button>
   </div>
 
   <!-- RESULTS -->
   <div class="results-header">
     <div class="results-count">Showing <span id="resultCount">24</span> events</div>
-    <div class="sort-wrap">
-      Sort by
-      <select id="sortSelect" onchange="applyFilters()">
-        <option value="date">Date (soonest)</option>
-        <option value="price-asc">Price (low to high)</option>
-        <option value="price-desc">Price (high to low)</option>
-        <option value="name">Name (A–Z)</option>
-      </select>
-    </div>
   </div>
 
   <div class="events-grid" id="eventsGrid"></div>
@@ -882,7 +953,36 @@ const events = [
   ]},
 ];
 
-function toggleDrawer() {
+function toggleFilters() {
+  const section = document.getElementById('filterSection');
+  const btn = document.getElementById('filterToggleBtn');
+  const isOpen = section.classList.contains('open');
+  section.classList.toggle('open');
+  btn.classList.toggle('active');
+  btn.innerHTML = isOpen
+    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg> Filters <span class="filter-count" id="filterCount" style="display:none"></span>`
+    : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg> Close Filters`;
+}
+
+function updateFilterCount() {
+  const filters = [
+    document.getElementById('stateFilter')?.value,
+    document.getElementById('organiserFilter')?.value,
+    document.getElementById('priceFilter')?.value,
+    document.getElementById('dateFrom')?.value,
+    document.getElementById('dateTo')?.value,
+  ].filter(Boolean);
+  const count = filters.length + (activeSport !== 'all' ? 1 : 0) + (activeSubtype !== 'all' ? 1 : 0);
+  const badge = document.getElementById('filterCount');
+  const clearBtn = document.getElementById('filterClearMobile');
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'inline' : 'none';
+  }
+  if (clearBtn) {
+    clearBtn.style.display = count > 0 ? 'inline' : 'none';
+  }
+}
   const hamburger = document.getElementById('hamburger');
   const drawer = document.getElementById('mobileDrawer');
   const overlay = document.getElementById('drawerOverlay');
@@ -950,7 +1050,14 @@ async function initSite() {
   const liveEvents = await loadLiveEvents();
   _allEvents = liveEvents || events;
   document.getElementById('totalEvents').textContent = _allEvents.length;
-  renderEvents(_allEvents.slice().sort((a,b) => (a.date||'').localeCompare(b.date||'')));
+  // Default sort: featured first, then soonest, then alphabetical
+  renderEvents(_allEvents.slice().sort((a,b) => {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    const dateDiff = (a.date||'').localeCompare(b.date||'');
+    if (dateDiff !== 0) return dateDiff;
+    return a.name.localeCompare(b.name);
+  }));
 }
 
 function toggleSport(el) {
@@ -1007,7 +1114,18 @@ function applyFilters() {
   });
 
   filtered.sort((a, b) => {
-    if (sort === 'date') return (a.date||'').localeCompare(b.date||'');
+    if (sort === 'featured-date') {
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      const dateDiff = (a.date||'').localeCompare(b.date||'');
+      if (dateDiff !== 0) return dateDiff;
+      return a.name.localeCompare(b.name);
+    }
+    if (sort === 'date') {
+      const dateDiff = (a.date||'').localeCompare(b.date||'');
+      if (dateDiff !== 0) return dateDiff;
+      return a.name.localeCompare(b.name);
+    }
     if (sort === 'price-asc') return Math.min(...a.disciplines.map(d=>d.price)) - Math.min(...b.disciplines.map(d=>d.price));
     if (sort === 'price-desc') return Math.min(...b.disciplines.map(d=>d.price)) - Math.min(...a.disciplines.map(d=>d.price));
     if (sort === 'name') return a.name.localeCompare(b.name);
@@ -1015,6 +1133,7 @@ function applyFilters() {
   });
 
   renderEvents(filtered);
+  updateFilterCount();
 }
 
 function clearFilters() {
@@ -1030,6 +1149,12 @@ function clearFilters() {
   document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
   document.querySelector('[data-sport="all"]').classList.add('active');
   document.getElementById('subtypePills').innerHTML = '';
+  // Close filter panel on mobile
+  const section = document.getElementById('filterSection');
+  const btn = document.getElementById('filterToggleBtn');
+  if (section) section.classList.remove('open');
+  if (btn) btn.classList.remove('active');
+  updateFilterCount();
   applyFilters();
 }
 
