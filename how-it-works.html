@@ -126,7 +126,21 @@
   /* DIVIDER */
   .divider { height: 1px; background: var(--border); margin: 3rem 0; }
 
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; border: none; background: none; z-index: 200; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-drawer { display: none; position: fixed; top: 60px; right: 0; width: 280px; height: calc(100vh - 60px); background: var(--white); border-left: 1px solid var(--border); z-index: 150; padding: 2rem 1.5rem; flex-direction: column; gap: 0; transform: translateX(100%); transition: transform 0.3s ease; box-shadow: -4px 0 20px rgba(0,0,0,0.08); }
+  .mobile-drawer.open { transform: translateX(0); }
+  .mobile-drawer a { display: block; padding: 1rem 0; font-size: 16px; font-weight: 500; color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.15s; }
+  .mobile-drawer a:hover { color: var(--accent); }
+  .mobile-drawer .mobile-cta { margin-top: 1.5rem; background: var(--ink); color: var(--white) !important; text-align: center; padding: 14px !important; border-radius: var(--pill-radius); border-bottom: none !important; font-weight: 600 !important; }
+  .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 140; }
+  .drawer-overlay.open { display: block; }
   @media (max-width: 700px) {
+    .hamburger { display: flex; }
+    .mobile-drawer { display: flex; }
     .annotation-wrap { grid-template-columns: 1fr; }
     .steps-hero { gap: 1rem; }
     .step-hero::after { display: none; }
@@ -143,7 +157,17 @@
     <li><a href="pricing.html">Organisers</a></li>
     <li><a href="index.html" class="nav-cta">Find an Event</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="index.html">Browse Events</a>
+  <a href="guide.html">Organiser Guide</a>
+  <a href="pricing.html">List an Event</a>
+  <a href="index.html" class="mobile-cta">Find an Event</a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -436,7 +460,7 @@
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-q">An event I'm looking for isn't on Eventry — what can I do? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">We're constantly adding new events. If there's an event you'd like to see listed, let us know at hello@eventry.au — or better yet, point the organiser to our listing page at eventry.au/pricing so they can add it themselves.</div>
+      <div class="faq-a">We're constantly adding new events. If there's an event you'd like to see listed, let us know at eventry.au@gmail.com — or better yet, point the organiser to our listing page at eventry.au/pricing so they can add it themselves.</div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
@@ -451,7 +475,7 @@
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-q">Can I suggest improvements to Eventry? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">We'd love to hear from you. Email us at hello@eventry.au with any feedback, suggestions, or features you'd like to see. We're building Eventry for the Australian sporting community — your input shapes what we build next.</div>
+      <div class="faq-a">We'd love to hear from you. Email us at eventry.au@gmail.com with any feedback, suggestions, or features you'd like to see. We're building Eventry for the Australian sporting community — your input shapes what we build next.</div>
     </div>
 
   </div>
@@ -462,17 +486,26 @@
     <p>Thousands of athletes across Australia are already discovering events on Eventry.</p>
     <div class="cta-btns">
       <a href="index.html" class="cta-btn primary">Browse events →</a>
-      <a href="mailto:hello@eventry.au" class="cta-btn secondary">Contact us</a>
+      <a href="mailto:eventry.au@gmail.com" class="cta-btn secondary">Contact us</a>
     </div>
   </div>
 
 </div>
 
 <footer style="background:var(--ink);color:#888;text-align:center;padding:2rem;font-size:13px;margin-top:0">
-  <p>© 2025 Eventry. Australia's sports events directory. &nbsp;·&nbsp; <a href="pricing.html" style="color:var(--accent);text-decoration:none">List your event</a> &nbsp;·&nbsp; <a href="mailto:hello@eventry.au" style="color:var(--accent);text-decoration:none">hello@eventry.au</a></p>
+  <p>© 2025 Eventry. Australia's sports events directory. &nbsp;·&nbsp; <a href="pricing.html" style="color:var(--accent);text-decoration:none">List your event</a> &nbsp;·&nbsp; <a href="mailto:eventry.au@gmail.com" style="color:var(--accent);text-decoration:none">eventry.au@gmail.com</a></p>
 </footer>
 
 <script>
+function toggleDrawer() {
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  hamburger.classList.toggle('open');
+  drawer.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+}
 function toggleFaq(el) { el.classList.toggle('open'); }
 </script>
 </body>

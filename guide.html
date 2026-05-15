@@ -132,11 +132,27 @@
   .progress-item .check { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; }
   .progress-item.done .check { background: var(--success); border-color: var(--success); color: white; }
 
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; border: none; background: none; z-index: 200; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-drawer { display: none; position: fixed; top: 60px; right: 0; width: 280px; height: calc(100vh - 60px); background: var(--white); border-left: 1px solid var(--border); z-index: 150; padding: 2rem 1.5rem; flex-direction: column; gap: 0; transform: translateX(100%); transition: transform 0.3s ease; box-shadow: -4px 0 20px rgba(0,0,0,0.08); }
+  .mobile-drawer.open { transform: translateX(0); }
+  .mobile-drawer a { display: block; padding: 1rem 0; font-size: 16px; font-weight: 500; color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.15s; }
+  .mobile-drawer a:hover { color: var(--accent); }
+  .mobile-drawer .mobile-cta { margin-top: 1.5rem; background: var(--ink); color: var(--white) !important; text-align: center; padding: 14px !important; border-radius: var(--pill-radius); border-bottom: none !important; font-weight: 600 !important; }
+  .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 140; }
+  .drawer-overlay.open { display: block; }
   @media (max-width: 768px) {
+    .hamburger { display: flex; }
+    .mobile-drawer { display: flex; }
+    nav .nav-links { display: none; }
     .page-wrap { grid-template-columns: 1fr; }
     .sidebar { display: none; }
     .field-row { grid-template-columns: 1fr; }
     .field-name { border-right: none; border-bottom: 1px solid var(--border); }
+    .sport-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   }
 </style>
 </head>
@@ -149,7 +165,17 @@
     <li><a href="pricing.html">Pricing</a></li>
     <li><a href="submit.html">List an Event</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="index.html">Browse Events</a>
+  <a href="how-it-works.html">How It Works</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="submit.html" class="mobile-cta">List an Event</a>
+</div>
 
 <div class="hero">
   <p class="eyebrow">Organiser Documentation</p>
@@ -565,7 +591,7 @@
 
       <div class="callout warn">
         <div class="callout-icon">⚡</div>
-        <div class="callout-body"><strong>Currently complimentary.</strong> While we build our audience, Featured listings are available at no cost to select organisers. Contact us at <a href="mailto:hello@eventry.au" style="color:var(--accent)">hello@eventry.au</a> to have your event featured.</div>
+        <div class="callout-body"><strong>Currently complimentary.</strong> While we build our audience, Featured listings are available at no cost to select organisers. Contact us at <a href="mailto:eventry.au@gmail.com" style="color:var(--accent)">eventry.au@gmail.com</a> to have your event featured.</div>
       </div>
     </section>
 
@@ -606,10 +632,10 @@
       </div>
 
       <h3>Need to make changes after submission?</h3>
-      <p>Email <a href="mailto:hello@eventry.au" style="color:var(--accent)">hello@eventry.au</a> with your event name and the changes needed. We'll update it within 24 hours. Full self-service editing is coming soon.</p>
+      <p>Email <a href="mailto:eventry.au@gmail.com" style="color:var(--accent)">eventry.au@gmail.com</a> with your event name and the changes needed. We'll update it within 24 hours. Full self-service editing is coming soon.</p>
 
       <h3>Need to remove your event?</h3>
-      <p>Email <a href="mailto:hello@eventry.au" style="color:var(--accent)">hello@eventry.au</a> and we'll remove it promptly. Events are also automatically archived after their end date.</p>
+      <p>Email <a href="mailto:eventry.au@gmail.com" style="color:var(--accent)">eventry.au@gmail.com</a> and we'll remove it promptly. Events are also automatically archived after their end date.</p>
     </section>
 
     <!-- FAQ -->
@@ -619,7 +645,7 @@
 
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">Can I list multiple events at once? <span class="faq-arrow">▼</span></div>
-        <div class="faq-a">Yes — submit each event separately through the form. There's no limit on how many events you can list. If you have a large calendar of events, email us at hello@eventry.au and we can discuss a bulk upload process.</div>
+        <div class="faq-a">Yes — submit each event separately through the form. There's no limit on how many events you can list. If you have a large calendar of events, email us at eventry.au@gmail.com and we can discuss a bulk upload process.</div>
       </div>
 
       <div class="faq-item" onclick="toggleFaq(this)">
@@ -634,7 +660,7 @@
 
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">My event has different prices for early bird vs full price — which do I enter? <span class="faq-arrow">▼</span></div>
-        <div class="faq-a">Enter the standard (full) entry price. You can mention early bird pricing in the Additional Notes field. We recommend keeping the price current — if early bird has closed, update it to the current price by emailing hello@eventry.au.</div>
+        <div class="faq-a">Enter the standard (full) entry price. You can mention early bird pricing in the Additional Notes field. We recommend keeping the price current — if early bird has closed, update it to the current price by emailing eventry.au@gmail.com.</div>
       </div>
 
       <div class="faq-item" onclick="toggleFaq(this)">
@@ -654,12 +680,12 @@
 
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">How do I get a Featured listing? <span class="faq-arrow">▼</span></div>
-        <div class="faq-a">During our launch phase, Featured listings are available at no cost to select organisers. Email hello@eventry.au to discuss featuring your event. Online payment for Featured listings is coming soon.</div>
+        <div class="faq-a">During our launch phase, Featured listings are available at no cost to select organisers. Email eventry.au@gmail.com to discuss featuring your event. Online payment for Featured listings is coming soon.</div>
       </div>
 
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">I submitted but haven't heard back — what should I do? <span class="faq-arrow">▼</span></div>
-        <div class="faq-a">Check your spam folder first. If you still haven't received a confirmation after 24 hours, email hello@eventry.au with your event name and we'll look into it.</div>
+        <div class="faq-a">Check your spam folder first. If you still haven't received a confirmation after 24 hours, email eventry.au@gmail.com with your event name and we'll look into it.</div>
       </div>
 
     </section>
@@ -675,10 +701,19 @@
 </div>
 
 <footer style="background:var(--ink);color:#888;text-align:center;padding:2rem;font-size:13px;">
-  <p>© 2025 Eventry. Australia's sports events directory. &nbsp;·&nbsp; <a href="submit.html" style="color:var(--accent);text-decoration:none">List your event</a> &nbsp;·&nbsp; <a href="mailto:hello@eventry.au" style="color:var(--accent);text-decoration:none">hello@eventry.au</a></p>
+  <p>© 2025 Eventry. Australia's sports events directory. &nbsp;·&nbsp; <a href="pricing.html" style="color:var(--accent);text-decoration:none">List your event</a> &nbsp;·&nbsp; <a href="mailto:eventry.au@gmail.com" style="color:var(--accent);text-decoration:none">eventry.au@gmail.com</a></p>
 </footer>
 
 <script>
+function toggleDrawer() {
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  hamburger.classList.toggle('open');
+  drawer.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+}
 function toggleFaq(el) { el.classList.toggle('open'); }
 
 // Highlight active sidebar link on scroll

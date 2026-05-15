@@ -137,21 +137,24 @@
   .success-msg h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--success); margin-bottom: 0.5rem; }
   .success-msg p { font-size: 14px; color: var(--ink-muted); }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .form-grid { grid-template-columns: 1fr; }
     .form-grid.thirds { grid-template-columns: 1fr; }
     .col-span-2 { grid-column: span 1; }
     .leg-row { grid-template-columns: 1fr 1fr; }
     .leg-row .remove-leg { grid-column: span 2; }
     .leg-row.custom { grid-template-columns: 1fr 1fr; }
+    .price-row { grid-template-columns: 1fr; }
+    .form-wrap { padding: 1.5rem 1rem 3rem; }
+    .submit-btn { width: 100%; justify-content: center; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="eventry.html" class="logo">Even<span>try</span></a>
-  <a href="eventry.html" class="nav-back">← Back to events</a>
+  <a href="index.html" class="logo">Even<span>try</span></a>
+  <a href="index.html" class="nav-back">← Back to events</a>
 </nav>
 
 <div class="page-hero">
@@ -760,7 +763,7 @@ async function handleSubmit(e) {
   } catch(err) {
     btn.innerHTML = 'Submit event for review →';
     btn.disabled = false;
-    alert('Something went wrong. Please try again or email us at hello@eventry.au');
+    alert('Something went wrong. Please try again or email us at eventry.au@gmail.com');
   }
 }
 
