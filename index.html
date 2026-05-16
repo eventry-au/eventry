@@ -1118,6 +1118,46 @@ const ORG_COLORS = {
   'Alpine Events': '#6a1b9a',
 };
 
+// Sample partner data — shown when no live partners in sheet
+const samplePartners = [
+  {
+    name: 'Endurance Coaching Co',
+    tagline: 'Triathlon & Run Coaching for all levels',
+    sports: 'Triathlon, Running',
+    state: 'NSW',
+    location: 'Sydney, NSW',
+    location_display: 'Sydney, NSW',
+    website: '#'
+  },
+  {
+    name: 'Aquatic Performance',
+    tagline: 'Open water & pool swimming for all abilities',
+    sports: 'Open Water Swimming, Triathlon',
+    state: 'NSW',
+    location: 'Sydney, NSW',
+    location_display: 'Sydney, NSW',
+    website: '#'
+  },
+  {
+    name: 'Active Body Physio',
+    tagline: 'Sports physiotherapy for endurance athletes',
+    sports: '',
+    state: 'VIC',
+    location: 'Melbourne, VIC',
+    location_display: 'Melbourne, VIC',
+    website: '#'
+  },
+  {
+    name: 'Trail & Road Running Store',
+    tagline: 'Expert advice and gear for every runner',
+    sports: 'Running',
+    state: 'QLD',
+    location: 'Brisbane, QLD',
+    location_display: 'Brisbane, QLD',
+    website: '#'
+  }
+];
+
 const events = [
   { id:1, name:"Blue Mountains Ultra Trail", sport:"Running", subtype:"Ultra", date:"2025-08-16", location:"Katoomba, NSW", state:"NSW", organiser:"Adventure Co", link:"#", featured:true, disciplines:[
     {name:"100km Ultra",dist:"100km",price:195},{name:"50km Trail",dist:"50km",price:145},{name:"22km Trail",dist:"22km",price:95},{name:"10km Fun Run",dist:"10km",price:55}
@@ -1303,6 +1343,10 @@ async function initSite() {
 
   const liveEvents = await loadLiveEvents();
   _allEvents = liveEvents || events;
+  // Use sample partners if no live partners loaded from sheet
+  if (!window._allPartners || window._allPartners.length === 0) {
+    window._allPartners = samplePartners;
+  }
   document.getElementById('totalEvents').textContent = _allEvents.length;
   // Default sort: featured first, then soonest, then alphabetical
   renderEvents(_allEvents.slice().sort((a,b) => {
@@ -1397,7 +1441,7 @@ function clearFilters() {
   document.getElementById('priceFilter').value = '';
   document.getElementById('dateFrom').value = '';
   document.getElementById('dateTo').value = '';
-  document.getElementById('sortSelect').value = 'date';
+  document.getElementById('sortSelect').value = 'featured-date';
   activeSport = 'all';
   activeSubtype = 'all';
   document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -1580,16 +1624,68 @@ function renderEvents(list) {
 }
 
 // NEWSLETTER SIGNUP
+function initNewsletter() {
+  const saved = localStorage.getItem('eventry_newsletter_email');
+  if (saved) {
+    const form = document.getElementById('newsletterForm');
+    if (form) {
+      form.innerHTML = `
+        <div class="nl-success" style="display:block">
+          ✓ You're already part of the Eventry community!<br>
+          <span style="font-size:12px;opacity:0.8">Signed up as ${saved}</span>
+        </div>
+        <p class="nl-privacy" style="margin-top:0.75rem">
+          Made a mistake or signing up a friend? 
+          <a href="#" onclick="resetNewsletter(event)" style="color:var(--accent);text-decoration:underline">Sign up again</a>
+        </p>
+      `;
+    }
+  }
+}
+
+function resetNewsletter(e) {
+  e.preventDefault();
+  localStorage.removeItem('eventry_newsletter_email');
+  const form = document.getElementById('newsletterForm');
+  form.innerHTML = `
+    <div class="nl-row">
+      <input type="text" id="nlName" placeholder="Your name" />
+      <input type="email" id="nlEmail" placeholder="Your email address" required />
+    </div>
+    <div class="nl-row">
+      <select id="nlState">
+        <option value="">All states</option>
+        <option>NSW</option><option>VIC</option><option>QLD</option>
+        <option>WA</option><option>SA</option><option>TAS</option>
+        <option>ACT</option><option>NT</option>
+      </select>
+      <select id="nlSport">
+        <option value="">All sports</option>
+        <option>Running</option><option>Cycling</option><option>Triathlon</option>
+        <option>Open Water Swimming</option><option>Paddling</option>
+        <option>Obstacle Racing</option><option>Hiking</option>
+        <option>Fitness</option><option>Equestrian</option><option>Snow Sports</option>
+      </select>
+    </div>
+    <button type="submit" class="nl-btn" id="nlBtn">Sign me up →</button>
+    <div class="nl-success" id="nlSuccess" style="display:none">
+      🎉 You're in! We'll keep you posted on great events.
+    </div>
+    <p class="nl-privacy">No spam. Unsubscribe anytime. We respect your privacy.</p>
+  `;
+}
+
 async function submitNewsletter(e) {
   e.preventDefault();
   const btn = document.getElementById('nlBtn');
   btn.textContent = 'Signing up...';
   btn.disabled = true;
 
+  const email = document.getElementById('nlEmail').value.trim();
   const payload = {
     type: 'newsletter',
     name: document.getElementById('nlName').value.trim(),
-    email: document.getElementById('nlEmail').value.trim(),
+    email: email,
     state: document.getElementById('nlState').value,
     sport: document.getElementById('nlSport').value
   };
@@ -1601,6 +1697,8 @@ async function submitNewsletter(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
+    // Save email to localStorage
+    localStorage.setItem('eventry_newsletter_email', email);
     document.getElementById('newsletterForm').querySelectorAll('input,select,button').forEach(el => el.style.display = 'none');
     document.getElementById('nlSuccess').style.display = 'block';
   } catch(err) {
@@ -1608,6 +1706,8 @@ async function submitNewsletter(e) {
     btn.disabled = false;
   }
 }
+
+initNewsletter();
 
 // COOKIE BANNER
 function initCookieBanner() {
@@ -1655,9 +1755,34 @@ function initTaglineRotator() {
 }
 
 initTaglineRotator();
-initSite();
+initSite().then(() => {
+  // Handle shared event links e.g. eventry.au/?event=8
+  const params = new URLSearchParams(window.location.search);
+  const sharedEventId = params.get('event');
+  if (sharedEventId) {
+    setTimeout(() => {
+      // Find the card by looking for matching event id
+      const cards = document.querySelectorAll('.event-card');
+      let found = false;
+      _allEvents.forEach((e, idx) => {
+        if (String(e.id) === String(sharedEventId) && cards[idx]) {
+          cards[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          cards[idx].style.boxShadow = '0 0 0 3px var(--accent)';
+          setTimeout(() => cards[idx].style.boxShadow = '', 3000);
+          found = true;
+        }
+      });
+      if (!found) {
+        // Show toast if event not found
+        const toast = document.getElementById('shareToast');
+        toast.textContent = 'Event not found — it may have been removed.';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+    }, 1000);
+  }
+});
 
-document.getElementById('searchInput').addEventListener('input', applyFilters);
 </script>
 </body>
 </html>
