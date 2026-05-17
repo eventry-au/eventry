@@ -282,6 +282,23 @@
   .filter-apply-btn { display: none; width: 100%; margin-top: 1rem; padding: 12px; background: var(--ink); color: var(--white); border: none; border-radius: var(--pill-radius); font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; }
   .filter-apply-btn:hover { background: var(--accent); }
 
+  /* LOCATION FILTER */
+  .location-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .location-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 14px; border-radius: var(--pill-radius);
+    border: 1px solid var(--border-strong); background: var(--white);
+    font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    color: var(--ink-muted); cursor: pointer; transition: all 0.15s;
+  }
+  .location-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .location-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .location-clear { background: none; border: none; font-size: 12px; color: var(--ink-faint); cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 4px 8px; }
+  .location-clear:hover { color: var(--accent); }
+  .location-status { font-size: 12px; color: var(--ink-faint); margin-top: 4px; }
+  .location-status.error { color: #c62828; }
+  .location-status.success { color: #2e7d32; }
+
   /* FILTER BAR */
   .filter-section {
     background: var(--white);
@@ -900,7 +917,9 @@
   <a href="index.html" class="logo"><span class="logo-name">Even<span class="orange">try</span></span><span class="logo-tagline">Event · Entry</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Browse Events</a></li>
-    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="how-it-works.html">How It Works</a>
+  <a href="about.html">About</a></li>
+    <li><a href="about.html">About</a></li>
     <li><a href="pricing.html">Organisers</a></li>
     <li><a href="pricing.html" class="nav-cta">List an Event</a></li>
   </ul>
@@ -914,6 +933,7 @@
 <div class="mobile-drawer" id="mobileDrawer">
   <a href="index.html">Browse Events</a>
   <a href="how-it-works.html">How It Works</a>
+  <a href="about.html">About</a>
   <a href="pricing.html">Organisers</a>
   <a href="guide.html">Organiser Guide</a>
   <a href="pricing.html" class="mobile-cta">List an Event</a>
@@ -986,6 +1006,25 @@
 
   <div class="filter-section" id="filterSection">
     <div class="filter-row">
+
+      <!-- LOCATION RADIUS -->
+      <span class="filter-label">Near me</span>
+      <div class="location-row">
+        <button class="location-btn" id="locationBtn" onclick="getLocation()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Use my location
+        </button>
+        <select id="radiusSelect" onchange="applyFilters()" style="display:none">
+          <option value="25">Within 25km</option>
+          <option value="50" selected>Within 50km</option>
+          <option value="100">Within 100km</option>
+          <option value="200">Within 200km</option>
+          <option value="500">Within 500km</option>
+        </select>
+        <button class="location-clear" id="locationClear" onclick="clearLocation()" style="display:none">✕ Clear</button>
+      </div>
+      <div class="location-status" id="locationStatus"></div>
+
       <span class="filter-label">State</span>
       <select id="stateFilter" onchange="applyFilters()">
         <option value="">All States</option>
@@ -1233,6 +1272,77 @@ const events = [
   ]},
 ];
 
+// LOCATION RADIUS FILTER
+let userLat = null;
+let userLng = null;
+
+// Australian city coordinates for distance calculation
+const STATE_COORDS = {
+  'NSW': { lat: -33.8688, lng: 151.2093 },
+  'VIC': { lat: -37.8136, lng: 144.9631 },
+  'QLD': { lat: -27.4698, lng: 153.0251 },
+  'WA':  { lat: -31.9505, lng: 115.8605 },
+  'SA':  { lat: -34.9285, lng: 138.6007 },
+  'TAS': { lat: -42.8821, lng: 147.3272 },
+  'ACT': { lat: -35.2809, lng: 149.1300 },
+  'NT':  { lat: -12.4634, lng: 130.8456 }
+};
+
+function getDistanceKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function getLocation() {
+  const btn = document.getElementById('locationBtn');
+  const status = document.getElementById('locationStatus');
+  if (!navigator.geolocation) {
+    status.textContent = 'Location not supported by your browser.';
+    status.className = 'location-status error';
+    return;
+  }
+  btn.textContent = 'Getting location...';
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      userLat = pos.coords.latitude;
+      userLng = pos.coords.longitude;
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Location set`;
+      btn.className = 'location-btn active';
+      btn.disabled = false;
+      status.textContent = `✓ Filtering by your location`;
+      status.className = 'location-status success';
+      document.getElementById('radiusSelect').style.display = 'inline-block';
+      document.getElementById('locationClear').style.display = 'inline';
+      applyFilters();
+    },
+    err => {
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Use my location`;
+      btn.disabled = false;
+      status.textContent = err.code === 1 ? 'Location access denied. Please allow location in your browser.' : 'Could not get location. Please try again.';
+      status.className = 'location-status error';
+    },
+    { timeout: 10000 }
+  );
+}
+
+function clearLocation() {
+  userLat = null;
+  userLng = null;
+  const btn = document.getElementById('locationBtn');
+  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Use my location`;
+  btn.className = 'location-btn';
+  document.getElementById('locationStatus').textContent = '';
+  document.getElementById('radiusSelect').style.display = 'none';
+  document.getElementById('locationClear').style.display = 'none';
+  applyFilters();
+}
+
 function toggleFilters() {
   const section = document.getElementById('filterSection');
   const btn = document.getElementById('filterToggleBtn');
@@ -1411,6 +1521,17 @@ function applyFilters() {
     return true;
   });
 
+  // Location radius filter
+  if (userLat !== null && userLng !== null) {
+    const radius = parseInt(document.getElementById('radiusSelect')?.value || '50');
+    filtered = filtered.filter(e => {
+      const stateCoords = STATE_COORDS[e.state];
+      if (!stateCoords) return true;
+      const dist = getDistanceKm(userLat, userLng, stateCoords.lat, stateCoords.lng);
+      return dist <= radius;
+    });
+  }
+
   filtered.sort((a, b) => {
     if (sort === 'featured-date') {
       if (a.featured && !b.featured) return -1;
@@ -1441,6 +1562,8 @@ function clearFilters() {
   document.getElementById('priceFilter').value = '';
   document.getElementById('dateFrom').value = '';
   document.getElementById('dateTo').value = '';
+  // Clear location filter too
+  if (userLat !== null) clearLocation();
   document.getElementById('sortSelect').value = 'featured-date';
   activeSport = 'all';
   activeSubtype = 'all';
@@ -1486,7 +1609,7 @@ function orgInitials(name) {
 }
 
 function shareEvent(id, name, btn) {
-  const url = `${window.location.origin}${window.location.pathname}?event=${id}`;
+  const url = `${window.location.origin}/event.html?id=${id}`;
   if (navigator.share) {
     navigator.share({ title: name, text: `Check out ${name} on Eventry!`, url });
   } else {
@@ -1616,7 +1739,7 @@ function renderEvents(list) {
             ${priceDisplay}
             <div style="font-size:11px;color:var(--ink-faint);margin-top:1px">${discCount} ${discCount === 1 ? 'discipline' : 'disciplines'}</div>
           </div>
-          <a href="${e.link}" class="register-btn">View →</a>
+          <a href="event.html?id=${e.id}" class="register-btn">View →</a>
         </div>
       </div>
     </div>`;
@@ -1756,30 +1879,27 @@ function initTaglineRotator() {
 
 initTaglineRotator();
 initSite().then(() => {
-  // Handle shared event links e.g. eventry.au/?event=8
+  // Handle legacy shared event links e.g. eventry.au/?event=8
+  // Redirect to proper event detail page
   const params = new URLSearchParams(window.location.search);
   const sharedEventId = params.get('event');
+  const organiserFilter = params.get('organiser');
+
   if (sharedEventId) {
-    setTimeout(() => {
-      // Find the card by looking for matching event id
-      const cards = document.querySelectorAll('.event-card');
-      let found = false;
-      _allEvents.forEach((e, idx) => {
-        if (String(e.id) === String(sharedEventId) && cards[idx]) {
-          cards[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          cards[idx].style.boxShadow = '0 0 0 3px var(--accent)';
-          setTimeout(() => cards[idx].style.boxShadow = '', 3000);
-          found = true;
-        }
-      });
-      if (!found) {
-        // Show toast if event not found
-        const toast = document.getElementById('shareToast');
-        toast.textContent = 'Event not found — it may have been removed.';
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-      }
-    }, 1000);
+    // Find event and redirect to detail page
+    const found = _allEvents.find(e => String(e.id) === String(sharedEventId));
+    if (found) {
+      window.location.href = `event.html?id=${found.id}`;
+    }
+  }
+
+  if (organiserFilter) {
+    // Auto-filter by organiser from organiser profile link
+    const select = document.getElementById('organiserFilter');
+    if (select) {
+      select.value = organiserFilter;
+      applyFilters();
+    }
   }
 });
 
