@@ -640,6 +640,15 @@
   .partner-btn { background: var(--surface); border: 1px solid var(--border-strong); color: var(--ink); border-radius: var(--pill-radius); padding: 7px 14px; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.15s; }
   .partner-btn:hover { background: var(--ink); color: var(--white); }
 
+  /* PARTNERS SECTION */
+  .partners-section { margin: 2.5rem 0 0; }
+  .partners-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
+  .partners-section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); }
+  .partners-section-line { flex: 1; height: 1px; background: var(--border); }
+  .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 900px) { .partners-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .partners-grid { grid-template-columns: 1fr; } }
+
   /* SHARE BUTTON */
   .share-btn {
     background: none;
@@ -1083,6 +1092,7 @@
   </div>
 
   <div class="events-grid" id="eventsGrid"></div>
+  <div id="partnersSection"></div>
 
 </main>
 
@@ -1639,22 +1649,22 @@ function shareEvent(id, name, btn) {
 
 function renderEvents(list) {
   const grid = document.getElementById('eventsGrid');
-  // Count only events (not partners) for the header
-  const eventCount = list.filter(e => e.type !== 'partner').length;
+  const eventCount = list.length;
   const eventWord = eventCount === 1 ? 'event' : 'events';
   document.querySelector('.results-count').innerHTML = `Showing <span id="resultCount">${eventCount}</span> ${eventWord}`;
 
   if (list.length === 0) {
     grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No events found</h3><p>Try adjusting your filters or search term</p></div>`;
+    // Still render partners section even with no events
+    const partnersSection = document.getElementById('partnersSection');
+    if (partnersSection) partnersSection.innerHTML = '';
     return;
   }
 
   // Filter partners by state and sport
   const activeState = document.getElementById('stateFilter')?.value || '';
   const partners = (window._allPartners || []).filter(p => {
-    // State filter
     if (activeState && p.state && p.state !== activeState) return false;
-    // Sport filter — blank partner_sports means show for all sports
     if (activeSport !== 'all' && p.sports) {
       const partnerSports = p.sports.split(',').map(s => s.trim().toLowerCase());
       if (!partnerSports.includes(activeSport.toLowerCase())) return false;
@@ -1662,22 +1672,25 @@ function renderEvents(list) {
     return true;
   });
 
+  // Build cards array: events + 2 partner cards injected after every 6th event
   let partnerIdx = 0;
   let eventIdx = 0;
   const cards = [];
-
-  list.forEach((e, i) => {
-    // Insert partner card every 6 events
-    if (eventIdx > 0 && eventIdx % 6 === 0 && partnerIdx < partners.length) {
-      cards.push({ type: 'partner', data: partners[partnerIdx++] });
-    }
+  list.forEach(e => {
     cards.push({ type: 'event', data: e });
     eventIdx++;
+    if (eventIdx % 6 === 0) {
+      // Inject up to 2 partners after every 6th event
+      for (let n = 0; n < 2 && partnerIdx < partners.length; n++) {
+        cards.push({ type: 'partner', data: partners[partnerIdx++] });
+      }
+    }
   });
+  // Partners not yet shown mid-grid go into the dedicated section below
+  const remainingPartners = partners.slice(partnerIdx);
 
   grid.innerHTML = cards.map((item, i) => {
     const delay = Math.min(i * 0.04, 0.4);
-
     if (item.type === 'partner') {
       const p = item.data;
       const sportTags = (p.sports || '').split(',').map(s => s.trim()).filter(Boolean)
@@ -1686,9 +1699,7 @@ function renderEvents(list) {
       const locationDisplay = p.location_display || p.location || '';
       return `
       <div class="partner-card" style="animation-delay:${delay}s">
-        <div class="card-header">
-          <span class="partner-badge">Partner</span>
-        </div>
+        <div class="card-header"><span class="partner-badge">Partner</span></div>
         <div class="card-body">
           <div class="partner-name">${p.name}</div>
           <div class="partner-tagline">${p.tagline || ''}</div>
@@ -1703,7 +1714,6 @@ function renderEvents(list) {
         </div>
       </div>`;
     }
-
     const e = item.data;
     const sportClass = SPORT_CLASSES[e.sport] || 'sport-fitness';
     const orgColor = ORG_COLORS[e.organiser] || '#555';
@@ -1759,6 +1769,48 @@ function renderEvents(list) {
       </div>
     </div>`;
   }).join('');
+
+  // Render dedicated partners section below the grid (any not shown mid-grid, or all if <6 events)
+  const partnersSection = document.getElementById('partnersSection');
+  if (partnersSection) {
+    const sectionPartners = list.length < 6 ? partners : remainingPartners;
+    if (sectionPartners.length > 0) {
+      const partnerCards = sectionPartners.map((p, i) => {
+        const sportTags = (p.sports || '').split(',').map(s => s.trim()).filter(Boolean)
+          .map(s => `<span class="partner-sport-tag">${s}</span>`).join('');
+        const initials = orgInitials(p.name);
+        const locationDisplay = p.location_display || p.location || '';
+        return `
+        <div class="partner-card" style="animation-delay:${Math.min(i * 0.05, 0.4)}s">
+          <div class="card-header">
+            <span class="partner-badge">Partner</span>
+          </div>
+          <div class="card-body">
+            <div class="partner-name">${p.name}</div>
+            <div class="partner-tagline">${p.tagline || ''}</div>
+            <div class="partner-sports">${sportTags || '<span class="partner-sport-tag">All sports</span>'}</div>
+          </div>
+          <div class="card-footer">
+            <div class="organiser">
+              <div class="org-logo" style="background:#555">${initials}</div>
+              <span class="org-name" style="font-size:11px;color:var(--ink-faint)">${locationDisplay}</span>
+            </div>
+            <a href="${p.website || '#'}" target="_blank" class="partner-btn">Learn more →</a>
+          </div>
+        </div>`;
+      }).join('');
+      partnersSection.innerHTML = `
+        <div class="partners-section">
+          <div class="partners-section-header">
+            <span class="partners-section-label">Supporting partners</span>
+            <div class="partners-section-line"></div>
+          </div>
+          <div class="partners-grid">${partnerCards}</div>
+        </div>`;
+    } else {
+      partnersSection.innerHTML = '';
+    }
+  }
 }
 
 // NEWSLETTER SIGNUP
