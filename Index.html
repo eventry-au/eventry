@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FM7R4KLD57"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-FM7R4KLD57");
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventry — Find Your Next Event</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0d0d;
+    --ink-muted: #5a5a5a;
+    --ink-faint: #9a9a9a;
+    --surface: #f5f3ef;
+    --white: #ffffff;
+    --accent: #e8572a;
+    --accent-light: #fdf0eb;
+    --border: #e2dfd8;
+    --border-strong: #c8c4bc;
+    --card-radius: 16px;
+    --pill-radius: 100px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 3px;
+  }
+
+  .logo-name {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .logo-name .orange { color: var(--accent); }
+
+  .logo span { color: var(--accent); }
+
+  .logo-tagline {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-family: 'DM Sans', sans-serif;
+    display: block;
+    white-space: nowrap;
+  }
+
+  /* ROTATING TAGLINE */
+  .rotating-tagline {
+    min-height: 28px;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .tagline-text {
+    font-size: 17px;
+    color: #aaa;
+    font-weight: 300;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+  }
+
+  .tagline-text.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--white) !important;
+    padding: 8px 18px;
+    border-radius: var(--pill-radius);
+    font-size: 13px !important;
+    transition: background 0.15s !important;
+  }
+
+  .nav-cta:hover { background: var(--accent) !important; color: var(--white) !important; }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: var(--white);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 120%, #e8572a22 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    max-width: 700px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 17px;
+    color: #aaa;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+
+  /* SEARCH BAR */
+  .search-wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding: 16px 56px 16px 20px;
+    border-radius: var(--pill-radius);
+    border: none;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    outline: none;
+    box-shadow: 0 0 0 0 transparent;
+    transition: box-shadow 0.2s;
+  }
+
+  .search-wrap input:focus { box-shadow: 0 0 0 3px rgba(232,87,42,0.3); }
+
+  .search-wrap input::placeholder { color: var(--ink-faint); }
+
+  .search-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent);
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 17px;
+    transition: background 0.15s;
+  }
+
+  .search-btn:hover { background: #c94420; }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #1f1f1f;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .stat-label { font-size: 12px; color: #666; font-weight: 400; }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+  }
+
+  /* FILTER TOGGLE ROW — visible on all screens */
+  .filter-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 10px;
+  }
+  .filter-toggle-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 16px; border-radius: var(--pill-radius);
+    border: 1px solid var(--border-strong); background: var(--white);
+    font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    color: var(--ink); cursor: pointer; transition: all 0.15s;
+  }
+  .filter-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-toggle-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .filter-count { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+  .filter-clear-mobile { font-size: 12px; color: var(--ink-faint); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 8px 0; }
+  .filter-clear-mobile:hover { color: var(--accent); }
+  .filter-apply-btn { display: none; width: 100%; margin-top: 1rem; padding: 12px; background: var(--ink); color: var(--white); border: none; border-radius: var(--pill-radius); font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; }
+  .filter-apply-btn:hover { background: var(--accent); }
+
+  /* LOCATION FILTER */
+  .location-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .location-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 14px; border-radius: var(--pill-radius);
+    border: 1px solid var(--border-strong); background: var(--white);
+    font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    color: var(--ink-muted); cursor: pointer; transition: all 0.15s;
+  }
+  .location-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .location-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .location-clear { background: none; border: none; font-size: 12px; color: var(--ink-faint); cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 4px 8px; }
+  .location-clear:hover { color: var(--accent); }
+  .location-status { font-size: 12px; color: var(--ink-faint); margin-top: 4px; }
+  .location-status.error { color: #c62828; }
+  .location-status.success { color: #2e7d32; }
+
+  /* FILTER BAR */
+  .filter-section {
+    background: var(--white);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    display: none;
+  }
+
+  .filter-section.open { display: block; }
+
+  .filter-apply-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 11px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--pill-radius);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .filter-apply-btn:hover { background: var(--accent); }
+
+  .filter-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1rem;
+  }
+
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .filter-row + .filter-row { margin-top: 10px; }
+
+  select, .date-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: var(--pill-radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    transition: border-color 0.15s;
+  }
+
+  select:focus, .date-input:focus { border-color: var(--accent); }
+
+  .date-input { background-image: none; padding-right: 14px; }
+
+  .filter-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+
+  .clear-btn {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--ink-faint);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .clear-btn:hover { color: var(--accent); }
+
+  /* SPORT PILLS */
+  .sport-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .pill {
+    padding: 6px 14px;
+    border-radius: var(--pill-radius);
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+  }
+
+  .pill:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  .pill.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+  }
+
+  /* SUBTYPE PILLS */
+  .subtype-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+  .subtype-pills:empty { margin-bottom: 1.5rem; }
+  .pill.subtype { font-size: 12px; padding: 4px 12px; background: var(--surface); border-color: var(--border); color: var(--ink-faint); }
+  .pill.subtype:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .pill.subtype.active { background: var(--accent); border-color: var(--accent); color: var(--white); }
+
+  /* RESULTS HEADER */
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .results-count {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .results-count span { color: var(--accent); }
+
+  .sort-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  .sort-wrap select { background-color: var(--white); }
+
+  /* EVENTS GRID */
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* EVENT CARD */
+  .event-card {
+    background: var(--white);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .event-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+  }
+
+  .card-header {
+    padding: 1.25rem 1.25rem 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .sport-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--pill-radius);
+    flex-shrink: 0;
+  }
+
+  .card-body { padding: 0 1.25rem 1rem; flex: 1; }
+
+  .event-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .event-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  .meta-row svg {
+    flex-shrink: 0;
+    color: var(--ink-faint);
+  }
+
+  .card-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .organiser {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .org-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .org-name {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+
+  .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .price-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .price-tag.free { color: #2e7d32; }
+
+  .register-btn {
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--pill-radius);
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s;
+  }
+
+  .register-btn:hover { background: var(--accent); }
+
+  /* FEATURED CARD */
+  .event-card.featured {
+    border-color: var(--accent);
+    border-width: 2px;
+    position: relative;
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -1px;
+    right: 20px;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 0 0 8px 8px;
+  }
+
+  /* PARTNER CARD */
+  .partner-card {
+    background: var(--white);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .partner-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+  .partner-badge { background: #f0f0f0; color: #666; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: var(--pill-radius); display: inline-block; }
+  .partner-card .card-header { padding: 1rem 1.25rem 0.5rem; display: flex; align-items: center; justify-content: space-between; }
+  .partner-card .card-body { padding: 0 1.25rem 0.75rem; flex: 1; }
+  .partner-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .partner-tagline { font-size: 13px; color: var(--ink-muted); margin-bottom: 0.5rem; }
+  .partner-sports { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .partner-sport-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--surface); color: var(--ink-muted); border: 1px solid var(--border); }
+  .partner-card .card-footer { padding: 0.75rem 1.25rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .partner-btn { background: var(--surface); border: 1px solid var(--border-strong); color: var(--ink); border-radius: var(--pill-radius); padding: 7px 14px; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.15s; }
+  .partner-btn:hover { background: var(--ink); color: var(--white); }
+
+  /* SHARE BUTTON */
+  .share-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    color: var(--ink-faint);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .share-btn:hover { color: var(--accent); background: var(--accent-light); }
+  .share-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: var(--pill-radius);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    grid-column: 1 / -1;
+  }
+
+  .empty-icon { font-size: 48px; margin-bottom: 1rem; }
+  .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 20px; margin-bottom: 0.5rem; }
+  .empty-state p { color: var(--ink-muted); font-size: 14px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: #888;
+    text-align: center;
+    padding: 2rem;
+    font-size: 13px;
+    margin-top: 4rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* Sport color map */
+  .sport-running { background: #fff3e0; color: #e65100; }
+  .sport-cycling { background: #e3f2fd; color: #1565c0; }
+  .sport-triathlon { background: #f3e5f5; color: #6a1b9a; }
+  .sport-obstacle { background: #fce4ec; color: #880e4f; }
+  .sport-paddling { background: #e0f7fa; color: #00695c; }
+  .sport-equestrian { background: #efebe9; color: #4e342e; }
+  .sport-snow { background: #e8eaf6; color: #283593; }
+  .sport-hiking { background: #f1f8e9; color: #33691e; }
+  .sport-fitness { background: #fff8e1; color: #f57f17; }
+  .sport-water { background: #e0f2f1; color: #004d40; }
+  .sport-openwater { background: #e1f5fe; color: #01579b; }
+
+  /* NEWSLETTER */
+  .newsletter-section {
+    background: var(--ink);
+    padding: 4rem 2rem;
+    color: var(--white);
+  }
+  .newsletter-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .newsletter-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .newsletter-text h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.75rem; }
+  .newsletter-text p { color: #aaa; font-size: 14px; font-weight: 300; line-height: 1.7; }
+  .newsletter-form { display: flex; flex-direction: column; gap: 10px; }
+  .nl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .nl-row input, .nl-row select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .nl-row input::placeholder { color: #666; }
+  .nl-row input:focus, .nl-row select:focus { border-color: var(--accent); }
+  .nl-row select option { background: #1a1a1a; }
+  .nl-btn {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: var(--pill-radius);
+    padding: 13px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+  }
+  .nl-btn:hover { background: #c94420; }
+  .nl-success { background: #1a3a1a; border: 1px solid #2e7d32; border-radius: 10px; padding: 12px 16px; font-size: 14px; color: #81c784; text-align: center; }
+  .nl-privacy { font-size: 11px; color: #555; text-align: center; }
+
+  /* COOKIE BANNER */
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    color: #ccc;
+    padding: 14px 2rem;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    border-top: 1px solid #222;
+    gap: 1rem;
+  }
+  .cookie-banner p { margin: 0; }
+  .cookie-banner a { color: var(--accent); text-decoration: none; font-weight: 500; margin: 0 4px; }
+  .cookie-banner a:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .newsletter-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .nl-row { grid-template-columns: 1fr; }
+    .cookie-banner { flex-direction: column; text-align: center; padding: 1rem; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .event-card { animation: fadeUp 0.3s ease both; }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    border: none;
+    background: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* MOBILE DRAWER */
+  .mobile-drawer {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 280px;
+    height: calc(100vh - 60px);
+    background: var(--white);
+    border-left: 1px solid var(--border);
+    z-index: 150;
+    padding: 2rem 1.5rem;
+    flex-direction: column;
+    gap: 0;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.08);
+  }
+  .mobile-drawer.open {
+    transform: translateX(0);
+  }
+  .mobile-drawer a {
+    display: block;
+    padding: 1rem 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s;
+  }
+  .mobile-drawer a:hover { color: var(--accent); }
+  .mobile-drawer .mobile-cta {
+    margin-top: 1.5rem;
+    background: var(--ink);
+    color: var(--white) !important;
+    text-align: center;
+    padding: 14px !important;
+    border-radius: var(--pill-radius);
+    border-bottom: none !important;
+    font-weight: 600 !important;
+  }
+  .mobile-drawer .mobile-cta:hover { background: var(--accent) !important; }
+
+  .drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 140;
+  }
+  .drawer-overlay.open { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hamburger { display: flex; }
+    .mobile-drawer { display: flex; }
+    nav .nav-links { display: none; }
+    .stats-bar { gap: 1.5rem; }
+    .events-grid { grid-template-columns: 1fr; }
+
+    /* Compact filter dropdowns on mobile */
+    .filter-row { flex-direction: column; align-items: stretch; gap: 8px; }
+    .filter-label { font-size: 11px; margin-bottom: -4px; }
+    select, .date-input { width: 100%; }
+    .clear-btn { display: none; }
+    .filter-title { display: none; }
+
+    /* Compact cards on mobile */
+    .card-header { padding: 0.875rem 1rem 0.5rem; }
+    .card-body { padding: 0 1rem 0.75rem; }
+    .event-name { font-size: 15px; }
+    .meta-row { font-size: 12px; }
+    .card-footer { padding: 0.75rem 1rem; }
+    .org-name { font-size: 11px; }
+    .price-tag { font-size: 13px; }
+    .register-btn { padding: 6px 12px; font-size: 11px; }
+
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+    .hero h1 { font-size: 2rem; letter-spacing: -0.5px; }
+    .hero p { font-size: 14px; }
+    .rotating-tagline { min-height: 48px; }
+    .tagline-text { font-size: 14px; }
+    .search-wrap { max-width: 100%; }
+    .stats-bar .stat-num { font-size: 22px; }
+    .main { padding: 1.5rem 1rem; }
+    .pill { font-size: 12px; padding: 5px 10px; }
+    .results-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  }
+
+  @media (max-width: 400px) {
+    .stats-bar { gap: 1rem; }
+    .stat-label { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div id="shareToast" class="share-toast"></div>
+
+<nav>
+  <a href="index.html" class="logo"><span class="logo-name">Even<span class="orange">try</span></span><span class="logo-tagline">Event · Entry</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Browse Events</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="pricing.html">Organisers</a></li>
+    <li><a href="pricing.html" class="nav-cta">List an Event</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="index.html">Browse Events</a>
+  <a href="how-it-works.html">How It Works</a>
+  <a href="about.html">About</a>
+  <a href="pricing.html">Organisers</a>
+  <a href="guide.html">Organiser Guide</a>
+  <a href="pricing.html" class="mobile-cta">List an Event</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Event + Entry = Eventry</p>
+  <h1>Find your next<br><em>sporting adventure</em></h1>
+
+  <div class="rotating-tagline" id="rotatingTagline">
+    <p class="tagline-text active">"Push your limits. Find your next challenge."</p>
+    <p class="tagline-text">"Every finish line is someone's proudest moment."</p>
+    <p class="tagline-text">"Every Australian sporting event, in one place."</p>
+    <p class="tagline-text">"Find it. Enter it. Do it."</p>
+    <p class="tagline-text">"From fun runs to ultramarathons — it all starts here."</p>
+    <p class="tagline-text">"Your next adventure is one search away."</p>
+    <p class="tagline-text">"Event + Entry = Eventry."</p>
+    <p class="tagline-text">"Every race, ride, paddle and plunge — all in one place."</p>
+  </div>
+
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search events, sports, locations..." />
+    <button class="search-btn" onclick="applyFilters()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num" id="totalEvents">0</div><div class="stat-label">Events Listed</div></div>
+    <div class="stat"><div class="stat-num" id="totalSports">0</div><div class="stat-label">Sport Categories</div></div>
+    <div class="stat"><div class="stat-num" id="totalStates">0</div><div class="stat-label">States Covered</div></div>
+    <div class="stat"><div class="stat-num" id="totalOrganisers">0</div><div class="stat-label">Organisers</div></div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- SPORT PILLS -->
+  <div class="sport-pills" id="sportPills">
+    <div class="pill active" data-sport="all" onclick="toggleSport(this)">All Sports</div>
+    <div class="pill" data-sport="Running" onclick="toggleSport(this)">🏃 Running</div>
+    <div class="pill" data-sport="Cycling" onclick="toggleSport(this)">🚴 Cycling</div>
+    <div class="pill" data-sport="Triathlon" onclick="toggleSport(this)">🏊 Triathlon</div>
+    <div class="pill" data-sport="Obstacle Racing" onclick="toggleSport(this)">🧗 Obstacle Racing</div>
+    <div class="pill" data-sport="Paddling" onclick="toggleSport(this)">🚣 Paddling</div>
+    <div class="pill" data-sport="Open Water Swimming" onclick="toggleSport(this)">🌊 Open Water Swimming</div>
+    <div class="pill" data-sport="Hiking" onclick="toggleSport(this)">🥾 Hiking</div>
+    <div class="pill" data-sport="Cycling MTB" onclick="toggleSport(this)">🚵 MTB</div>
+    <div class="pill" data-sport="Fitness" onclick="toggleSport(this)">🏋️ Fitness</div>
+    <div class="pill" data-sport="Equestrian" onclick="toggleSport(this)">🏇 Equestrian</div>
+    <div class="pill" data-sport="Snow Sports" onclick="toggleSport(this)">⛷️ Snow Sports</div>
+    <div class="pill" data-sport="Other" onclick="toggleSport(this)">⭐ Other</div>
+  </div>
+
+  <!-- SUBTYPE PILLS — shown when a sport is selected -->
+  <div class="subtype-pills" id="subtypePills"></div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-toggle-row">
+    <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilters()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      Filters <span class="filter-count" id="filterCount" style="display:none"></span>
+    </button>
+    <button class="filter-clear-mobile" id="filterClearMobile" onclick="clearFilters()" style="display:none">
+      ✕ Clear filters
+    </button>
+  </div>
+
+  <div class="filter-section" id="filterSection">
+    <div class="filter-row">
+
+      <!-- LOCATION RADIUS -->
+      <span class="filter-label">Near me</span>
+      <div class="location-row">
+        <button class="location-btn" id="locationBtn" onclick="getLocation()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Use my location
+        </button>
+        <select id="radiusSelect" onchange="applyFilters()" style="display:none">
+          <option value="25">Within 25km</option>
+          <option value="50" selected>Within 50km</option>
+          <option value="100">Within 100km</option>
+          <option value="200">Within 200km</option>
+          <option value="500">Within 500km</option>
+        </select>
+        <button class="location-clear" id="locationClear" onclick="clearLocation()" style="display:none">✕ Clear</button>
+      </div>
+      <div class="location-status" id="locationStatus"></div>
+
+      <span class="filter-label">State</span>
+      <select id="stateFilter" onchange="applyFilters()">
+        <option value="">All States</option>
+        <option value="NSW">NSW</option>
+        <option value="VIC">VIC</option>
+        <option value="QLD">QLD</option>
+        <option value="WA">WA</option>
+        <option value="SA">SA</option>
+        <option value="TAS">TAS</option>
+        <option value="ACT">ACT</option>
+        <option value="NT">NT</option>
+      </select>
+
+      <span class="filter-label">Organiser</span>
+      <select id="organiserFilter" onchange="applyFilters()">
+        <option value="">All Organisers</option>
+        <option value="Adventure Co">Adventure Co</option>
+        <option value="Peak Events">Peak Events</option>
+        <option value="Endure Sports">Endure Sports</option>
+        <option value="Blue Water Events">Blue Water Events</option>
+        <option value="Alpine Events">Alpine Events</option>
+      </select>
+
+      <span class="filter-label">Price</span>
+      <select id="priceFilter" onchange="applyFilters()">
+        <option value="">Any Price</option>
+        <option value="free">Free</option>
+        <option value="under50">Under $50</option>
+        <option value="under100">Under $100</option>
+        <option value="under200">Under $200</option>
+      </select>
+
+      <span class="filter-label">From</span>
+      <input type="date" class="date-input" id="dateFrom" onchange="applyFilters()" />
+      <span class="filter-label">To</span>
+      <input type="date" class="date-input" id="dateTo" onchange="applyFilters()" />
+
+      <span class="filter-label">Sort by</span>
+      <select id="sortSelect" onchange="applyFilters()">
+        <option value="featured-date">Featured first, then soonest</option>
+        <option value="date">Date (soonest first)</option>
+        <option value="price-asc">Price (low to high)</option>
+        <option value="price-desc">Price (high to low)</option>
+        <option value="name">Name (A–Z)</option>
+      </select>
+
+      <button class="clear-btn" onclick="clearFilters()">Clear all filters</button>
+    </div>
+    <button class="filter-apply-btn" onclick="toggleFilters()">
+      Apply & Close ✓
+    </button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-header">
+    <div class="results-count">Showing <span id="resultCount">24</span> events</div>
+  </div>
+
+  <div class="events-grid" id="eventsGrid"></div>
+
+</main>
+
+<!-- NEWSLETTER SIGNUP -->
+<section class="newsletter-section">
+  <div class="newsletter-inner">
+    <div class="newsletter-text">
+      <p class="newsletter-eyebrow">Stay in the loop</p>
+      <h2>Never miss your next event</h2>
+      <p>Join the Eventry community. Get notified about new events, race tips, and what's coming next.</p>
+    </div>
+    <form class="newsletter-form" id="newsletterForm" onsubmit="submitNewsletter(event)">
+      <div class="nl-row">
+        <input type="text" id="nlName" placeholder="Your name" />
+        <input type="email" id="nlEmail" placeholder="Your email address" required />
+      </div>
+      <div class="nl-row">
+        <select id="nlState">
+          <option value="">All states</option>
+          <option>NSW</option><option>VIC</option><option>QLD</option>
+          <option>WA</option><option>SA</option><option>TAS</option>
+          <option>ACT</option><option>NT</option>
+        </select>
+        <select id="nlSport">
+          <option value="">All sports</option>
+          <option>Running</option><option>Cycling</option><option>Triathlon</option>
+          <option>Open Water Swimming</option><option>Paddling</option>
+          <option>Obstacle Racing</option><option>Hiking</option>
+          <option>Fitness</option><option>Equestrian</option><option>Snow Sports</option>
+        </select>
+      </div>
+      <button type="submit" class="nl-btn" id="nlBtn">Sign me up →</button>
+      <div class="nl-success" id="nlSuccess" style="display:none">
+        🎉 You're in! We'll keep you posted on great events.
+      </div>
+      <p class="nl-privacy">No spam. Unsubscribe anytime. We respect your privacy.</p>
+    </form>
+  </div>
+</section>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <p>Eventry uses cookies to analyse traffic and improve your experience. <a href="#" onclick="acceptCookies()">Accept</a> or <a href="#" onclick="declineCookies()">Decline</a>.</p>
+</div>
+
+<footer>
+  <p>© 2025 Eventry — <em>Event + Entry</em>. Australia's home for sporting events. &nbsp;·&nbsp; <a href="pricing.html">List your event</a> &nbsp;·&nbsp; <a href="mailto:eventry.au@gmail.com">Contact</a></p>
+</footer>
+
+<script>
+const SPORT_CLASSES = {
+  'Running': 'sport-running',
+  'Cycling': 'sport-cycling',
+  'Triathlon': 'sport-triathlon',
+  'Obstacle Racing': 'sport-obstacle',
+  'Paddling': 'sport-paddling',
+  'Equestrian': 'sport-equestrian',
+  'Snow Sports': 'sport-snow',
+  'Hiking': 'sport-hiking',
+  'Fitness': 'sport-fitness',
+  'Water Sports': 'sport-water',
+  'Open Water Swimming': 'sport-openwater',
+  'Cycling MTB': 'sport-cycling',
+};
+
+const ORG_COLORS = {
+  'Adventure Co': '#e8572a',
+  'Peak Events': '#1565c0',
+  'Endure Sports': '#2e7d32',
+  'Blue Water Events': '#00695c',
+  'Alpine Events': '#6a1b9a',
+};
+
+// Sample partner data — shown when no live partners in sheet
+const samplePartners = [
+  {
+    name: 'Endurance Coaching Co',
+    tagline: 'Triathlon & Run Coaching for all levels',
+    sports: 'Triathlon, Running',
+    state: 'NSW',
+    location: 'Sydney, NSW',
+    location_display: 'Sydney, NSW',
+    website: '#'
+  },
+  {
+    name: 'Aquatic Performance',
+    tagline: 'Open water & pool swimming for all abilities',
+    sports: 'Open Water Swimming, Triathlon',
+    state: 'NSW',
+    location: 'Sydney, NSW',
+    location_display: 'Sydney, NSW',
+    website: '#'
+  },
+  {
+    name: 'Active Body Physio',
+    tagline: 'Sports physiotherapy for endurance athletes',
+    sports: '',
+    state: 'VIC',
+    location: 'Melbourne, VIC',
+    location_display: 'Melbourne, VIC',
+    website: '#'
+  },
+  {
+    name: 'Trail & Road Running Store',
+    tagline: 'Expert advice and gear for every runner',
+    sports: 'Running',
+    state: 'QLD',
+    location: 'Brisbane, QLD',
+    location_display: 'Brisbane, QLD',
+    website: '#'
+  }
+];
+
+const events = [
+  { id:1, name:"Blue Mountains Ultra Trail", sport:"Running", subtype:"Ultra", date:"2025-08-16", location:"Katoomba, NSW", state:"NSW", organiser:"Adventure Co", link:"#", featured:true, disciplines:[
+    {name:"100km Ultra",dist:"100km",price:195},{name:"50km Trail",dist:"50km",price:145},{name:"22km Trail",dist:"22km",price:95},{name:"10km Fun Run",dist:"10km",price:55}
+  ]},
+  { id:2, name:"Sydney Harbour Open Water Classic", sport:"Open Water Swimming", subtype:"Ocean", date:"2025-09-06", location:"Balmoral Beach, NSW", state:"NSW", organiser:"Blue Water Events", link:"#", featured:false, disciplines:[
+    {name:"5km Ocean Swim",dist:"5km",price:95},{name:"2.5km",dist:"2.5km",price:75},{name:"1km",dist:"1km",price:55}
+  ]},
+  { id:3, name:"Gibb River Road Cycle Challenge", sport:"Cycling", subtype:"Road", date:"2025-07-20", location:"Kimberley, WA", state:"WA", organiser:"Peak Events", link:"#", featured:true, disciplines:[
+    {name:"160km Gran Fondo",dist:"160km",price:195},{name:"100km",dist:"100km",price:145},{name:"50km",dist:"50km",price:95}
+  ]},
+  { id:4, name:"Melbourne Spring Triathlon", sport:"Triathlon", subtype:"Olympic", date:"2025-10-12", location:"St Kilda, VIC", state:"VIC", organiser:"Peak Events", link:"#", featured:false, disciplines:[
+    {name:"Olympic",dist:"1.5km/40km/10km",price:130},{name:"Sprint",dist:"750m/20km/5km",price:110}
+  ]},
+  { id:5, name:"Kokoda Trail Trek", sport:"Hiking", subtype:"Multi-Day", date:"2025-08-03", location:"Gold Coast, QLD", state:"QLD", organiser:"Adventure Co", link:"#", featured:false, disciplines:[
+    {name:"3-Day Trek",dist:"96km",price:120},{name:"Day Hike",dist:"28km",price:85}
+  ]},
+  { id:6, name:"Hunter Valley Gravel Grind", sport:"Cycling", subtype:"Gravel", date:"2025-09-28", location:"Cessnock, NSW", state:"NSW", organiser:"Endure Sports", link:"#", featured:false, disciplines:[
+    {name:"120km",dist:"120km",price:80},{name:"60km",dist:"60km",price:60}
+  ]},
+  { id:7, name:"Bondi to Manly Ocean Swim", sport:"Open Water Swimming", subtype:"Ocean", date:"2025-11-01", location:"Bondi Beach, NSW", state:"NSW", organiser:"Blue Water Events", link:"#", featured:false, disciplines:[
+    {name:"Full 22km",dist:"22km",price:95},{name:"Half 11km",dist:"11km",price:55}
+  ]},
+  { id:8, name:"Iron Challenge Gold Coast", sport:"Obstacle Racing", subtype:"Beast", date:"2025-07-27", location:"Mudgeeraba, QLD", state:"QLD", organiser:"Peak Events", link:"#", featured:false, disciplines:[
+    {name:"Beast 21km",dist:"21km",price:139},{name:"Super 13km",dist:"13km",price:119},{name:"Sprint 5km",dist:"5km",price:99},{name:"Kids Race",dist:"1km",price:45}
+  ]},
+  { id:9, name:"Snowy Mountains MTB Enduro", sport:"Cycling MTB", subtype:"Enduro", date:"2025-10-05", location:"Thredbo, NSW", state:"NSW", organiser:"Adventure Co", link:"#", featured:false, disciplines:[
+    {name:"Expert",dist:"50km",price:175},{name:"Sport",dist:"30km",price:145},{name:"Beginner",dist:"15km",price:95}
+  ]},
+  { id:10, name:"Perth City to Surf", sport:"Running", subtype:"Road", date:"2025-08-10", location:"Perth, WA", state:"WA", organiser:"Endure Sports", link:"#", featured:false, disciplines:[
+    {name:"12km",dist:"12km",price:55},{name:"4km Family",dist:"4km",price:35},{name:"Kids Dash",dist:"500m",price:0}
+  ]},
+  { id:11, name:"Hawkesbury River Canoe Classic", sport:"Paddling", subtype:"Canoe", date:"2025-10-25", location:"Windsor, NSW", state:"NSW", organiser:"Blue Water Events", link:"#", featured:true, disciplines:[
+    {name:"Solo 111km",dist:"111km",price:110},{name:"Doubles 111km",dist:"111km",price:80},{name:"55km Short",dist:"55km",price:70}
+  ]},
+  { id:12, name:"Adelaide Tour de Vines", sport:"Cycling", subtype:"Road", date:"2025-11-15", location:"Barossa Valley, SA", state:"SA", organiser:"Peak Events", link:"#", featured:false, disciplines:[
+    {name:"200km Gran Fondo",dist:"200km",price:145},{name:"100km",dist:"100km",price:115},{name:"50km",dist:"50km",price:80}
+  ]},
+  { id:13, name:"Cradle Mountain Trail Run", sport:"Running", subtype:"Trail", date:"2025-09-14", location:"Cradle Mountain, TAS", state:"TAS", organiser:"Adventure Co", link:"#", featured:false, disciplines:[
+    {name:"65km Ultra",dist:"65km",price:130},{name:"32km",dist:"32km",price:95},{name:"15km",dist:"15km",price:75}
+  ]},
+  { id:14, name:"Brisbane Sunrise Swim", sport:"Open Water Swimming", subtype:"River", date:"2025-07-19", location:"Shorncliffe, QLD", state:"QLD", organiser:"Blue Water Events", link:"#", featured:false, disciplines:[
+    {name:"5km",dist:"5km",price:55},{name:"2km",dist:"2km",price:40},{name:"500m",dist:"500m",price:30}
+  ]},
+  { id:15, name:"Fitzroy Island Duathlon", sport:"Triathlon", subtype:"Duathlon", date:"2025-08-23", location:"Fitzroy Island, QLD", state:"QLD", organiser:"Peak Events", link:"#", featured:false, disciplines:[
+    {name:"Standard",dist:"5km/30km/5km",price:125},{name:"Sprint",dist:"2.5km/15km/2.5km",price:95}
+  ]},
+  { id:16, name:"Grampians Trail Running Festival", sport:"Running", subtype:"Trail", date:"2025-10-18", location:"Halls Gap, VIC", state:"VIC", organiser:"Endure Sports", link:"#", featured:false, disciplines:[
+    {name:"50km",dist:"50km",price:110},{name:"25km",dist:"25km",price:85},{name:"10km",dist:"10km",price:70},{name:"5km",dist:"5km",price:50}
+  ]},
+  { id:17, name:"Whitsunday SUP Race", sport:"Paddling", subtype:"SUP", date:"2025-09-20", location:"Airlie Beach, QLD", state:"QLD", organiser:"Adventure Co", link:"#", featured:false, disciplines:[
+    {name:"20km Elite",dist:"20km",price:75},{name:"10km Open",dist:"10km",price:55}
+  ]},
+  { id:18, name:"City2Surf Fun Run", sport:"Running", subtype:"Road", date:"2025-08-10", location:"Sydney, NSW", state:"NSW", organiser:"Endure Sports", link:"#", featured:false, disciplines:[
+    {name:"14km",dist:"14km",price:75},{name:"14km Community",dist:"14km",price:0}
+  ]},
+  { id:19, name:"Functional Fitness Open", sport:"Fitness", subtype:"Functional Fitness", date:"2025-11-08", location:"Melbourne, VIC", state:"VIC", organiser:"Peak Events", link:"#", featured:false, disciplines:[
+    {name:"Rx Division",dist:"3 workouts",price:85},{name:"Scaled",dist:"3 workouts",price:65},{name:"Masters 40+",dist:"3 workouts",price:65}
+  ]},
+  { id:20, name:"Great Ocean Road Half Marathon", sport:"Running", subtype:"Road", date:"2025-09-07", location:"Apollo Bay, VIC", state:"VIC", organiser:"Endure Sports", link:"#", featured:false, disciplines:[
+    {name:"Half Marathon",dist:"21.1km",price:95},{name:"10km",dist:"10km",price:80},{name:"5km",dist:"5km",price:60}
+  ]},
+  { id:21, name:"Murray River Kayak Classic", sport:"Paddling", subtype:"Kayak", date:"2025-10-11", location:"Echuca, VIC", state:"VIC", organiser:"Blue Water Events", link:"#", featured:false, disciplines:[
+    {name:"404km Solo",dist:"404km",price:110},{name:"202km",dist:"202km",price:85},{name:"80km",dist:"80km",price:70}
+  ]},
+  { id:22, name:"Darwin Dry Season Duathlon", sport:"Triathlon", subtype:"Duathlon", date:"2025-07-13", location:"Darwin, NT", state:"NT", organiser:"Peak Events", link:"#", featured:false, disciplines:[
+    {name:"Standard",dist:"5km/30km/5km",price:90},{name:"Sprint",dist:"2.5km/15km/2.5km",price:70}
+  ]},
+  { id:23, name:"ACT Alpine Hike Challenge", sport:"Hiking", subtype:"Multi-Day", date:"2025-11-22", location:"Kosciuszko NP, ACT", state:"ACT", organiser:"Alpine Events", link:"#", featured:false, disciplines:[
+    {name:"3-Day",dist:"75km",price:65},{name:"Day Walk",dist:"22km",price:40}
+  ]},
+  { id:24, name:"Noosa Triathlon Festival", sport:"Triathlon", subtype:"Olympic", date:"2025-10-26", location:"Noosa, QLD", state:"QLD", organiser:"Adventure Co", link:"#", featured:true, disciplines:[
+    {name:"Ironman 70.3",dist:"1.9km/90km/21.1km",price:275},{name:"Olympic",dist:"1.5km/40km/10km",price:195},{name:"Sprint",dist:"750m/20km/5km",price:155},{name:"Aquathlon",dist:"1km swim/5km run",price:95},{name:"Kids Tri",dist:"100m/2km/1km",price:45}
+  ]},
+];
+
+// LOCATION RADIUS FILTER
+let userLat = null;
+let userLng = null;
+
+// Australian city coordinates for distance calculation
+const STATE_COORDS = {
+  'NSW': { lat: -33.8688, lng: 151.2093 },
+  'VIC': { lat: -37.8136, lng: 144.9631 },
+  'QLD': { lat: -27.4698, lng: 153.0251 },
+  'WA':  { lat: -31.9505, lng: 115.8605 },
+  'SA':  { lat: -34.9285, lng: 138.6007 },
+  'TAS': { lat: -42.8821, lng: 147.3272 },
+  'ACT': { lat: -35.2809, lng: 149.1300 },
+  'NT':  { lat: -12.4634, lng: 130.8456 }
+};
+
+function getDistanceKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function getLocation() {
+  const btn = document.getElementById('locationBtn');
+  const status = document.getElementById('locationStatus');
+  if (!navigator.geolocation) {
+    status.textContent = 'Location not supported by your browser.';
+    status.className = 'location-status error';
+    return;
+  }
+  btn.textContent = 'Getting location...';
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      userLat = pos.coords.latitude;
+      userLng = pos.coords.longitude;
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Location set`;
+      btn.className = 'location-btn active';
+      btn.disabled = false;
+      status.textContent = `✓ Filtering by your location`;
+      status.className = 'location-status success';
+      document.getElementById('radiusSelect').style.display = 'inline-block';
+      document.getElementById('locationClear').style.display = 'inline';
+      applyFilters();
+    },
+    err => {
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Use my location`;
+      btn.disabled = false;
+      status.textContent = err.code === 1 ? 'Location access denied. Please allow location in your browser.' : 'Could not get location. Please try again.';
+      status.className = 'location-status error';
+    },
+    { timeout: 10000 }
+  );
+}
+
+function clearLocation() {
+  userLat = null;
+  userLng = null;
+  const btn = document.getElementById('locationBtn');
+  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Use my location`;
+  btn.className = 'location-btn';
+  document.getElementById('locationStatus').textContent = '';
+  document.getElementById('radiusSelect').style.display = 'none';
+  document.getElementById('locationClear').style.display = 'none';
+  applyFilters();
+}
+
+function toggleFilters() {
+  const section = document.getElementById('filterSection');
+  const btn = document.getElementById('filterToggleBtn');
+  const isOpen = section.classList.contains('open');
+  section.classList.toggle('open');
+  btn.classList.toggle('active');
+  btn.innerHTML = isOpen
+    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg> Filters <span class="filter-count" id="filterCount" style="display:none"></span>`
+    : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg> Close Filters`;
+}
+
+function updateFilterCount() {
+  const filters = [
+    document.getElementById('stateFilter')?.value,
+    document.getElementById('organiserFilter')?.value,
+    document.getElementById('priceFilter')?.value,
+    document.getElementById('dateFrom')?.value,
+    document.getElementById('dateTo')?.value,
+  ].filter(Boolean);
+  const count = filters.length + (activeSport !== 'all' ? 1 : 0) + (activeSubtype !== 'all' ? 1 : 0);
+  const badge = document.getElementById('filterCount');
+  const clearBtn = document.getElementById('filterClearMobile');
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'inline' : 'none';
+  }
+  if (clearBtn) {
+    clearBtn.style.display = count > 0 ? 'inline' : 'none';
+  }
+}
+
+function toggleDrawer() {
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  hamburger.classList.toggle('open');
+  drawer.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+}
+
+const SPORT_SUBTYPES = {
+  'Running': ['Road','Trail','Ultra','Track','Cross Country','Fun Run','Vertical/Vert km'],
+  'Cycling': ['Road','Gravel','Track','Criterium','Cyclocross','MTB XCO','MTB XCM','MTB DH','MTB Enduro','MTB 4X','BMX'],
+  'Cycling MTB': ['XCO','XCM','Downhill','Enduro','4X','E-MTB'],
+  'Triathlon': ['Sprint','Olympic','70.3 Half','Full Ironman','Duathlon','Aquathlon','SwimRun','Xterra'],
+  'Open Water Swimming': ['Ocean','River','Lake','Pool Open Water'],
+  'Paddling': ['Kayak','Canoe','SUP','Outrigger','Dragon Boat','Surfski','Rafting'],
+  'Obstacle Racing': ['Sprint','Super','Beast','OCR','Mud Run','Adventure Race'],
+  'Hiking': ['Day Hike','Multi-Day','Fastpacking','Peak Bagging'],
+  'Fitness': ['CrossFit','Functional Fitness','HYROX','Strongman','Powerlifting'],
+  'Equestrian': ['Show Jumping','Dressage','Cross Country','Eventing','Endurance','Polo Cross'],
+  'Snow Sports': ['Alpine','Cross Country','Snowboard','Ski Touring','Telemark'],
+};
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5LNMivIm3qrjOkLsGfmBZI2jb35SU3RQYMQ_EqJQfinbxZIC-EHcIHclv_lfzaLFgfw/exec';
+let activeSport = 'all';
+let activeSubtype = 'all';
+let _allEvents = [];
+
+async function loadLiveEvents() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const json = await res.json();
+    if (json.success) {
+      // Always load partners regardless of whether events exist
+      if (json.partners && json.partners.length > 0) {
+        window._allPartners = json.partners.map(p => ({
+          name: p.org_name,
+          tagline: p.partner_tagline,
+          sports: p.partner_sports,
+          location: `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
+          location_display: p.partner_location_display || `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
+          state: p.state,
+          website: p.partner_website,
+          type: 'partner'
+        }));
+      }
+      // Return events if any approved events exist
+      if (json.events && json.events.length > 0) {
+        return json.events.map(e => ({
+          id: e.submission_id,
+          name: e.event_name,
+          sport: e.disciplines?.[0]?.sport || 'Other',
+          subtype: e.disciplines?.[0]?.subtype || '',
+          date: e.event_date ? (typeof e.event_date === 'number'
+            ? new Date((e.event_date - 25569) * 86400 * 1000).toISOString().split('T')[0]
+            : String(e.event_date).split('T')[0]) : '',
+          location: `${e.location}, ${e.state}`,
+          state: e.state,
+          organiser: e.org_name,
+          link: e.event_url || '#',
+          featured: e.featured || false,
+          disciplines: (e.disciplines || []).map(d => ({
+            name: d.disc_name || '',
+            dist: d.dist_display || '',
+            price: parseFloat(d.price) || 0
+          }))
+        }));
+      }
+      // Partners loaded but no approved events — fall back to sample events
+      return null;
+    }
+  } catch(err) {
+    console.log('Sheet unavailable, using sample data');
+  }
+  return null;
+}
+
+async function initSite() {
+  const grid = document.getElementById('eventsGrid');
+  grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-muted)">
+    <div style="font-size:32px;margin-bottom:1rem">⏳</div><p>Loading events...</p></div>`;
+
+  const liveEvents = await loadLiveEvents();
+  _allEvents = liveEvents || events;
+
+  // Populate hero stats from real data
+  const sports = [...new Set(_allEvents.map(e => e.sport).filter(Boolean))];
+  const states = [...new Set(_allEvents.map(e => e.state).filter(Boolean))];
+  const organisers = [...new Set(_allEvents.map(e => e.organiser).filter(Boolean))];
+  document.getElementById('totalEvents').textContent = _allEvents.length;
+  document.getElementById('totalSports').textContent = sports.length;
+  document.getElementById('totalStates').textContent = states.length;
+  document.getElementById('totalOrganisers').textContent = organisers.length;
+
+  // Use sample partners if no live partners loaded from sheet
+  if (!window._allPartners || window._allPartners.length === 0) {
+    window._allPartners = samplePartners;
+  }
+  document.getElementById('totalEvents').textContent = _allEvents.length;
+  // Default sort: featured first, then soonest, then alphabetical
+  renderEvents(_allEvents.slice().sort((a,b) => {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    const dateDiff = (a.date||'').localeCompare(b.date||'');
+    if (dateDiff !== 0) return dateDiff;
+    return a.name.localeCompare(b.name);
+  }));
+}
+
+function toggleSport(el) {
+  document.querySelectorAll('.pill:not(.subtype)').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  activeSport = el.dataset.sport;
+  activeSubtype = 'all';
+  renderSubtypes(activeSport);
+  applyFilters();
+}
+
+function toggleSubtype(el) {
+  document.querySelectorAll('.pill.subtype').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  activeSubtype = el.dataset.subtype;
+  applyFilters();
+}
+
+function renderSubtypes(sport) {
+  const container = document.getElementById('subtypePills');
+  const subtypes = SPORT_SUBTYPES[sport];
+  if (!subtypes || sport === 'all') {
+    container.innerHTML = '';
+    return;
+  }
+  container.innerHTML = `
+    <div class="pill subtype active" data-subtype="all" onclick="toggleSubtype(this)">All ${sport}</div>
+    ${subtypes.map(s => `<div class="pill subtype" data-subtype="${s}" onclick="toggleSubtype(this)">${s}</div>`).join('')}
+  `;
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const state = document.getElementById('stateFilter').value;
+  const organiser = document.getElementById('organiserFilter').value;
+  const price = document.getElementById('priceFilter').value;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  const sort = document.getElementById('sortSelect').value;
+
+  let filtered = _allEvents.filter(e => {
+    if (activeSport !== 'all' && e.sport !== activeSport) return false;
+    if (activeSubtype !== 'all' && e.subtype !== activeSubtype) return false;
+    if (state && e.state !== state) return false;
+    if (organiser && e.organiser !== organiser) return false;
+    if (price === 'free' && !e.disciplines.some(d => d.price === 0)) return false;
+    if (price === 'under50' && Math.min(...e.disciplines.map(d=>d.price)) >= 50) return false;
+    if (price === 'under100' && Math.min(...e.disciplines.map(d=>d.price)) >= 100) return false;
+    if (price === 'under200' && Math.min(...e.disciplines.map(d=>d.price)) >= 200) return false;
+    if (dateFrom && e.date < dateFrom) return false;
+    if (dateTo && e.date > dateTo) return false;
+    if (search && !e.name.toLowerCase().includes(search) && !e.location.toLowerCase().includes(search) && !e.sport.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  // Location radius filter
+  if (userLat !== null && userLng !== null) {
+    const radius = parseInt(document.getElementById('radiusSelect')?.value || '50');
+    filtered = filtered.filter(e => {
+      const stateCoords = STATE_COORDS[e.state];
+      if (!stateCoords) return true;
+      const dist = getDistanceKm(userLat, userLng, stateCoords.lat, stateCoords.lng);
+      return dist <= radius;
+    });
+  }
+
+  filtered.sort((a, b) => {
+    if (sort === 'featured-date') {
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      const dateDiff = (a.date||'').localeCompare(b.date||'');
+      if (dateDiff !== 0) return dateDiff;
+      return a.name.localeCompare(b.name);
+    }
+    if (sort === 'date') {
+      const dateDiff = (a.date||'').localeCompare(b.date||'');
+      if (dateDiff !== 0) return dateDiff;
+      return a.name.localeCompare(b.name);
+    }
+    if (sort === 'price-asc') return Math.min(...a.disciplines.map(d=>d.price)) - Math.min(...b.disciplines.map(d=>d.price));
+    if (sort === 'price-desc') return Math.min(...b.disciplines.map(d=>d.price)) - Math.min(...a.disciplines.map(d=>d.price));
+    if (sort === 'name') return a.name.localeCompare(b.name);
+    return 0;
+  });
+
+  renderEvents(filtered);
+  updateFilterCount();
+}
+
+function clearFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('stateFilter').value = '';
+  document.getElementById('organiserFilter').value = '';
+  document.getElementById('priceFilter').value = '';
+  document.getElementById('dateFrom').value = '';
+  document.getElementById('dateTo').value = '';
+  // Clear location filter too
+  if (userLat !== null) clearLocation();
+  document.getElementById('sortSelect').value = 'featured-date';
+  activeSport = 'all';
+  activeSubtype = 'all';
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-sport="all"]').classList.add('active');
+  document.getElementById('subtypePills').innerHTML = '';
+  // Close filter panel on mobile
+  const section = document.getElementById('filterSection');
+  const btn = document.getElementById('filterToggleBtn');
+  if (section) section.classList.remove('open');
+  if (btn) btn.classList.remove('active');
+  updateFilterCount();
+  applyFilters();
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Date TBC';
+  // Handle Google Sheets date formats: "2026-05-28", "28/05/2026", "May 28, 2026" etc
+  let d;
+  if (typeof dateStr === 'number') {
+    // Google Sheets serial date number
+    d = new Date((dateStr - 25569) * 86400 * 1000);
+  } else if (typeof dateStr === 'string') {
+    // Try YYYY-MM-DD first
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      d = new Date(dateStr + 'T00:00:00');
+    } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+      // DD/MM/YYYY
+      const parts = dateStr.split('/');
+      d = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T00:00:00`);
+    } else {
+      d = new Date(dateStr);
+    }
+  } else {
+    d = new Date(dateStr);
+  }
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function orgInitials(name) {
+  return name.split(' ').map(w => w[0]).slice(0,2).join('');
+}
+
+function shareEvent(id, name, btn) {
+  const url = `${window.location.origin}/event.html?id=${id}`;
+  if (navigator.share) {
+    navigator.share({ title: name, text: `Check out ${name} on Eventry!`, url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const toast = document.getElementById('shareToast');
+      toast.textContent = '✓ Link copied to clipboard!';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    });
+  }
+}
+
+function renderEvents(list) {
+  const grid = document.getElementById('eventsGrid');
+  // Count only events (not partners) for the header
+  const eventCount = list.filter(e => e.type !== 'partner').length;
+  const eventWord = eventCount === 1 ? 'event' : 'events';
+  document.querySelector('.results-count').innerHTML = `Showing <span id="resultCount">${eventCount}</span> ${eventWord}`;
+
+  if (list.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No events found</h3><p>Try adjusting your filters or search term</p></div>`;
+    return;
+  }
+
+  // Filter partners by state and sport
+  const activeState = document.getElementById('stateFilter')?.value || '';
+  const partners = (window._allPartners || []).filter(p => {
+    // State filter
+    if (activeState && p.state && p.state !== activeState) return false;
+    // Sport filter — blank partner_sports means show for all sports
+    if (activeSport !== 'all' && p.sports) {
+      const partnerSports = p.sports.split(',').map(s => s.trim().toLowerCase());
+      if (!partnerSports.includes(activeSport.toLowerCase())) return false;
+    }
+    return true;
+  });
+
+  let partnerIdx = 0;
+  let eventIdx = 0;
+  const cards = [];
+
+  list.forEach((e, i) => {
+    cards.push({ type: 'event', data: e });
+    eventIdx++;
+    // Insert partner card after every 6th event
+    if (eventIdx % 6 === 0 && partnerIdx < partners.length) {
+      cards.push({ type: 'partner', data: partners[partnerIdx++] });
+    }
+  });
+
+  grid.innerHTML = cards.map((item, i) => {
+    const delay = Math.min(i * 0.04, 0.4);
+
+    if (item.type === 'partner') {
+      const p = item.data;
+      const sportTags = (p.sports || '').split(',').map(s => s.trim()).filter(Boolean)
+        .map(s => `<span class="partner-sport-tag">${s}</span>`).join('');
+      const initials = orgInitials(p.name);
+      const locationDisplay = p.location_display || p.location || '';
+      return `
+      <div class="partner-card" style="animation-delay:${delay}s">
+        <div class="card-header">
+          <span class="partner-badge">Partner</span>
+        </div>
+        <div class="card-body">
+          <div class="partner-name">${p.name}</div>
+          <div class="partner-tagline">${p.tagline || ''}</div>
+          <div class="partner-sports">${sportTags || '<span class="partner-sport-tag">All sports</span>'}</div>
+        </div>
+        <div class="card-footer">
+          <div class="organiser">
+            <div class="org-logo" style="background:#555">${initials}</div>
+            <span class="org-name" style="font-size:11px;color:var(--ink-faint)">${locationDisplay}</span>
+          </div>
+          <a href="${p.website || '#'}" target="_blank" class="partner-btn">Learn more →</a>
+        </div>
+      </div>`;
+    }
+
+    const e = item.data;
+    const sportClass = SPORT_CLASSES[e.sport] || 'sport-fitness';
+    const orgColor = ORG_COLORS[e.organiser] || '#555';
+    const minPrice = Math.min(...e.disciplines.map(d => d.price));
+    const maxPrice = Math.max(...e.disciplines.map(d => d.price));
+    const discCount = e.disciplines.length;
+    const badgeLabel = e.subtype
+      ? `${e.sport} · ${e.subtype}`
+      : e.sport === 'other' || e.sport === 'Other'
+        ? `Other / Custom`
+        : e.sport;
+    const priceDisplay = minPrice === 0 && maxPrice === 0
+      ? '<span class="price-tag free">Free</span>'
+      : minPrice === 0
+        ? '<span class="price-tag">Free – <span style="font-size:13px">$' + maxPrice + '</span></span>'
+        : '<span class="price-tag">From $' + minPrice + '</span>';
+
+    return `
+    <div class="event-card${e.featured ? ' featured' : ''}" style="animation-delay:${delay}s">
+      ${e.featured ? '<div class="featured-badge">Featured</div>' : ''}
+      <div class="card-header">
+        <span class="sport-badge ${sportClass}">${badgeLabel}</span>
+        <button class="share-btn" onclick="shareEvent('${e.id}','${e.name.replace(/'/g,"\\'")}',this)" title="Share this event">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="event-name">${e.name}</div>
+        <div class="event-meta">
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            ${formatDate(e.date)}
+          </div>
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            ${e.location}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="organiser">
+          <div class="org-logo" style="background:${orgColor}">${orgInitials(e.organiser)}</div>
+          <span class="org-name">${e.organiser}</span>
+        </div>
+        <div class="card-actions">
+          <div style="text-align:right">
+            ${priceDisplay}
+            <div style="font-size:11px;color:var(--ink-faint);margin-top:1px">${discCount} ${discCount === 1 ? 'discipline' : 'disciplines'}</div>
+          </div>
+          <a href="event.html?id=${e.id}" class="register-btn">View →</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// NEWSLETTER SIGNUP
+function initNewsletter() {
+  const saved = localStorage.getItem('eventry_newsletter_email');
+  if (saved) {
+    const form = document.getElementById('newsletterForm');
+    if (form) {
+      form.innerHTML = `
+        <div class="nl-success" style="display:block">
+          ✓ You're already part of the Eventry community!<br>
+          <span style="font-size:12px;opacity:0.8">Signed up as ${saved}</span>
+        </div>
+        <p class="nl-privacy" style="margin-top:0.75rem">
+          Made a mistake or signing up a friend? 
+          <a href="#" onclick="resetNewsletter(event)" style="color:var(--accent);text-decoration:underline">Sign up again</a>
+        </p>
+      `;
+    }
+  }
+}
+
+function resetNewsletter(e) {
+  e.preventDefault();
+  localStorage.removeItem('eventry_newsletter_email');
+  const form = document.getElementById('newsletterForm');
+  form.innerHTML = `
+    <div class="nl-row">
+      <input type="text" id="nlName" placeholder="Your name" />
+      <input type="email" id="nlEmail" placeholder="Your email address" required />
+    </div>
+    <div class="nl-row">
+      <select id="nlState">
+        <option value="">All states</option>
+        <option>NSW</option><option>VIC</option><option>QLD</option>
+        <option>WA</option><option>SA</option><option>TAS</option>
+        <option>ACT</option><option>NT</option>
+      </select>
+      <select id="nlSport">
+        <option value="">All sports</option>
+        <option>Running</option><option>Cycling</option><option>Triathlon</option>
+        <option>Open Water Swimming</option><option>Paddling</option>
+        <option>Obstacle Racing</option><option>Hiking</option>
+        <option>Fitness</option><option>Equestrian</option><option>Snow Sports</option>
+      </select>
+    </div>
+    <button type="submit" class="nl-btn" id="nlBtn">Sign me up →</button>
+    <div class="nl-success" id="nlSuccess" style="display:none">
+      🎉 You're in! We'll keep you posted on great events.
+    </div>
+    <p class="nl-privacy">No spam. Unsubscribe anytime. We respect your privacy.</p>
+  `;
+}
+
+async function submitNewsletter(e) {
+  e.preventDefault();
+  const btn = document.getElementById('nlBtn');
+  btn.textContent = 'Signing up...';
+  btn.disabled = true;
+
+  const email = document.getElementById('nlEmail').value.trim();
+  const payload = {
+    type: 'newsletter',
+    name: document.getElementById('nlName').value.trim(),
+    email: email,
+    state: document.getElementById('nlState').value,
+    sport: document.getElementById('nlSport').value
+  };
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    // Save email to localStorage
+    localStorage.setItem('eventry_newsletter_email', email);
+    document.getElementById('newsletterForm').querySelectorAll('input,select,button').forEach(el => el.style.display = 'none');
+    document.getElementById('nlSuccess').style.display = 'block';
+  } catch(err) {
+    btn.textContent = 'Sign me up →';
+    btn.disabled = false;
+  }
+}
+
+initNewsletter();
+
+// COOKIE BANNER
+function initCookieBanner() {
+  const consent = localStorage.getItem('eventry_cookie_consent');
+  if (consent === 'accepted' || consent === 'declined') {
+    document.getElementById('cookieBanner').style.display = 'none';
+    if (consent === 'declined') disableAnalytics();
+  }
+}
+
+function acceptCookies() {
+  localStorage.setItem('eventry_cookie_consent', 'accepted');
+  document.getElementById('cookieBanner').style.display = 'none';
+}
+
+function declineCookies() {
+  localStorage.setItem('eventry_cookie_consent', 'declined');
+  document.getElementById('cookieBanner').style.display = 'none';
+  disableAnalytics();
+}
+
+function disableAnalytics() {
+  window['ga-disable-G-FM7R4KLD57'] = true;
+}
+
+initCookieBanner();
+function initTaglineRotator() {
+  const taglines = document.querySelectorAll('.tagline-text');
+  if (!taglines.length) return;
+  let current = 0;
+  let isPaused = false;
+  const container = document.getElementById('rotatingTagline');
+
+  if (container) {
+    container.addEventListener('mouseenter', () => isPaused = true);
+    container.addEventListener('mouseleave', () => isPaused = false);
+  }
+
+  setInterval(() => {
+    if (isPaused) return;
+    taglines[current].classList.remove('active');
+    current = (current + 1) % taglines.length;
+    taglines[current].classList.add('active');
+  }, 5000);
+}
+
+initTaglineRotator();
+initSite().then(() => {
+  // Handle legacy shared event links e.g. eventry.au/?event=8
+  // Redirect to proper event detail page
+  const params = new URLSearchParams(window.location.search);
+  const sharedEventId = params.get('event');
+  const organiserFilter = params.get('organiser');
+
+  if (sharedEventId) {
+    // Find event and redirect to detail page
+    const found = _allEvents.find(e => String(e.id) === String(sharedEventId));
+    if (found) {
+      window.location.href = `event.html?id=${found.id}`;
+    }
+  }
+
+  if (organiserFilter) {
+    // Auto-filter by organiser from organiser profile link
+    const select = document.getElementById('organiserFilter');
+    if (select) {
+      select.value = organiserFilter;
+      applyFilters();
+    }
+  }
+});
+
+</script>
+</body>
+</html>
