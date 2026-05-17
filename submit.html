@@ -212,19 +212,6 @@
           <label>Website</label>
           <input type="url" name="website" placeholder="https://yourwebsite.com.au" />
         </div>
-        <div class="field">
-          <label>Organisation logo</label>
-          <div class="upload-area" id="uploadArea" onclick="document.getElementById('logoInput').click()">
-            <input type="file" id="logoInput" accept="image/*" onchange="previewLogo(event)" />
-            <p><strong>Click to upload</strong> your logo</p>
-            <p style="font-size:11px; margin-top:4px;">PNG or JPG, max 2MB</p>
-          </div>
-          <div class="upload-preview" id="uploadPreview">
-            <img id="logoPreviewImg" src="" alt="Logo preview" />
-            <span id="logoFileName"></span>
-            <button type="button" onclick="removeLogo()">✕</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -245,12 +232,12 @@
         </div>
         <div class="field">
           <label>Event date <span class="req">*</span></label>
-          <input type="date" name="event_date" required />
+          <input type="date" name="event_date" id="eventDateInput" required />
         </div>
         <div class="field">
-          <label>Event end date <span class="req">*</span></label>
-          <input type="date" name="event_end_date" required />
-          <span class="field-hint">Same as start date if single day</span>
+          <label>Event end date</label>
+          <input type="date" name="event_end_date" id="eventEndDateInput" />
+          <span class="field-hint">Leave blank if single day</span>
         </div>
         <div class="field">
           <label>Suburb / Town <span class="req">*</span></label>
@@ -786,6 +773,25 @@ async function handleSubmit(e) {
 }
 
 addDiscipline();
+
+// Set min date to today to prevent past event submissions
+const today = new Date().toISOString().split('T')[0];
+const startInput = document.getElementById('eventDateInput');
+const endInput = document.getElementById('eventEndDateInput');
+if (startInput) startInput.min = today;
+if (endInput) endInput.min = today;
+
+// Auto-fill end date when start date chosen (default to same day)
+if (startInput) {
+  startInput.addEventListener('change', function() {
+    if (endInput && !endInput.value) {
+      endInput.value = this.value;
+      endInput.min = this.value;
+    } else if (endInput) {
+      endInput.min = this.value;
+    }
+  });
+}
 </script>
 </body>
 </html>

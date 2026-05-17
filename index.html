@@ -421,6 +421,25 @@
     color: var(--white);
   }
 
+  .pill.more-pill { background: var(--surface); border-style: dashed; }
+  .pill.more-pill:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); border-style: dashed; }
+  .pill.more-pill.open { background: var(--accent-light); border-color: var(--accent); color: var(--accent); border-style: dashed; }
+
+  .more-sports-dropdown {
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: -8px;
+    margin-bottom: 1rem;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    animation: fadeSlideIn 0.15s ease;
+  }
+  .more-sports-dropdown.open { display: flex; }
+  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
   /* SUBTYPE PILLS */
   .subtype-pills {
     display: flex;
@@ -987,15 +1006,18 @@
     <div class="pill" data-sport="Running" onclick="toggleSport(this)">🏃 Running</div>
     <div class="pill" data-sport="Cycling" onclick="toggleSport(this)">🚴 Cycling</div>
     <div class="pill" data-sport="Triathlon" onclick="toggleSport(this)">🏊 Triathlon</div>
-    <div class="pill" data-sport="Obstacle Racing" onclick="toggleSport(this)">🧗 Obstacle Racing</div>
-    <div class="pill" data-sport="Paddling" onclick="toggleSport(this)">🚣 Paddling</div>
     <div class="pill" data-sport="Open Water Swimming" onclick="toggleSport(this)">🌊 Open Water Swimming</div>
-    <div class="pill" data-sport="Hiking" onclick="toggleSport(this)">🥾 Hiking</div>
-    <div class="pill" data-sport="Cycling MTB" onclick="toggleSport(this)">🚵 MTB</div>
-    <div class="pill" data-sport="Fitness" onclick="toggleSport(this)">🏋️ Fitness</div>
-    <div class="pill" data-sport="Equestrian" onclick="toggleSport(this)">🏇 Equestrian</div>
-    <div class="pill" data-sport="Snow Sports" onclick="toggleSport(this)">⛷️ Snow Sports</div>
-    <div class="pill" data-sport="Other" onclick="toggleSport(this)">⭐ Other</div>
+    <div class="pill" data-sport="Obstacle Racing" onclick="toggleSport(this)">🧗 Obstacle Racing</div>
+    <div class="pill more-pill" id="moreSportsPill" onclick="toggleMoreSports(event)">More ▾</div>
+  </div>
+  <div class="more-sports-dropdown" id="moreSportsDropdown">
+    <div class="pill" data-sport="Paddling" onclick="toggleSport(this);closeMoreSports()">🚣 Paddling</div>
+    <div class="pill" data-sport="Hiking" onclick="toggleSport(this);closeMoreSports()">🥾 Hiking</div>
+    <div class="pill" data-sport="Cycling MTB" onclick="toggleSport(this);closeMoreSports()">🚵 MTB</div>
+    <div class="pill" data-sport="Fitness" onclick="toggleSport(this);closeMoreSports()">🏋️ Fitness</div>
+    <div class="pill" data-sport="Equestrian" onclick="toggleSport(this);closeMoreSports()">🏇 Equestrian</div>
+    <div class="pill" data-sport="Snow Sports" onclick="toggleSport(this);closeMoreSports()">⛷️ Snow Sports</div>
+    <div class="pill" data-sport="Other" onclick="toggleSport(this);closeMoreSports()">⭐ Other</div>
   </div>
 
   <!-- SUBTYPE PILLS — shown when a sport is selected -->
@@ -1493,8 +1515,33 @@ async function initSite() {
   }));
 }
 
+function toggleMoreSports(e) {
+  e.stopPropagation();
+  const dropdown = document.getElementById('moreSportsDropdown');
+  const pill = document.getElementById('moreSportsPill');
+  const isOpen = dropdown.classList.contains('open');
+  dropdown.classList.toggle('open', !isOpen);
+  pill.classList.toggle('open', !isOpen);
+  pill.textContent = isOpen ? 'More ▾' : 'Less ▴';
+}
+
+function closeMoreSports() {
+  const dropdown = document.getElementById('moreSportsDropdown');
+  const pill = document.getElementById('moreSportsPill');
+  dropdown.classList.remove('open');
+  pill.classList.remove('open');
+  pill.textContent = 'More ▾';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#moreSportsPill') && !e.target.closest('#moreSportsDropdown')) {
+    closeMoreSports();
+  }
+});
+
 function toggleSport(el) {
-  document.querySelectorAll('.pill:not(.subtype)').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pill:not(.subtype):not(.more-pill)').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   activeSport = el.dataset.sport;
   activeSubtype = 'all';
@@ -1592,8 +1639,9 @@ function clearFilters() {
   document.getElementById('sortSelect').value = 'featured-date';
   activeSport = 'all';
   activeSubtype = 'all';
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pill:not(.more-pill)').forEach(p => p.classList.remove('active'));
   document.querySelector('[data-sport="all"]').classList.add('active');
+  closeMoreSports();
   document.getElementById('subtypePills').innerHTML = '';
   // Close filter panel on mobile
   const section = document.getElementById('filterSection');
