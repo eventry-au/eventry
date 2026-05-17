@@ -101,9 +101,9 @@
   /* UNIT TOGGLE */
   .distance-field { display: flex; flex-direction: column; gap: 5px; }
   .distance-field label { font-size: 12px; font-weight: 500; color: var(--ink-muted); }
-  .distance-input-wrap { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; }
+  .distance-input-wrap { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; min-width: 0; }
   .distance-input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,87,42,0.1); background: var(--white); }
-  .distance-input-wrap input { border: none; background: transparent; border-radius: 0; box-shadow: none; flex: 1; min-width: 0; padding: 10px 10px; }
+  .distance-input-wrap input { border: none; background: transparent; border-radius: 0; box-shadow: none; flex: 1; min-width: 0; padding: 10px 8px; width: 0; }
   .distance-input-wrap input:focus { border: none; box-shadow: none; }
   .unit-toggle { display: flex; border-left: 1px solid var(--border); flex-shrink: 0; }
   .unit-btn { border: none; background: transparent; padding: 6px 9px; font-size: 11px; font-weight: 600; color: var(--ink-faint); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; white-space: nowrap; }
@@ -411,9 +411,9 @@ function sportFields(sport, dIdx) {
     case 'triathlon':
       return `<div style="margin-top:10px">
         <div class="form-grid thirds">
-          ${distanceField('Swim <span class="req">*</span>', `${p}_swim`, 'm')}
-          ${distanceField('Bike <span class="req">*</span>', `${p}_bike`, 'km')}
-          ${distanceField('Run <span class="req">*</span>', `${p}_run`, 'km')}
+          ${distanceField('Swim <span class="req">*</span>', `${p}_swim`, 'm', ['m', 'km'])}
+          ${distanceField('Bike <span class="req">*</span>', `${p}_bike`, 'km', ['km', 'miles'])}
+          ${distanceField('Run <span class="req">*</span>', `${p}_run`, 'km', ['km', 'miles'])}
         </div>
         <div class="form-grid" style="margin-top:8px">
           <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Sprint, Olympic, Ironman 70.3" /></div>
