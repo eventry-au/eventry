@@ -100,6 +100,7 @@
     position: absolute;
     width: 100%;
     left: 0;
+    text-align: center;
     opacity: 0;
     transition: opacity 0.8s ease;
     pointer-events: none;
@@ -1429,6 +1430,30 @@ const SPORT_SUBTYPES = {
   'Snow Sports': ['Alpine','Cross Country','Snowboard','Ski Touring','Telemark'],
 };
 
+// Normalise sport values from sheet to match pill data-sport values
+function normaliseSport(raw) {
+  const map = {
+    'running': 'Running',
+    'cycling': 'Cycling',
+    'cycling_road': 'Cycling',
+    'triathlon': 'Triathlon',
+    'openwater': 'Open Water Swimming',
+    'open water swimming': 'Open Water Swimming',
+    'obstacle': 'Obstacle Racing',
+    'obstacle racing': 'Obstacle Racing',
+    'paddling': 'Paddling',
+    'hiking': 'Hiking',
+    'cycling_mtb': 'Cycling MTB',
+    'mtb': 'Cycling MTB',
+    'fitness': 'Fitness',
+    'equestrian': 'Equestrian',
+    'snow sports': 'Snow Sports',
+    'snowsports': 'Snow Sports',
+    'other': 'Other'
+  };
+  return map[(raw || '').toLowerCase().trim()] || raw || 'Other';
+}
+
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5LNMivIm3qrjOkLsGfmBZI2jb35SU3RQYMQ_EqJQfinbxZIC-EHcIHclv_lfzaLFgfw/exec';
 let activeSport = 'all';
 let activeSubtype = 'all';
@@ -1457,7 +1482,7 @@ async function loadLiveEvents() {
         return json.events.map(e => ({
           id: e.submission_id,
           name: e.event_name,
-          sport: e.disciplines?.[0]?.sport || 'Other',
+          sport: normaliseSport(e.disciplines?.[0]?.sport || 'other'),
           subtype: e.disciplines?.[0]?.subtype || '',
           date: e.event_date ? (typeof e.event_date === 'number'
             ? new Date((e.event_date - 25569) * 86400 * 1000).toISOString().split('T')[0]
@@ -1589,7 +1614,7 @@ function applyFilters() {
     if (price === 'under200' && Math.min(...e.disciplines.map(d=>d.price)) >= 200) return false;
     if (dateFrom && e.date < dateFrom) return false;
     if (dateTo && e.date > dateTo) return false;
-    if (search && !e.name.toLowerCase().includes(search) && !e.location.toLowerCase().includes(search) && !e.sport.toLowerCase().includes(search)) return false;
+    if (search && !e.name.toLowerCase().includes(search) && !e.location.toLowerCase().includes(search) && !(e.sport || '').toLowerCase().includes(search)) return false;
     return true;
   });
 
@@ -1769,7 +1794,7 @@ function renderEvents(list) {
     const discCount = e.disciplines.length;
     const badgeLabel = e.subtype
       ? `${e.sport} · ${e.subtype}`
-      : e.sport === 'other' || e.sport === 'Other'
+      : e.sport === 'Other'
         ? `Other / Custom`
         : e.sport;
     const priceDisplay = minPrice === 0 && maxPrice === 0
