@@ -1686,8 +1686,7 @@ function renderEvents(list) {
       }
     }
   });
-  // Partners not yet shown mid-grid go into the dedicated section below
-  const remainingPartners = partners.slice(partnerIdx);
+  // Partners also always shown in dedicated section below (see below)
 
   grid.innerHTML = cards.map((item, i) => {
     const delay = Math.min(i * 0.04, 0.4);
@@ -1770,12 +1769,11 @@ function renderEvents(list) {
     </div>`;
   }).join('');
 
-  // Render dedicated partners section below the grid (any not shown mid-grid, or all if <6 events)
+  // Render dedicated partners section below the grid — always show all filtered partners
   const partnersSection = document.getElementById('partnersSection');
   if (partnersSection) {
-    const sectionPartners = list.length < 6 ? partners : remainingPartners;
-    if (sectionPartners.length > 0) {
-      const partnerCards = sectionPartners.map((p, i) => {
+    if (partners.length > 0) {
+      const partnerCards = partners.map((p, i) => {
         const sportTags = (p.sports || '').split(',').map(s => s.trim()).filter(Boolean)
           .map(s => `<span class="partner-sport-tag">${s}</span>`).join('');
         const initials = orgInitials(p.name);
