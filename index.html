@@ -962,10 +962,10 @@
   </div>
 
   <div class="stats-bar">
-    <div class="stat"><div class="stat-num" id="totalEvents">24</div><div class="stat-label">Events Listed</div></div>
-    <div class="stat"><div class="stat-num">11</div><div class="stat-label">Sport Categories</div></div>
-    <div class="stat"><div class="stat-num">6</div><div class="stat-label">States Covered</div></div>
-    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Organisers</div></div>
+    <div class="stat"><div class="stat-num" id="totalEvents">0</div><div class="stat-label">Events Listed</div></div>
+    <div class="stat"><div class="stat-num" id="totalSports">0</div><div class="stat-label">Sport Categories</div></div>
+    <div class="stat"><div class="stat-num" id="totalStates">0</div><div class="stat-label">States Covered</div></div>
+    <div class="stat"><div class="stat-num" id="totalOrganisers">0</div><div class="stat-label">Organisers</div></div>
   </div>
 </section>
 
@@ -1458,6 +1458,16 @@ async function initSite() {
 
   const liveEvents = await loadLiveEvents();
   _allEvents = liveEvents || events;
+
+  // Populate hero stats from real data
+  const sports = [...new Set(_allEvents.map(e => e.sport).filter(Boolean))];
+  const states = [...new Set(_allEvents.map(e => e.state).filter(Boolean))];
+  const organisers = [...new Set(_allEvents.map(e => e.organiser).filter(Boolean))];
+  document.getElementById('totalEvents').textContent = _allEvents.length;
+  document.getElementById('totalSports').textContent = sports.length;
+  document.getElementById('totalStates').textContent = states.length;
+  document.getElementById('totalOrganisers').textContent = organisers.length;
+
   // Use sample partners if no live partners loaded from sheet
   if (!window._allPartners || window._allPartners.length === 0) {
     window._allPartners = samplePartners;
