@@ -917,8 +917,7 @@
   <a href="index.html" class="logo"><span class="logo-name">Even<span class="orange">try</span></span><span class="logo-tagline">Event · Entry</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Browse Events</a></li>
-    <li><a href="how-it-works.html">How It Works</a>
-  <a href="about.html">About</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="pricing.html">Organisers</a></li>
     <li><a href="pricing.html" class="nav-cta">List an Event</a></li>
@@ -1407,38 +1406,44 @@ async function loadLiveEvents() {
   try {
     const res = await fetch(SCRIPT_URL);
     const json = await res.json();
-    if (json.success && json.events && json.events.length > 0) {
-      // Separate partners from events
-      window._allPartners = (json.partners || []).map(p => ({
-        name: p.org_name,
-        tagline: p.partner_tagline,
-        sports: p.partner_sports,
-        location: `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
-        location_display: p.partner_location_display || `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
-        state: p.state,
-        website: p.partner_website,
-        type: 'partner'
-      }));
-
-      return json.events.map(e => ({
-        id: e.submission_id,
-        name: e.event_name,
-        sport: e.disciplines?.[0]?.sport || 'Other',
-        subtype: e.disciplines?.[0]?.subtype || '',
-        date: e.event_date ? (typeof e.event_date === 'number'
-          ? new Date((e.event_date - 25569) * 86400 * 1000).toISOString().split('T')[0]
-          : String(e.event_date).split('T')[0]) : '',
-        location: `${e.location}, ${e.state}`,
-        state: e.state,
-        organiser: e.org_name,
-        link: e.event_url || '#',
-        featured: e.featured || false,
-        disciplines: (e.disciplines || []).map(d => ({
-          name: d.disc_name || '',
-          dist: d.dist_display || '',
-          price: parseFloat(d.price) || 0
-        }))
-      }));
+    if (json.success) {
+      // Always load partners regardless of whether events exist
+      if (json.partners && json.partners.length > 0) {
+        window._allPartners = json.partners.map(p => ({
+          name: p.org_name,
+          tagline: p.partner_tagline,
+          sports: p.partner_sports,
+          location: `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
+          location_display: p.partner_location_display || `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
+          state: p.state,
+          website: p.partner_website,
+          type: 'partner'
+        }));
+      }
+      // Return events if any approved events exist
+      if (json.events && json.events.length > 0) {
+        return json.events.map(e => ({
+          id: e.submission_id,
+          name: e.event_name,
+          sport: e.disciplines?.[0]?.sport || 'Other',
+          subtype: e.disciplines?.[0]?.subtype || '',
+          date: e.event_date ? (typeof e.event_date === 'number'
+            ? new Date((e.event_date - 25569) * 86400 * 1000).toISOString().split('T')[0]
+            : String(e.event_date).split('T')[0]) : '',
+          location: `${e.location}, ${e.state}`,
+          state: e.state,
+          organiser: e.org_name,
+          link: e.event_url || '#',
+          featured: e.featured || false,
+          disciplines: (e.disciplines || []).map(d => ({
+            name: d.disc_name || '',
+            dist: d.dist_display || '',
+            price: parseFloat(d.price) || 0
+          }))
+        }));
+      }
+      // Partners loaded but no approved events — fall back to sample events
+      return null;
     }
   } catch(err) {
     console.log('Sheet unavailable, using sample data');
