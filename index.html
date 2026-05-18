@@ -626,6 +626,34 @@
 
   .register-btn:hover { background: var(--accent); }
 
+  /* SKELETON CARDS */
+  @keyframes shimmer {
+    0% { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+  }
+  .skeleton-card {
+    background: var(--white);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .skeleton-line {
+    border-radius: 6px;
+    background: linear-gradient(90deg, #ece9e3 25%, #f5f2ec 50%, #ece9e3 75%);
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+  }
+  .sk-badge  { height: 20px; width: 100px; }
+  .sk-title  { height: 22px; width: 85%; }
+  .sk-title2 { height: 22px; width: 60%; }
+  .sk-meta   { height: 14px; width: 55%; }
+  .sk-meta2  { height: 14px; width: 45%; }
+  .sk-footer { height: 32px; width: 100%; margin-top: 0.5rem; }
+
   /* FEATURED CARD */
   .event-card.featured {
     border-color: var(--accent);
@@ -1483,7 +1511,7 @@ async function loadLiveEvents() {
           location: `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           location_display: p.partner_location_display || `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           state: p.state,
-          website: p.partner_website,
+          website: p.website,
           type: 'partner'
         }));
       }
@@ -1518,11 +1546,49 @@ async function loadLiveEvents() {
   return null;
 }
 
+const CACHE_KEY = 'eventry_data_cache';
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+function showSkeletonCards(grid, count = 6) {
+  grid.innerHTML = Array(count).fill(0).map(() => `
+    <div class="skeleton-card">
+      <div class="skeleton-line sk-badge"></div>
+      <div class="skeleton-line sk-title"></div>
+      <div class="skeleton-line sk-title2"></div>
+      <div class="skeleton-line sk-meta"></div>
+      <div class="skeleton-line sk-meta2"></div>
+      <div class="skeleton-line sk-footer"></div>
+    </div>`).join('');
+}
+
+function getCachedData() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { timestamp, data } = JSON.parse(raw);
+    if (Date.now() - timestamp > CACHE_TTL) { localStorage.removeItem(CACHE_KEY); return null; }
+    return data;
+  } catch(e) { return null; }
+}
+
+function setCachedData(data) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data })); } catch(e) {}
+}
+
 async function initSite() {
   const grid = document.getElementById('eventsGrid');
-  grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-muted)">
-    <div style="font-size:32px;margin-bottom:1rem">⏳</div><p>Loading events...</p></div>`;
 
+  // Show cached data instantly if available
+  const cached = getCachedData();
+  if (cached) {
+    _allEvents = cached.events || events;
+    window._allPartners = cached.partners || [];
+  } else {
+    // No cache — show skeleton cards while fetching
+    showSkeletonCards(grid);
+  }
+
+  // Always fetch fresh data in background (or wait if no cache)
   const liveEvents = await loadLiveEvents();
   _allEvents = liveEvents || events;
 
@@ -1539,6 +1605,10 @@ async function initSite() {
   if (!window._allPartners || window._allPartners.length === 0) {
     window._allPartners = samplePartners;
   }
+
+  // Save fresh data to cache
+  setCachedData({ events: _allEvents, partners: window._allPartners });
+
   document.getElementById('totalEvents').textContent = _allEvents.length;
   // Default sort: featured first, then soonest, then alphabetical
   renderEvents(_allEvents.slice().sort((a,b) => {
