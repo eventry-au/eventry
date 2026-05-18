@@ -621,6 +621,7 @@
     text-decoration: none;
     display: inline-block;
     transition: background 0.15s;
+    white-space: nowrap;
   }
 
   .register-btn:hover { background: var(--accent); }
@@ -1458,7 +1459,7 @@ function normaliseSport(raw) {
     'equestrian': 'Equestrian',
     'snow sports': 'Snow Sports',
     'snowsports': 'Snow Sports',
-    'other': 'Other'
+    'other': 'Multi-Sport'
   };
   return map[(raw || '').toLowerCase().trim()] || raw || 'Other';
 }
