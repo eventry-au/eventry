@@ -700,6 +700,7 @@
   .sport-cycling { background: #e3f2fd; color: #1565c0; }
   .sport-triathlon { background: #f3e5f5; color: #6a1b9a; }
   .sport-obstacle { background: #fce4ec; color: #880e4f; }
+  .sport-adventure { background: #fbe9e7; color: #bf360c; }
   .sport-paddling { background: #e0f7fa; color: #00695c; }
   .sport-equestrian { background: #efebe9; color: #4e342e; }
   .sport-snow { background: #e8eaf6; color: #283593; }
@@ -707,6 +708,8 @@
   .sport-fitness { background: #fff8e1; color: #f57f17; }
   .sport-water { background: #e0f2f1; color: #004d40; }
   .sport-openwater { background: #e1f5fe; color: #01579b; }
+  .sport-orienteering { background: #f9fbe7; color: #558b2f; }
+  .sport-rowing { background: #e8f5e9; color: #1b5e20; }
 
   /* NEWSLETTER */
   .newsletter-section {
@@ -979,10 +982,13 @@
     <div class="pill" data-sport="Cycling" onclick="toggleSport(this)">🚴 Cycling</div>
     <div class="pill" data-sport="Triathlon" onclick="toggleSport(this)">🏊 Triathlon</div>
     <div class="pill" data-sport="Obstacle Racing" onclick="toggleSport(this)">🧗 Obstacle Racing</div>
+    <div class="pill" data-sport="Adventure Racing" onclick="toggleSport(this)">🗺️ Adventure Racing</div>
     <div class="pill" data-sport="Paddling" onclick="toggleSport(this)">🚣 Paddling</div>
     <div class="pill" data-sport="Open Water Swimming" onclick="toggleSport(this)">🌊 Open Water Swimming</div>
     <div class="pill" data-sport="Hiking" onclick="toggleSport(this)">🥾 Hiking</div>
     <div class="pill" data-sport="Cycling MTB" onclick="toggleSport(this)">🚵 MTB</div>
+    <div class="pill" data-sport="Orienteering" onclick="toggleSport(this)">🧭 Orienteering</div>
+    <div class="pill" data-sport="Rowing" onclick="toggleSport(this)">🛶 Rowing</div>
     <div class="pill" data-sport="Fitness" onclick="toggleSport(this)">🏋️ Fitness</div>
     <div class="pill" data-sport="Equestrian" onclick="toggleSport(this)">🏇 Equestrian</div>
     <div class="pill" data-sport="Snow Sports" onclick="toggleSport(this)">⛷️ Snow Sports</div>
@@ -1136,8 +1142,10 @@
 const SPORT_CLASSES = {
   'Running': 'sport-running',
   'Cycling': 'sport-cycling',
+  'Cycling MTB': 'sport-cycling',
   'Triathlon': 'sport-triathlon',
   'Obstacle Racing': 'sport-obstacle',
+  'Adventure Racing': 'sport-adventure',
   'Paddling': 'sport-paddling',
   'Equestrian': 'sport-equestrian',
   'Snow Sports': 'sport-snow',
@@ -1145,7 +1153,8 @@ const SPORT_CLASSES = {
   'Fitness': 'sport-fitness',
   'Water Sports': 'sport-water',
   'Open Water Swimming': 'sport-openwater',
-  'Cycling MTB': 'sport-cycling',
+  'Orienteering': 'sport-orienteering',
+  'Rowing': 'sport-rowing',
 };
 
 const ORG_COLORS = {
@@ -1390,34 +1399,47 @@ const SPORT_SUBTYPES = {
   'Triathlon': ['Sprint','Olympic','70.3 Half','Full Ironman','Duathlon','Aquathlon','SwimRun','Xterra'],
   'Open Water Swimming': ['Ocean','River','Lake','Pool Open Water'],
   'Paddling': ['Kayak','Canoe','SUP','Outrigger','Dragon Boat','Surfski','Rafting'],
-  'Obstacle Racing': ['Sprint','Super','Beast','OCR','Mud Run','Adventure Race'],
+  'Obstacle Racing': ['Sprint','Super','Beast','OCR','Mud Run'],
+  'Adventure Racing': ['Sprint','Short Course','Long Course','Expedition','Rogaine'],
   'Hiking': ['Day Hike','Multi-Day','Fastpacking','Peak Bagging'],
   'Fitness': ['CrossFit','Functional Fitness','HYROX','Strongman','Powerlifting'],
   'Equestrian': ['Show Jumping','Dressage','Cross Country','Eventing','Endurance','Polo Cross'],
   'Snow Sports': ['Alpine','Cross Country','Snowboard','Ski Touring','Telemark'],
+  'Orienteering': ['Sprint','Middle','Long','Night','Score','Rogaine','Trail-O'],
+  'Rowing': ['Single Scull','Double Scull','Coxed Four','Eight','Coastal','Indoor Erg'],
 };
 
 function normaliseSport(raw) {
   if (!raw) return 'Other';
   switch (raw.toLowerCase().trim()) {
-    case 'running':            return 'Running';
-    case 'cycling':            return 'Cycling';
+    case 'running':                return 'Running';
+    case 'cycling':
+    case 'cycling_road':           return 'Cycling';
     case 'cycling_mtb':
-    case 'mtb':                return 'Cycling MTB';
-    case 'triathlon':          return 'Triathlon';
+    case 'mtb':                    return 'Cycling MTB';
+    case 'triathlon':              return 'Triathlon';
+    case 'duathlon':               return 'Triathlon';
     case 'openwater':
     case 'open water':
-    case 'open water swimming':return 'Open Water Swimming';
+    case 'open water swimming':    return 'Open Water Swimming';
     case 'obstacle':
-    case 'obstacle racing':    return 'Obstacle Racing';
-    case 'paddling':           return 'Paddling';
-    case 'hiking':             return 'Hiking';
-    case 'fitness':            return 'Fitness';
-    case 'equestrian':         return 'Equestrian';
+    case 'obstacle racing':
+    case 'obstacle_racing':
+    case 'ocr':                    return 'Obstacle Racing';
+    case 'adventure':
+    case 'adventure racing':
+    case 'adventure_racing':       return 'Adventure Racing';
+    case 'paddling':               return 'Paddling';
+    case 'hiking':                 return 'Hiking';
+    case 'fitness':                return 'Fitness';
+    case 'equestrian':             return 'Equestrian';
     case 'snow sports':
-    case 'snowsports':         return 'Snow Sports';
-    case 'other':              return 'Multi-Sport';
-    default:                   return raw;
+    case 'snowsports':
+    case 'snow':                   return 'Snow Sports';
+    case 'orienteering':           return 'Orienteering';
+    case 'rowing':                 return 'Rowing';
+    case 'other':                  return 'Other';
+    default:                       return raw;
   }
 }
 

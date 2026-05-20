@@ -295,13 +295,18 @@
           <input type="number" name="max_participants" placeholder="e.g. 500" />
         </div>
         <div class="field col-span-2">
-          <label>Is this event beginner friendly?</label>
-          <select name="beginner_friendly">
-            <option value="">Not specified</option>
-            <option value="yes">Yes — suitable for beginners</option>
-            <option value="no">No — experienced participants only</option>
-            <option value="mixed">Mixed — some disciplines for beginners</option>
+          <label>Is this a recurring event?</label>
+          <select name="recurring" id="recurringSelect" onchange="toggleRecurringFields()">
+            <option value="">One-off event</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="annual">Annual</option>
           </select>
+          <span class="field-hint">For recurring events (e.g. parkrun, club races) we'll remind you to update the next date.</span>
+        </div>
+        <div class="field col-span-2" id="recurringNoteField" style="display:none">
+          <label>Recurring event notes</label>
+          <input type="text" name="recurring_note" placeholder="e.g. Every Saturday 8am, Speers Point Park — next date updated monthly" />
         </div>
         <div class="field col-span-2">
           <label>Additional notes</label>
@@ -330,11 +335,14 @@ const SPORT_SUBTYPES = {
   'duathlon': ['Sprint','Standard','Long'],
   'openwater': ['Ocean','River','Lake','Pool Open Water'],
   'paddling': ['Kayak','Canoe','SUP','Outrigger','Dragon Boat','Surfski','Rafting'],
-  'obstacle': ['Sprint','Super','Beast','OCR','Mud Run','Adventure Race'],
+  'obstacle': ['Sprint','Super','Beast','OCR','Mud Run'],
+  'adventure_racing': ['Sprint','Short Course','Long Course','Expedition','Rogaine'],
   'hiking': ['Day Hike','Multi-Day','Fastpacking','Peak Bagging'],
   'fitness': ['CrossFit','Functional Fitness','HYROX','Strongman','Powerlifting'],
   'equestrian': ['Show Jumping','Dressage','Cross Country','Eventing','Endurance','Polo Cross'],
   'snow': ['Alpine','Cross Country','Snowboard','Ski Touring','Telemark'],
+  'orienteering': ['Sprint','Middle','Long','Night','Score','Rogaine','Trail-O'],
+  'rowing': ['Single Scull','Double Scull','Coxed Four','Eight','Coastal','Indoor Erg'],
 };
 
 const SPORTS = [
@@ -346,7 +354,10 @@ const SPORTS = [
   { value: 'duathlon', label: '🤸 Duathlon' },
   { value: 'openwater', label: '🌊 Open Water Swimming' },
   { value: 'paddling', label: '🚣 Paddling / Kayaking' },
-  { value: 'obstacle', label: '🧗 Obstacle Racing' },
+  { value: 'obstacle', label: '🧗 Obstacle Racing (OCR)' },
+  { value: 'adventure_racing', label: '🗺️ Adventure Racing' },
+  { value: 'orienteering', label: '🧭 Orienteering' },
+  { value: 'rowing', label: '🛶 Rowing' },
   { value: 'hiking', label: '🥾 Hiking / Trekking' },
   { value: 'fitness', label: '🏋️ Fitness / CrossFit' },
   { value: 'equestrian', label: '🏇 Equestrian' },
@@ -479,6 +490,51 @@ function sportFields(sport, dIdx) {
         <div class="field"><label>Discipline</label><select name="${p}_snow_disc">${SNOW_DISCIPLINES.map(d=>`<option>${d}</option>`).join('')}</select></div>
         ${distanceField('Distance (optional)', `${p}_snow_dist`, 'km')}
         <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Open Men, U18" /></div>
+      </div>`;
+
+    case 'adventure_racing':
+      return `<div style="margin-top:10px">
+        <div class="form-grid" style="margin-bottom:10px">
+          <div class="field col-span-2">
+            <label>Race name / category</label>
+            <input type="text" name="${p}_cat_name" placeholder="e.g. Sprint, 6hr, Expedition" />
+          </div>
+        </div>
+        <span class="custom-legs-label">Legs / stages — add in race order (optional):</span>
+        <div class="legs-container" id="legs_${dIdx}"></div>
+        <button type="button" class="add-leg-btn" onclick="addLeg(${dIdx})">+ Add a leg</button>
+        <div class="form-grid" style="margin-top:10px">
+          ${distanceField('Total distance (approx)', `${p}_adv_dist`, 'km')}
+          <div class="field"><label>Duration (hours, optional)</label><input type="number" name="${p}_adv_hours" placeholder="e.g. 6" min="1" /></div>
+        </div>
+      </div>`;
+
+    case 'orienteering':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_ori_dist`, 'km')}
+        <div class="field"><label>Course type</label>
+          <select name="${p}_ori_type">
+            <option value="">Select...</option>
+            <option>Sprint</option><option>Middle</option><option>Long</option>
+            <option>Night</option><option>Score / Rogaine</option><option>Trail-O</option>
+          </select>
+        </div>
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Open, Elite, Beginner" /></div>
+      </div>`;
+
+    case 'rowing':
+      return `<div class="form-grid" style="margin-top:10px">
+        ${distanceField('Distance <span class="req">*</span>', `${p}_row_dist`, 'm', ['m', 'km'])}
+        <div class="field"><label>Boat class</label>
+          <select name="${p}_row_class">
+            <option value="">Select...</option>
+            <option>Single Scull (1x)</option><option>Double Scull (2x)</option>
+            <option>Coxless Pair (2-)</option><option>Coxed Four (4+)</option>
+            <option>Coxless Four (4-)</option><option>Eight (8+)</option>
+            <option>Coastal Rowing</option><option>Indoor Erg</option>
+          </select>
+        </div>
+        <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Open Men, Under 23, Masters C" /></div>
       </div>`;
 
     case 'other':
@@ -691,6 +747,29 @@ function collectDisciplines() {
     } else if (sport === 'hiking') {
       dist_value = get(`${p}_hike_dist_val`);
       dist_unit = get(`${p}_hike_dist_unit`) || 'km';
+    } else if (sport === 'adventure_racing') {
+      dist_value = get(`${p}_adv_dist_val`);
+      dist_unit = get(`${p}_adv_dist_unit`) || 'km';
+      // Also collect leg data if any
+      const legRows = card.querySelectorAll('.leg-row');
+      const legArr = [];
+      legRows.forEach(row => {
+        const activity = row.querySelector('select')?.value || '';
+        const custom = row.querySelector(`[name*="_custom"]`)?.value || '';
+        const distVal = row.querySelector('input[type="number"]')?.value || '';
+        const distUnt = row.querySelector('input[type="hidden"]')?.value || 'km';
+        if (activity) legArr.push({ activity: activity === 'custom' ? custom : activity, dist_value: distVal, dist_unit: distUnt });
+      });
+      if (legArr.length) {
+        legs = JSON.stringify(legArr);
+        dist_display = legArr.map(l => `${l.activity} ${l.dist_value}${l.dist_unit}`).join(' → ');
+      }
+    } else if (sport === 'orienteering') {
+      dist_value = get(`${p}_ori_dist_val`);
+      dist_unit = get(`${p}_ori_dist_unit`) || 'km';
+    } else if (sport === 'rowing') {
+      dist_value = get(`${p}_row_dist_val`);
+      dist_unit = get(`${p}_row_dist_unit`) || 'm';
     } else if (sport === 'other') {
       const legRows = card.querySelectorAll('.leg-row');
       const legArr = [];
@@ -748,7 +827,8 @@ async function handleSubmit(e) {
     venue: (fd.get('venue') || '').trim(),
     event_url: (fd.get('event_url') || '').trim(),
     description: (fd.get('description') || '').trim(),
-    beginner_friendly: fd.get('beginner_friendly'),
+    recurring: fd.get('recurring') || '',
+    recurring_note: (fd.get('recurring_note') || '').trim(),
     min_age: fd.get('min_age'),
     max_participants: fd.get('max_participants'),
     notes: (fd.get('notes') || '').trim(),
@@ -770,6 +850,12 @@ async function handleSubmit(e) {
     btn.disabled = false;
     alert('Something went wrong. Please try again or email us at eventry.au@gmail.com');
   }
+}
+
+function toggleRecurringFields() {
+  const val = document.getElementById('recurringSelect')?.value;
+  const noteField = document.getElementById('recurringNoteField');
+  if (noteField) noteField.style.display = val ? 'flex' : 'none';
 }
 
 addDiscipline();
