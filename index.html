@@ -89,13 +89,8 @@
   /* ROTATING TAGLINE */
   .rotating-tagline {
     min-height: 28px;
-    margin-top: 0;
     margin-bottom: 2.5rem;
-    margin-left: auto;
-    margin-right: auto;
     position: relative;
-    max-width: 700px;
-    width: 100%;
   }
 
   .tagline-text {
@@ -103,13 +98,8 @@
     color: #aaa;
     font-weight: 300;
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content;
-    max-width: 100%;
-    text-align: center;
-    white-space: normal;
+    width: 100%;
+    left: 0;
     opacity: 0;
     transition: opacity 0.8s ease;
     pointer-events: none;
@@ -431,25 +421,6 @@
     color: var(--white);
   }
 
-  .pill.more-pill { background: var(--surface); border-style: dashed; }
-  .pill.more-pill:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); border-style: dashed; }
-  .pill.more-pill.open { background: var(--accent-light); border-color: var(--accent); color: var(--accent); border-style: dashed; }
-
-  .more-sports-dropdown {
-    display: none;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: -8px;
-    margin-bottom: 1rem;
-    padding: 12px 14px;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    animation: fadeSlideIn 0.15s ease;
-  }
-  .more-sports-dropdown.open { display: flex; }
-  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-
   /* SUBTYPE PILLS */
   .subtype-pills {
     display: flex;
@@ -621,38 +592,9 @@
     text-decoration: none;
     display: inline-block;
     transition: background 0.15s;
-    white-space: nowrap;
   }
 
   .register-btn:hover { background: var(--accent); }
-
-  /* SKELETON CARDS */
-  @keyframes shimmer {
-    0% { background-position: -600px 0; }
-    100% { background-position: 600px 0; }
-  }
-  .skeleton-card {
-    background: var(--white);
-    border-radius: var(--card-radius);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .skeleton-line {
-    border-radius: 6px;
-    background: linear-gradient(90deg, #ece9e3 25%, #f5f2ec 50%, #ece9e3 75%);
-    background-size: 600px 100%;
-    animation: shimmer 1.4s infinite linear;
-  }
-  .sk-badge  { height: 20px; width: 100px; }
-  .sk-title  { height: 22px; width: 85%; }
-  .sk-title2 { height: 22px; width: 60%; }
-  .sk-meta   { height: 14px; width: 55%; }
-  .sk-meta2  { height: 14px; width: 45%; }
-  .sk-footer { height: 32px; width: 100%; margin-top: 0.5rem; }
 
   /* FEATURED CARD */
   .event-card.featured {
@@ -697,15 +639,6 @@
   .partner-card .card-footer { padding: 0.75rem 1.25rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
   .partner-btn { background: var(--surface); border: 1px solid var(--border-strong); color: var(--ink); border-radius: var(--pill-radius); padding: 7px 14px; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.15s; }
   .partner-btn:hover { background: var(--ink); color: var(--white); }
-
-  /* PARTNERS SECTION */
-  .partners-section { margin: 2.5rem 0 0; }
-  .partners-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
-  .partners-section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); }
-  .partners-section-line { flex: 1; height: 1px; background: var(--border); }
-  .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  @media (max-width: 900px) { .partners-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .partners-grid { grid-template-columns: 1fr; } }
 
   /* SHARE BUTTON */
   .share-btn {
@@ -1045,18 +978,15 @@
     <div class="pill" data-sport="Running" onclick="toggleSport(this)">🏃 Running</div>
     <div class="pill" data-sport="Cycling" onclick="toggleSport(this)">🚴 Cycling</div>
     <div class="pill" data-sport="Triathlon" onclick="toggleSport(this)">🏊 Triathlon</div>
-    <div class="pill" data-sport="Open Water Swimming" onclick="toggleSport(this)">🌊 Open Water Swimming</div>
     <div class="pill" data-sport="Obstacle Racing" onclick="toggleSport(this)">🧗 Obstacle Racing</div>
-    <div class="pill more-pill" id="moreSportsPill" onclick="toggleMoreSports(event)">More ▾</div>
-  </div>
-  <div class="more-sports-dropdown" id="moreSportsDropdown">
-    <div class="pill" data-sport="Paddling" onclick="toggleSport(this);closeMoreSports()">🚣 Paddling</div>
-    <div class="pill" data-sport="Hiking" onclick="toggleSport(this);closeMoreSports()">🥾 Hiking</div>
-    <div class="pill" data-sport="Cycling MTB" onclick="toggleSport(this);closeMoreSports()">🚵 MTB</div>
-    <div class="pill" data-sport="Fitness" onclick="toggleSport(this);closeMoreSports()">🏋️ Fitness</div>
-    <div class="pill" data-sport="Equestrian" onclick="toggleSport(this);closeMoreSports()">🏇 Equestrian</div>
-    <div class="pill" data-sport="Snow Sports" onclick="toggleSport(this);closeMoreSports()">⛷️ Snow Sports</div>
-    <div class="pill" data-sport="Other" onclick="toggleSport(this);closeMoreSports()">⭐ Other</div>
+    <div class="pill" data-sport="Paddling" onclick="toggleSport(this)">🚣 Paddling</div>
+    <div class="pill" data-sport="Open Water Swimming" onclick="toggleSport(this)">🌊 Open Water Swimming</div>
+    <div class="pill" data-sport="Hiking" onclick="toggleSport(this)">🥾 Hiking</div>
+    <div class="pill" data-sport="Cycling MTB" onclick="toggleSport(this)">🚵 MTB</div>
+    <div class="pill" data-sport="Fitness" onclick="toggleSport(this)">🏋️ Fitness</div>
+    <div class="pill" data-sport="Equestrian" onclick="toggleSport(this)">🏇 Equestrian</div>
+    <div class="pill" data-sport="Snow Sports" onclick="toggleSport(this)">⛷️ Snow Sports</div>
+    <div class="pill" data-sport="Other" onclick="toggleSport(this)">⭐ Other</div>
   </div>
 
   <!-- SUBTYPE PILLS — shown when a sport is selected -->
@@ -1153,7 +1083,6 @@
   </div>
 
   <div class="events-grid" id="eventsGrid"></div>
-  <div id="partnersSection"></div>
 
 </main>
 
@@ -1468,28 +1397,28 @@ const SPORT_SUBTYPES = {
   'Snow Sports': ['Alpine','Cross Country','Snowboard','Ski Touring','Telemark'],
 };
 
-// Normalise sport values from sheet to match pill data-sport values
 function normaliseSport(raw) {
-  const map = {
-    'running': 'Running',
-    'cycling': 'Cycling',
-    'cycling_road': 'Cycling',
-    'triathlon': 'Triathlon',
-    'openwater': 'Open Water Swimming',
-    'open water swimming': 'Open Water Swimming',
-    'obstacle': 'Obstacle Racing',
-    'obstacle racing': 'Obstacle Racing',
-    'paddling': 'Paddling',
-    'hiking': 'Hiking',
-    'cycling_mtb': 'Cycling MTB',
-    'mtb': 'Cycling MTB',
-    'fitness': 'Fitness',
-    'equestrian': 'Equestrian',
-    'snow sports': 'Snow Sports',
-    'snowsports': 'Snow Sports',
-    'other': 'Multi-Sport'
-  };
-  return map[(raw || '').toLowerCase().trim()] || raw || 'Other';
+  if (!raw) return 'Other';
+  switch (raw.toLowerCase().trim()) {
+    case 'running':            return 'Running';
+    case 'cycling':            return 'Cycling';
+    case 'cycling_mtb':
+    case 'mtb':                return 'Cycling MTB';
+    case 'triathlon':          return 'Triathlon';
+    case 'openwater':
+    case 'open water':
+    case 'open water swimming':return 'Open Water Swimming';
+    case 'obstacle':
+    case 'obstacle racing':    return 'Obstacle Racing';
+    case 'paddling':           return 'Paddling';
+    case 'hiking':             return 'Hiking';
+    case 'fitness':            return 'Fitness';
+    case 'equestrian':         return 'Equestrian';
+    case 'snow sports':
+    case 'snowsports':         return 'Snow Sports';
+    case 'other':              return 'Multi-Sport';
+    default:                   return raw;
+  }
 }
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5LNMivIm3qrjOkLsGfmBZI2jb35SU3RQYMQ_EqJQfinbxZIC-EHcIHclv_lfzaLFgfw/exec';
@@ -1511,7 +1440,7 @@ async function loadLiveEvents() {
           location: `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           location_display: p.partner_location_display || `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           state: p.state,
-          website: p.website,
+          website: p.website || p.partner_website,
           type: 'partner'
         }));
       }
@@ -1520,7 +1449,7 @@ async function loadLiveEvents() {
         return json.events.map(e => ({
           id: e.submission_id,
           name: e.event_name,
-          sport: normaliseSport(e.disciplines?.[0]?.sport || 'other'),
+          sport: normaliseSport(e.sport || e.disciplines?.[0]?.sport),
           subtype: e.disciplines?.[0]?.subtype || '',
           date: e.event_date ? (typeof e.event_date === 'number'
             ? new Date((e.event_date - 25569) * 86400 * 1000).toISOString().split('T')[0]
@@ -1546,49 +1475,11 @@ async function loadLiveEvents() {
   return null;
 }
 
-const CACHE_KEY = 'eventry_data_cache';
-const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
-
-function showSkeletonCards(grid, count = 6) {
-  grid.innerHTML = Array(count).fill(0).map(() => `
-    <div class="skeleton-card">
-      <div class="skeleton-line sk-badge"></div>
-      <div class="skeleton-line sk-title"></div>
-      <div class="skeleton-line sk-title2"></div>
-      <div class="skeleton-line sk-meta"></div>
-      <div class="skeleton-line sk-meta2"></div>
-      <div class="skeleton-line sk-footer"></div>
-    </div>`).join('');
-}
-
-function getCachedData() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const { timestamp, data } = JSON.parse(raw);
-    if (Date.now() - timestamp > CACHE_TTL) { localStorage.removeItem(CACHE_KEY); return null; }
-    return data;
-  } catch(e) { return null; }
-}
-
-function setCachedData(data) {
-  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data })); } catch(e) {}
-}
-
 async function initSite() {
   const grid = document.getElementById('eventsGrid');
+  grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-muted)">
+    <div style="font-size:32px;margin-bottom:1rem">⏳</div><p>Loading events...</p></div>`;
 
-  // Show cached data instantly if available
-  const cached = getCachedData();
-  if (cached) {
-    _allEvents = cached.events || events;
-    window._allPartners = cached.partners || [];
-  } else {
-    // No cache — show skeleton cards while fetching
-    showSkeletonCards(grid);
-  }
-
-  // Always fetch fresh data in background (or wait if no cache)
   const liveEvents = await loadLiveEvents();
   _allEvents = liveEvents || events;
 
@@ -1605,10 +1496,6 @@ async function initSite() {
   if (!window._allPartners || window._allPartners.length === 0) {
     window._allPartners = samplePartners;
   }
-
-  // Save fresh data to cache
-  setCachedData({ events: _allEvents, partners: window._allPartners });
-
   document.getElementById('totalEvents').textContent = _allEvents.length;
   // Default sort: featured first, then soonest, then alphabetical
   renderEvents(_allEvents.slice().sort((a,b) => {
@@ -1620,33 +1507,8 @@ async function initSite() {
   }));
 }
 
-function toggleMoreSports(e) {
-  e.stopPropagation();
-  const dropdown = document.getElementById('moreSportsDropdown');
-  const pill = document.getElementById('moreSportsPill');
-  const isOpen = dropdown.classList.contains('open');
-  dropdown.classList.toggle('open', !isOpen);
-  pill.classList.toggle('open', !isOpen);
-  pill.textContent = isOpen ? 'More ▾' : 'Less ▴';
-}
-
-function closeMoreSports() {
-  const dropdown = document.getElementById('moreSportsDropdown');
-  const pill = document.getElementById('moreSportsPill');
-  dropdown.classList.remove('open');
-  pill.classList.remove('open');
-  pill.textContent = 'More ▾';
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('#moreSportsPill') && !e.target.closest('#moreSportsDropdown')) {
-    closeMoreSports();
-  }
-});
-
 function toggleSport(el) {
-  document.querySelectorAll('.pill:not(.subtype):not(.more-pill)').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pill:not(.subtype)').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   activeSport = el.dataset.sport;
   activeSubtype = 'all';
@@ -1694,7 +1556,7 @@ function applyFilters() {
     if (price === 'under200' && Math.min(...e.disciplines.map(d=>d.price)) >= 200) return false;
     if (dateFrom && e.date < dateFrom) return false;
     if (dateTo && e.date > dateTo) return false;
-    if (search && !e.name.toLowerCase().includes(search) && !e.location.toLowerCase().includes(search) && !(e.sport || '').toLowerCase().includes(search)) return false;
+    if (search && !e.name.toLowerCase().includes(search) && !e.location.toLowerCase().includes(search) && !e.sport.toLowerCase().includes(search)) return false;
     return true;
   });
 
@@ -1744,9 +1606,8 @@ function clearFilters() {
   document.getElementById('sortSelect').value = 'featured-date';
   activeSport = 'all';
   activeSubtype = 'all';
-  document.querySelectorAll('.pill:not(.more-pill)').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
   document.querySelector('[data-sport="all"]').classList.add('active');
-  closeMoreSports();
   document.getElementById('subtypePills').innerHTML = '';
   // Close filter panel on mobile
   const section = document.getElementById('filterSection');
@@ -1802,22 +1663,22 @@ function shareEvent(id, name, btn) {
 
 function renderEvents(list) {
   const grid = document.getElementById('eventsGrid');
-  const eventCount = list.length;
+  // Count only events (not partners) for the header
+  const eventCount = list.filter(e => e.type !== 'partner').length;
   const eventWord = eventCount === 1 ? 'event' : 'events';
   document.querySelector('.results-count').innerHTML = `Showing <span id="resultCount">${eventCount}</span> ${eventWord}`;
 
   if (list.length === 0) {
     grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No events found</h3><p>Try adjusting your filters or search term</p></div>`;
-    // Still render partners section even with no events
-    const partnersSection = document.getElementById('partnersSection');
-    if (partnersSection) partnersSection.innerHTML = '';
     return;
   }
 
   // Filter partners by state and sport
   const activeState = document.getElementById('stateFilter')?.value || '';
   const partners = (window._allPartners || []).filter(p => {
+    // State filter
     if (activeState && p.state && p.state !== activeState) return false;
+    // Sport filter — blank partner_sports means show for all sports
     if (activeSport !== 'all' && p.sports) {
       const partnerSports = p.sports.split(',').map(s => s.trim().toLowerCase());
       if (!partnerSports.includes(activeSport.toLowerCase())) return false;
@@ -1825,24 +1686,22 @@ function renderEvents(list) {
     return true;
   });
 
-  // Build cards array: events + 2 partner cards injected after every 6th event
   let partnerIdx = 0;
   let eventIdx = 0;
   const cards = [];
-  list.forEach(e => {
+
+  list.forEach((e, i) => {
     cards.push({ type: 'event', data: e });
     eventIdx++;
-    if (eventIdx % 6 === 0) {
-      // Inject up to 2 partners after every 6th event
-      for (let n = 0; n < 2 && partnerIdx < partners.length; n++) {
-        cards.push({ type: 'partner', data: partners[partnerIdx++] });
-      }
+    // Insert partner card after every 6th event
+    if (eventIdx % 6 === 0 && partnerIdx < partners.length) {
+      cards.push({ type: 'partner', data: partners[partnerIdx++] });
     }
   });
-  // Partners also always shown in dedicated section below (see below)
 
   grid.innerHTML = cards.map((item, i) => {
     const delay = Math.min(i * 0.04, 0.4);
+
     if (item.type === 'partner') {
       const p = item.data;
       const sportTags = (p.sports || '').split(',').map(s => s.trim()).filter(Boolean)
@@ -1851,7 +1710,9 @@ function renderEvents(list) {
       const locationDisplay = p.location_display || p.location || '';
       return `
       <div class="partner-card" style="animation-delay:${delay}s">
-        <div class="card-header"><span class="partner-badge">Partner</span></div>
+        <div class="card-header">
+          <span class="partner-badge">Partner</span>
+        </div>
         <div class="card-body">
           <div class="partner-name">${p.name}</div>
           <div class="partner-tagline">${p.tagline || ''}</div>
@@ -1866,6 +1727,7 @@ function renderEvents(list) {
         </div>
       </div>`;
     }
+
     const e = item.data;
     const sportClass = SPORT_CLASSES[e.sport] || 'sport-fitness';
     const orgColor = ORG_COLORS[e.organiser] || '#555';
@@ -1874,7 +1736,7 @@ function renderEvents(list) {
     const discCount = e.disciplines.length;
     const badgeLabel = e.subtype
       ? `${e.sport} · ${e.subtype}`
-      : e.sport === 'Other'
+      : e.sport === 'other' || e.sport === 'Other'
         ? `Other / Custom`
         : e.sport;
     const priceDisplay = minPrice === 0 && maxPrice === 0
@@ -1921,47 +1783,6 @@ function renderEvents(list) {
       </div>
     </div>`;
   }).join('');
-
-  // Render dedicated partners section below the grid — always show all filtered partners
-  const partnersSection = document.getElementById('partnersSection');
-  if (partnersSection) {
-    if (partners.length > 0) {
-      const partnerCards = partners.map((p, i) => {
-        const sportTags = (p.sports || '').split(',').map(s => s.trim()).filter(Boolean)
-          .map(s => `<span class="partner-sport-tag">${s}</span>`).join('');
-        const initials = orgInitials(p.name);
-        const locationDisplay = p.location_display || p.location || '';
-        return `
-        <div class="partner-card" style="animation-delay:${Math.min(i * 0.05, 0.4)}s">
-          <div class="card-header">
-            <span class="partner-badge">Partner</span>
-          </div>
-          <div class="card-body">
-            <div class="partner-name">${p.name}</div>
-            <div class="partner-tagline">${p.tagline || ''}</div>
-            <div class="partner-sports">${sportTags || '<span class="partner-sport-tag">All sports</span>'}</div>
-          </div>
-          <div class="card-footer">
-            <div class="organiser">
-              <div class="org-logo" style="background:#555">${initials}</div>
-              <span class="org-name" style="font-size:11px;color:var(--ink-faint)">${locationDisplay}</span>
-            </div>
-            <a href="${p.website || '#'}" target="_blank" class="partner-btn">Learn more →</a>
-          </div>
-        </div>`;
-      }).join('');
-      partnersSection.innerHTML = `
-        <div class="partners-section">
-          <div class="partners-section-header">
-            <span class="partners-section-label">Supporting partners</span>
-            <div class="partners-section-line"></div>
-          </div>
-          <div class="partners-grid">${partnerCards}</div>
-        </div>`;
-    } else {
-      partnersSection.innerHTML = '';
-    }
-  }
 }
 
 // NEWSLETTER SIGNUP
