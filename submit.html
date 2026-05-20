@@ -233,11 +233,12 @@
         <div class="field">
           <label>Event date <span class="req">*</span></label>
           <input type="date" name="event_date" id="eventDateInput" required />
+          <span class="field-hint">Use the date picker — avoid typing the date manually</span>
         </div>
         <div class="field">
           <label>Event end date</label>
           <input type="date" name="event_end_date" id="eventEndDateInput" />
-          <span class="field-hint">Leave blank if single day</span>
+          <span class="field-hint">Leave blank if single day. Use the date picker.</span>
         </div>
         <div class="field">
           <label>Suburb / Town <span class="req">*</span></label>
@@ -867,14 +868,47 @@ const endInput = document.getElementById('eventEndDateInput');
 if (startInput) startInput.min = today;
 if (endInput) endInput.min = today;
 
+// Validate that a date input value is a sensible year (2000–2100)
+function isValidDateValue(val) {
+  if (!val) return false;
+  const year = parseInt(val.split('-')[0], 10);
+  return year >= 2000 && year <= 2100;
+}
+
 // Auto-fill end date when start date chosen (default to same day)
 if (startInput) {
   startInput.addEventListener('change', function() {
-    if (endInput && !endInput.value) {
-      endInput.value = this.value;
+    if (!isValidDateValue(this.value)) {
+      // Bad value — clear the field and warn
+      this.value = '';
+      this.setCustomValidity('Please use the date picker to select a date.');
+      this.reportValidity();
+      return;
+    }
+    this.setCustomValidity('');
+    if (endInput) {
       endInput.min = this.value;
-    } else if (endInput) {
-      endInput.min = this.value;
+      // Only auto-fill end date if it's empty or also invalid
+      if (!endInput.value || !isValidDateValue(endInput.value)) {
+        endInput.value = this.value;
+      }
+      // If end date is now before start date, reset it to start date
+      if (endInput.value && endInput.value < this.value) {
+        endInput.value = this.value;
+      }
+    }
+  });
+}
+
+// Validate end date isn't before start date on change
+if (endInput) {
+  endInput.addEventListener('change', function() {
+    if (!isValidDateValue(this.value)) {
+      this.value = '';
+      return;
+    }
+    if (startInput && startInput.value && this.value < startInput.value) {
+      this.value = startInput.value;
     }
   });
 }
