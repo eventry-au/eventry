@@ -1473,7 +1473,7 @@ let _allEvents = [];
 async function loadLiveEvents() {
   try {
     const res = await fetch(SCRIPT_URL);
-    const json = await res.json();
+    const json = await res.json();     window._apiDebug = json;
     if (json.success) {
       // Always load partners regardless of whether events exist
       if (json.partners && json.partners.length > 0) {
@@ -1525,13 +1525,13 @@ async function initSite() {
     <div style="font-size:32px;margin-bottom:1rem">⏳</div><p>Loading events...</p></div>`;
 
   const liveEvents = await loadLiveEvents();
-  _allEvents = liveEvents || events;
+  window._allEvents = liveEvents || events;
 
   // Populate hero stats from real data
-  const sports = [...new Set(_allEvents.map(e => e.sport).filter(Boolean))];
-  const states = [...new Set(_allEvents.map(e => e.state).filter(Boolean))];
-  const organisers = [...new Set(_allEvents.map(e => e.organiser).filter(Boolean))];
-  document.getElementById('totalEvents').textContent = _allEvents.length;
+  const sports = [...new Set(window._allEvents.map(e => e.sport).filter(Boolean))];
+  const states = [...new Set(window._allEvents.map(e => e.state).filter(Boolean))];
+  const organisers = [...new Set(window._allEvents.map(e => e.organiser).filter(Boolean))];
+  document.getElementById('totalEvents').textContent = window._allEvents.length;
   document.getElementById('totalSports').textContent = sports.length;
   document.getElementById('totalStates').textContent = states.length;
   document.getElementById('totalOrganisers').textContent = organisers.length;
@@ -1540,9 +1540,9 @@ async function initSite() {
   if (!window._allPartners || window._allPartners.length === 0) {
     window._allPartners = samplePartners;
   }
-  document.getElementById('totalEvents').textContent = _allEvents.length;
+  document.getElementById('totalEvents').textContent = window._allEvents.length;
   // Default sort: featured first, then soonest, then alphabetical
-  renderEvents(_allEvents.slice().sort((a,b) => {
+  renderEvents(window._allEvents.slice().sort((a,b) => {
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
     const dateDiff = (a.date||'').localeCompare(b.date||'');
