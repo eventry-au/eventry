@@ -313,6 +313,35 @@
           <label>Additional notes</label>
           <textarea name="notes" placeholder="Any extra details — parking, gear requirements, cut-off times, course info..."></textarea>
         </div>
+
+        <!-- SERIES TOGGLE -->
+        <div class="field col-span-2">
+          <label>Is this event part of a series?</label>
+          <select name="series_toggle" id="seriesToggle" onchange="toggleSeriesField()">
+            <option value="">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+        <div class="field col-span-2" id="seriesNameField" style="display:none">
+          <label>Series name</label>
+          <input type="text" name="series_name" placeholder="e.g. RunThrough Summer Series 2026" />
+          <span class="field-hint">The series name will appear as a label on your event card.</span>
+        </div>
+
+        <!-- CHAMPIONSHIP TOGGLE -->
+        <div class="field col-span-2">
+          <label>Is this event part of a championship?</label>
+          <select name="championship_toggle" id="championshipToggle" onchange="toggleChampionshipField()">
+            <option value="">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+        <div class="field col-span-2" id="championshipNameField" style="display:none">
+          <label>Championship name</label>
+          <input type="text" name="championship_pending" placeholder="e.g. Hunter Triathlon Club Championship 2026" />
+          <span class="field-hint">Championship listings are subject to Eventry review before appearing on your event card.</span>
+        </div>
+
       </div>
     </div>
 
@@ -833,6 +862,8 @@ async function handleSubmit(e) {
     min_age: fd.get('min_age'),
     max_participants: fd.get('max_participants'),
     notes: (fd.get('notes') || '').trim(),
+    series_name: (fd.get('series_name') || '').trim(),
+    championship_pending: (fd.get('championship_pending') || '').trim(),
     disciplines: collectDisciplines()
   };
 
@@ -857,6 +888,18 @@ function toggleRecurringFields() {
   const val = document.getElementById('recurringSelect')?.value;
   const noteField = document.getElementById('recurringNoteField');
   if (noteField) noteField.style.display = val ? 'flex' : 'none';
+}
+
+function toggleSeriesField() {
+  const val = document.getElementById('seriesToggle')?.value;
+  const field = document.getElementById('seriesNameField');
+  if (field) field.style.display = val === 'yes' ? 'flex' : 'none';
+}
+
+function toggleChampionshipField() {
+  const val = document.getElementById('championshipToggle')?.value;
+  const field = document.getElementById('championshipNameField');
+  if (field) field.style.display = val === 'yes' ? 'flex' : 'none';
 }
 
 addDiscipline();

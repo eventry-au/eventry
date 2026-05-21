@@ -617,6 +617,28 @@
     border-radius: 0 0 8px 8px;
   }
 
+  /* SERIES / CHAMPIONSHIP RIBBON */
+  .event-ribbon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 1.25rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .event-ribbon.series {
+    background: #e8f4fd;
+    color: #1565c0;
+    border-bottom-color: #bbdefb;
+  }
+  .event-ribbon.championship {
+    background: #fff8e1;
+    color: #f57f17;
+    border-bottom-color: #ffe082;
+  }
+
   /* PARTNER CARD */
   .partner-card {
     background: var(--white);
@@ -1770,6 +1792,8 @@ function renderEvents(list) {
     return `
     <div class="event-card${e.featured ? ' featured' : ''}" style="animation-delay:${delay}s">
       ${e.featured ? '<div class="featured-badge">Featured</div>' : ''}
+      ${e.series_name ? `<div class="event-ribbon series">🔗 ${e.series_name}</div>` : ''}
+      ${e.championship_name ? `<div class="event-ribbon championship">🏆 ${e.championship_name}</div>` : ''}
       <div class="card-header">
         <span class="sport-badge ${sportClass}">${badgeLabel}</span>
         <button class="share-btn" onclick="shareEvent('${e.id}','${e.name.replace(/'/g,"\\'")}',this)" title="Share this event">
