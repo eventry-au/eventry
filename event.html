@@ -360,7 +360,7 @@ function renderEvent(event) {
       <span>${event.event_name}</span>
     </div>
 
-    <!-- EVENT HEADER -->
+    ${event.recurring === 'weekly' || event.recurring === 'monthly' ? `<div style="display:inline-flex;align-items:center;gap:6px;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;margin-bottom:1rem">🔁 Recurring ${event.recurring === 'weekly' ? 'Weekly' : 'Monthly'} — dates subject to change</div>` : ''}     <!-- EVENT HEADER -->
     <div class="event-header">
       <div class="event-header-top">
         <div class="event-badges">
@@ -428,15 +428,7 @@ function renderEvent(event) {
           </div>
         </div>` : ''}
 
-        ${event.beginner_friendly && event.beginner_friendly !== 'undefined' ? `
-        <div class="meta-item">
-          <div class="meta-icon">🏅</div>
-          <div>
-            <div class="meta-label">Beginner Friendly</div>
-            <div class="meta-value" style="text-transform:capitalize">${event.beginner_friendly}</div>
-          </div>
-        </div>` : ''}
-      </div>
+              </div>
 
       <!-- ADD TO CALENDAR -->
       <div style="margin-top:1.25rem">
