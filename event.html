@@ -111,6 +111,31 @@
   .disc-dist { color: var(--ink-muted); font-size: 13px; }
   .disc-price { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
   .disc-price.free { color: var(--success); }
+  .status-banner {
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  .status-banner.cancelled {
+    background: #fdecea;
+    color: #c0392b;
+    border: 1px solid #f5c6c6;
+  }
+
+  .status-banner.postponed {
+    background: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffe0b2;
+  }
+
+  .btn-check {
+    background: var(--ink-muted) !important;
+  }
+
   .register-btn { display: inline-flex; align-items: center; gap: 5px; background: var(--ink); color: white; padding: 7px 14px; border-radius: var(--pill-radius); font-size: 12px; font-weight: 500; text-decoration: none; transition: background 0.15s; white-space: nowrap; }
   .register-btn:hover { background: var(--accent); }
 
@@ -395,6 +420,8 @@ function renderEvent(event) {
     ${event.recurring === 'weekly' || event.recurring === 'monthly' ? `<div style="display:inline-flex;align-items:center;gap:6px;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;margin-bottom:1rem">🔁 Recurring ${event.recurring === 'weekly' ? 'Weekly' : 'Monthly'} — dates subject to change</div>` : ''}     <!-- EVENT HEADER -->
     <div class="event-header">
       <div class="event-header-top">
+        ${event.status === 'cancelled' ? '<div class="status-banner cancelled">⚠️ This event has been cancelled — check the organiser\'s website for details</div>' : ''}
+        ${event.status === 'postponed' ? '<div class="status-banner postponed">📅 This event has been postponed' + (event.notes ? ' — ' + event.notes : ' — new date TBC') + '</div>' : ''}
         <div class="event-badges">
           <span class="sport-badge ${sportClass}">${badgeLabel}</span>
           ${event.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
@@ -526,7 +553,10 @@ function renderEvent(event) {
               </td>
               <td><span class="disc-dist">${d.dist_display || '—'}</span></td>
               <td><span class="disc-price ${isFree ? 'free' : ''}">${isFree ? 'Free' : '$' + d.price}</span></td>
-              <td><a href="${regLink}" target="_blank" class="register-btn">Register →</a></td>
+              <td>${event.status === 'cancelled' || event.status === 'postponed'
+                ? `<a href="${event.org_website || event.event_url || '#'}" target="_blank" class="register-btn btn-check">Check organiser site →</a>`
+                : `<a href="${regLink}" target="_blank" class="register-btn">Register →</a>`
+              }</td>
             </tr>`;
           }).join('')}
         </tbody>
