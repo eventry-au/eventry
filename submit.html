@@ -922,7 +922,7 @@ function addMonthlyDate() {
   div.innerHTML = `
     <input type="date" name="monthly_date_${monthlyDateCount}" id="monthlyDate_${monthlyDateCount}" />
     <span class="monthly-date-label">Date ${monthlyDateCount}</span>
-    <button type="button" style="background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:16px" onclick="this.closest('.monthly-date-row').remove(); monthlyDateCount--;">✕</button>
+    <button type="button" style="background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:16px" onclick="this.closest('.monthly-date-row').remove();">✕</button>
   `;
   container.appendChild(div);
   if (monthlyDateCount >= 12) {
