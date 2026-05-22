@@ -1569,6 +1569,7 @@ async function initSite() {
 
   const liveEvents = await loadLiveEvents();
   window._allEvents = liveEvents || events;
+  _allEvents = window._allEvents;
 
   // Populate hero stats from real data
   const sports = [...new Set(window._allEvents.map(e => e.sport).filter(Boolean))];
