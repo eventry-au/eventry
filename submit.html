@@ -243,6 +243,18 @@
       <span class="field-hint">For recurring events (e.g. parkrun, club races) we'll remind you to update dates as needed.</span>
     </div>
 
+    <div class="field">
+      <label>Event type</label>
+      <select name="event_type" id="eventType">
+        <option value="">Select type (optional)</option>
+        <option value="race">🏁 Race — competitive, with results/timing</option>
+        <option value="training">🏋️ Training — structured training session</option>
+        <option value="social">🎉 Social — fun, community or non-competitive</option>
+        <option value="mixed">🤝 Mixed — competitive and social combined</option>
+      </select>
+      <span class="field-hint">Helps participants find the right kind of event for them.</span>
+    </div>
+
     <!-- ONE-OFF / ANNUAL DATE FIELDS -->
     <div class="field" id="dateStartWrap">
       <label>Event date <span class="req">*</span></label>
@@ -879,6 +891,7 @@ async function handleSubmit(e) {
     monthly_dates: monthlyDates,
     weekly_start: fd.get('weekly_start') || '',
     weekly_end: fd.get('weekly_end') || '',
+    event_type: (fd.get('event_type') || '').trim(),
     notes: (fd.get('notes') || '').trim(),
     series_name: (fd.get('series_name') || '').trim(),
     championship_pending: (fd.get('championship_pending') || '').trim(),
