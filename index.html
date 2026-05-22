@@ -1544,6 +1544,7 @@ async function loadLiveEvents() {
           state: e.state,
           organiser: e.org_name,
           link: e.event_url || '#',
+          status: e.status || '',
           featured: e.featured || false,           series_name: e.series_name || '',           championship_name: e.championship_name || '',           recurring: e.recurring || '',
           disciplines: (e.disciplines || []).map(d => ({
             name: d.disc_name || '',
