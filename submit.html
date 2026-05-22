@@ -139,7 +139,7 @@
   .upload-preview span { font-size: 13px; color: var(--ink-muted); flex: 1; }
   .upload-preview button { background: none; border: none; color: var(--ink-faint); cursor: pointer; font-size: 18px; }
 
-  /* SUBMIT */
+  .monthly-date-row {   display: flex;   align-items: center;   gap: 10px;   margin-bottom: 8px; } .monthly-date-label {   font-size: 12px;   color: var(--ink-muted);   min-width: 40px; }   /* SUBMIT */
   .submit-section { text-align: center; padding: 1rem 0; }
   .submit-btn { background: var(--ink); color: var(--white); border: none; border-radius: var(--pill-radius); padding: 16px 48px; font-size: 16px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s, transform 0.1s; display: inline-flex; align-items: center; gap: 10px; }
   .submit-btn:hover { background: var(--accent); }
@@ -216,54 +216,128 @@
     </div>
 
     <!-- SECTION 2: EVENT DETAILS -->
-    <div class="form-section">
-      <div class="section-header">
-        <div class="section-num">2</div>
-        <div class="section-title">Event details</div>
-      </div>
-      <div class="form-grid">
-        <div class="field col-span-2">
-          <label>Event name <span class="req">*</span></label>
-          <input type="text" name="event_name" placeholder="e.g. Blue Mountains Ultra Trail" required />
-        </div>
-        <div class="field col-span-2">
-          <label>Event description <span class="req">*</span></label>
-          <textarea name="description" placeholder="Tell participants what makes this event special — the course, the scenery, the vibe..." required></textarea>
-        </div>
-        <div class="field">
-          <label>Event date <span class="req">*</span></label>
-          <input type="date" name="event_date" id="eventDateInput" required />
-          <span class="field-hint">Use the date picker — avoid typing the date manually</span>
-        </div>
-        <div class="field">
-          <label>Event end date</label>
-          <input type="date" name="event_end_date" id="eventEndDateInput" />
-          <span class="field-hint">Leave blank if single day. Use the date picker.</span>
-        </div>
-        <div class="field">
-          <label>Suburb / Town <span class="req">*</span></label>
-          <input type="text" name="location" placeholder="e.g. Katoomba" required />
-        </div>
-        <div class="field">
-          <label>State <span class="req">*</span></label>
-          <select name="state" required>
-            <option value="">Select state...</option>
-            <option>NSW</option><option>VIC</option><option>QLD</option>
-            <option>WA</option><option>SA</option><option>TAS</option>
-            <option>ACT</option><option>NT</option>
-          </select>
-        </div>
-        <div class="field col-span-2">
-          <label>Venue / Address</label>
-          <input type="text" name="venue" placeholder="e.g. Echo Point Car Park, Katoomba NSW 2780" />
-        </div>
-        <div class="field col-span-2">
-          <label>Event website / Registration URL <span class="req">*</span></label>
-          <input type="url" name="event_url" placeholder="https://youreventregistration.com" required />
-        </div>
-      </div>
+<div class="form-section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">Event details</div>
+  </div>
+  <div class="form-grid">
+    <div class="field col-span-2">
+      <label>Event name <span class="req">*</span></label>
+      <input type="text" name="event_name" placeholder="e.g. Blue Mountains Ultra Trail" required />
+    </div>
+    <div class="field col-span-2">
+      <label>Event description <span class="req">*</span></label>
+      <textarea name="description" placeholder="Tell participants what makes this event special — the course, the scenery, the vibe..." required></textarea>
     </div>
 
+    <!-- RECURRING SELECTOR -->
+    <div class="field col-span-2">
+      <label>Is this a recurring event?</label>
+      <select name="recurring" id="recurringSelect" onchange="toggleDateFields()">
+        <option value="">One-off event</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="annual">Annual</option>
+      </select>
+      <span class="field-hint">For recurring events (e.g. parkrun, club races) we'll remind you to update dates as needed.</span>
+    </div>
+
+    <!-- ONE-OFF / ANNUAL DATE FIELDS -->
+    <div class="field" id="dateStartWrap">
+      <label>Event date <span class="req">*</span></label>
+      <input type="date" name="event_date" id="eventDateInput" required />
+      <span class="field-hint">Use the date picker — avoid typing the date manually.</span>
+    </div>
+    <div class="field" id="dateEndWrap">
+      <label>Event end date</label>
+      <input type="date" name="event_end_date" id="eventEndDateInput" />
+      <span class="field-hint">Leave blank if single day.</span>
+    </div>
+
+    <!-- WEEKLY DATE FIELDS -->
+    <div class="field" id="weeklyStartWrap" style="display:none">
+      <label>First event date <span class="req">*</span></label>
+      <input type="date" name="weekly_start" id="weeklyStartInput" />
+      <span class="field-hint">Use the date picker.</span>
+    </div>
+    <div class="field" id="weeklyEndWrap" style="display:none">
+      <label>Last event date (optional)</label>
+      <input type="date" name="weekly_end" id="weeklyEndInput" />
+      <span class="field-hint">Leave blank to generate the next 10 dates automatically.</span>
+    </div>
+
+    <!-- MONTHLY DATE FIELDS -->
+    <div class="field col-span-2" id="monthlyDatesWrap" style="display:none">
+      <label>Event dates <span class="req">*</span></label>
+      <div id="monthlyDatesContainer">
+        <div class="monthly-date-row">
+          <input type="date" name="monthly_date_1" id="monthlyDate_1" />
+          <span class="monthly-date-label">Date 1</span>
+        </div>
+      </div>
+      <button type="button" class="add-disc-btn" style="margin-top:8px" id="addMonthlyDateBtn" onclick="addMonthlyDate()">+ Add another date</button>
+      <span class="field-hint">Add up to 12 dates — one per month. Leave unused dates blank.</span>
+    </div>
+
+    <div class="field">
+      <label>Suburb / Town <span class="req">*</span></label>
+      <input type="text" name="location" placeholder="e.g. Katoomba" required />
+    </div>
+    <div class="field">
+      <label>State <span class="req">*</span></label>
+      <select name="state" required>
+        <option value="">Select state...</option>
+        <option>NSW</option><option>VIC</option><option>QLD</option>
+        <option>WA</option><option>SA</option><option>TAS</option>
+        <option>ACT</option><option>NT</option>
+      </select>
+    </div>
+    <div class="field col-span-2">
+      <label>Venue / Address</label>
+      <input type="text" name="venue" placeholder="e.g. Echo Point Car Park, Katoomba NSW 2780" />
+    </div>
+    <div class="field col-span-2">
+      <label>Event website / Registration URL <span class="req">*</span></label>
+      <input type="url" name="event_url" placeholder="https://youreventregistration.com" required />
+    </div>
+
+    <!-- SERIES TOGGLE -->
+    <div class="field col-span-2">
+      <label>Is this event part of a series?</label>
+      <select name="series_toggle" id="seriesToggle" onchange="toggleSeriesField()">
+        <option value="">No</option>
+        <option value="yes">Yes</option>
+      </select>
+    </div>
+    <div class="field col-span-2" id="seriesNameField" style="display:none">
+      <label>Series name</label>
+      <input type="text" name="series_name" placeholder="e.g. RunThrough Summer Series 2026" />
+      <span class="field-hint">The series name will appear as a label on your event card.</span>
+    </div>
+
+    <!-- CHAMPIONSHIP TOGGLE -->
+    <div class="field col-span-2">
+      <label>Is this event part of a championship?</label>
+      <select name="championship_toggle" id="championshipToggle" onchange="toggleChampionshipField()">
+        <option value="">No</option>
+        <option value="yes">Yes</option>
+      </select>
+    </div>
+    <div class="field col-span-2" id="championshipNameField" style="display:none">
+      <label>Championship name</label>
+      <input type="text" name="championship_pending" placeholder="e.g. Hunter Triathlon Club Championship 2026" />
+      <span class="field-hint">Championship listings are subject to Eventry review before appearing on your event card.</span>
+    </div>
+
+    <!-- NOTES -->
+    <div class="field col-span-2">
+      <label>Additional notes</label>
+      <textarea name="notes" placeholder="Any extra details — parking, gear requirements, cut-off times, course info..."></textarea>
+    </div>
+
+  </div>
+</div>
     <!-- SECTION 3: DISCIPLINES -->
     <div class="form-section">
       <div class="section-header">
@@ -280,81 +354,7 @@
       </button>
     </div>
 
-    <!-- SECTION 4: ADDITIONAL INFO -->
-    <div class="form-section">
-      <div class="section-header">
-        <div class="section-num">4</div>
-        <div class="section-title">Additional information</div>
-      </div>
-      <div class="form-grid">
-        <div class="field">
-          <label>Min age</label>
-          <input type="number" name="min_age" placeholder="e.g. 16" min="0" max="120" />
-        </div>
-        <div class="field">
-          <label>Max participants</label>
-          <input type="number" name="max_participants" placeholder="e.g. 500" />
-        </div>
-        <div class="field col-span-2">
-          <label>Is this a recurring event?</label>
-          <select name="recurring" id="recurringSelect" onchange="toggleRecurringFields()">
-            <option value="">One-off event</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="annual">Annual</option>
-          </select>
-          <span class="field-hint">For recurring events (e.g. parkrun, club races) we'll remind you to update the next date.</span>
-        </div>
-        <div class="field col-span-2" id="recurringNoteField" style="display:none">
-          <label>Recurring event notes</label>
-          <input type="text" name="recurring_note" placeholder="e.g. Every Saturday 8am, Speers Point Park — next date updated monthly" />
-        </div>
-        <div class="field col-span-2">
-          <label>Additional notes</label>
-          <textarea name="notes" placeholder="Any extra details — parking, gear requirements, cut-off times, course info..."></textarea>
-        </div>
 
-        <!-- SERIES TOGGLE -->
-        <div class="field col-span-2">
-          <label>Is this event part of a series?</label>
-          <select name="series_toggle" id="seriesToggle" onchange="toggleSeriesField()">
-            <option value="">No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </div>
-        <div class="field col-span-2" id="seriesNameField" style="display:none">
-          <label>Series name</label>
-          <input type="text" name="series_name" placeholder="e.g. RunThrough Summer Series 2026" />
-          <span class="field-hint">The series name will appear as a label on your event card.</span>
-        </div>
-
-        <!-- CHAMPIONSHIP TOGGLE -->
-        <div class="field col-span-2">
-          <label>Is this event part of a championship?</label>
-          <select name="championship_toggle" id="championshipToggle" onchange="toggleChampionshipField()">
-            <option value="">No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </div>
-        <div class="field col-span-2" id="championshipNameField" style="display:none">
-          <label>Championship name</label>
-          <input type="text" name="championship_pending" placeholder="e.g. Hunter Triathlon Club Championship 2026" />
-          <span class="field-hint">Championship listings are subject to Eventry review before appearing on your event card.</span>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="submit-section">
-      <button type="submit" class="submit-btn">
-        Submit event for review
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-      <p class="submit-note">Your event will be reviewed and published within 24 hours. We'll email you once it's live.</p>
-    </div>
-
-  </form>
-</div>
 
 <script>
 const SPORT_SUBTYPES = {
@@ -884,10 +884,50 @@ async function handleSubmit(e) {
   }
 }
 
-function toggleRecurringFields() {
+let monthlyDateCount = 1;
+
+function toggleDateFields() {
   const val = document.getElementById('recurringSelect')?.value;
-  const noteField = document.getElementById('recurringNoteField');
-  if (noteField) noteField.style.display = val ? 'flex' : 'none';
+  const dateStartWrap = document.getElementById('dateStartWrap');
+  const dateEndWrap = document.getElementById('dateEndWrap');
+  const weeklyStartWrap = document.getElementById('weeklyStartWrap');
+  const weeklyEndWrap = document.getElementById('weeklyEndWrap');
+  const monthlyDatesWrap = document.getElementById('monthlyDatesWrap');
+
+  // Hide all first
+  dateStartWrap.style.display = 'none';
+  dateEndWrap.style.display = 'none';
+  weeklyStartWrap.style.display = 'none';
+  weeklyEndWrap.style.display = 'none';
+  monthlyDatesWrap.style.display = 'none';
+
+  if (val === 'weekly') {
+    weeklyStartWrap.style.display = 'flex';
+    weeklyEndWrap.style.display = 'flex';
+  } else if (val === 'monthly') {
+    monthlyDatesWrap.style.display = 'flex';
+  } else {
+    // One-off or Annual — show standard date fields
+    dateStartWrap.style.display = 'flex';
+    dateEndWrap.style.display = val === 'annual' ? 'none' : 'flex';
+  }
+}
+
+function addMonthlyDate() {
+  if (monthlyDateCount >= 12) return;
+  monthlyDateCount++;
+  const container = document.getElementById('monthlyDatesContainer');
+  const div = document.createElement('div');
+  div.className = 'monthly-date-row';
+  div.innerHTML = `
+    <input type="date" name="monthly_date_${monthlyDateCount}" id="monthlyDate_${monthlyDateCount}" />
+    <span class="monthly-date-label">Date ${monthlyDateCount}</span>
+    <button type="button" style="background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:16px" onclick="this.closest('.monthly-date-row').remove(); monthlyDateCount--;">✕</button>
+  `;
+  container.appendChild(div);
+  if (monthlyDateCount >= 12) {
+    document.getElementById('addMonthlyDateBtn').style.display = 'none';
+  }
 }
 
 function toggleSeriesField() {
