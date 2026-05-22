@@ -319,7 +319,39 @@ function shareEvent(name, id) {
     });
   }
 }
-
+function normaliseSport(raw) {
+  if (!raw) return 'Other';
+  switch (raw.toLowerCase().trim()) {
+    case 'running':                return 'Running';
+    case 'cycling':
+    case 'cycling_road':           return 'Cycling';
+    case 'cycling_mtb':
+    case 'mtb':                    return 'Cycling MTB';
+    case 'triathlon':              return 'Triathlon';
+    case 'duathlon':               return 'Triathlon';
+    case 'openwater':
+    case 'open water':
+    case 'open water swimming':    return 'Open Water Swimming';
+    case 'obstacle':
+    case 'obstacle racing':
+    case 'obstacle_racing':
+    case 'ocr':                    return 'Obstacle Racing';
+    case 'adventure':
+    case 'adventure racing':
+    case 'adventure_racing':       return 'Adventure Racing';
+    case 'paddling':               return 'Paddling';
+    case 'hiking':                 return 'Hiking';
+    case 'fitness':                return 'Fitness';
+    case 'equestrian':             return 'Equestrian';
+    case 'snow sports':
+    case 'snowsports':
+    case 'snow':                   return 'Snow Sports';
+    case 'orienteering':           return 'Orienteering';
+    case 'rowing':                 return 'Rowing';
+    case 'other':                  return 'Other';
+    default:                       return raw;
+  }
+}
 function renderLegs(legsStr) {
   try {
     const legs = typeof legsStr === 'string' ? JSON.parse(legsStr) : legsStr;
@@ -334,7 +366,7 @@ function renderLegs(legsStr) {
 }
 
 function renderEvent(event) {
-  const sport = event.disciplines?.[0]?.sport || 'other';
+  const sport = normaliseSport(event.disciplines?.[0]?.sport || 'other');
   const subtype = event.disciplines?.[0]?.subtype || '';
   const sportClass = SPORT_CLASSES[sport] || 'sport-other';
   const orgColor = ORG_COLORS[event.org_name] || '#555';
