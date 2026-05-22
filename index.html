@@ -1130,6 +1130,15 @@
         <option value="Alpine Events">Alpine Events</option>
       </select>
 
+      <span class="filter-label">Event type</span>
+      <select id="eventTypeFilter" onchange="applyFilters()">
+        <option value="">All types</option>
+        <option value="race">🏁 Race</option>
+        <option value="training">🏋️ Training</option>
+        <option value="social">🎉 Social</option>
+        <option value="mixed">🤝 Mixed</option>
+      </select>
+
       <span class="filter-label">Price</span>
       <select id="priceFilter" onchange="applyFilters()">
         <option value="">Any Price</option>
@@ -1441,9 +1450,10 @@ function toggleFilters() {
 
 function updateFilterCount() {
   const filters = [
-    document.getElementById('stateFilter')?.value,
-    document.getElementById('organiserFilter')?.value,
-    document.getElementById('priceFilter')?.value,
+      document.getElementById('stateFilter')?.value,
+      document.getElementById('organiserFilter')?.value,
+      document.getElementById('eventTypeFilter')?.value,
+      document.getElementById('priceFilter')?.value,
     document.getElementById('dateFrom')?.value,
     document.getElementById('dateTo')?.value,
   ].filter(Boolean);
@@ -1647,6 +1657,7 @@ function applyFilters() {
   const state = document.getElementById('stateFilter').value;
   const organiser = document.getElementById('organiserFilter').value;
   const price = document.getElementById('priceFilter').value;
+    const eventType = document.getElementById('eventTypeFilter').value;
   const dateFrom = document.getElementById('dateFrom').value;
   const dateTo = document.getElementById('dateTo').value;
   const sort = document.getElementById('sortSelect').value;
@@ -1656,6 +1667,7 @@ function applyFilters() {
     if (activeSubtype !== 'all' && e.subtype !== activeSubtype) return false;
     if (state && e.state !== state) return false;
     if (organiser && e.organiser !== organiser) return false;
+    if (eventType && e.event_type !== eventType) return false;
     if (price === 'free' && !e.disciplines.some(d => d.price === 0)) return false;
     if (price === 'under50' && Math.min(...e.disciplines.map(d=>d.price)) >= 50) return false;
     if (price === 'under100' && Math.min(...e.disciplines.map(d=>d.price)) >= 100) return false;
@@ -1704,7 +1716,8 @@ function clearFilters() {
   document.getElementById('searchInput').value = '';
   document.getElementById('stateFilter').value = '';
   document.getElementById('organiserFilter').value = '';
-  document.getElementById('priceFilter').value = '';
+  document.getElementById('eventTypeFilter').value = '';
+    document.getElementById('priceFilter').value = '';
   document.getElementById('dateFrom').value = '';
   document.getElementById('dateTo').value = '';
   // Clear location filter too
