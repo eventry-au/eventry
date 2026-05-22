@@ -480,9 +480,50 @@
   }
 
   .event-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     border-color: var(--border-strong);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .event-card.is-cancelled,
+  .event-card.is-postponed {
+    opacity: 0.55;
+    filter: grayscale(40%);
+  }
+
+  .event-card.is-cancelled:hover,
+  .event-card.is-postponed:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .status-banner {
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .status-banner.cancelled {
+    background: #fdecea;
+    color: #c0392b;
+    border-bottom: 1px solid #f5c6c6;
+  }
+
+  .status-banner.postponed {
+    background: #fff3e0;
+    color: #e65100;
+    border-bottom: 1px solid #ffe0b2;
+  }
+
+  .card-disclaimer {
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 7px 14px 10px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+    font-style: italic;
   }
 
   .card-header {
@@ -1544,6 +1585,10 @@ async function initSite() {
   document.getElementById('totalEvents').textContent = window._allEvents.length;
   // Default sort: featured first, then soonest, then alphabetical
   renderEvents(window._allEvents.slice().sort((a,b) => {
+    const aInactive = a.status === 'cancelled' || a.status === 'postponed';
+    const bInactive = b.status === 'cancelled' || b.status === 'postponed';
+    if (aInactive && !bInactive) return 1;
+    if (!aInactive && bInactive) return -1;
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
     const dateDiff = (a.date||'').localeCompare(b.date||'');
@@ -1791,7 +1836,9 @@ function renderEvents(list) {
         : '<span class="price-tag">From $' + minPrice + '</span>';
 
     return `
-    <div class="event-card${e.featured ? ' featured' : ''}" style="animation-delay:${delay}s">
+    <div class="event-card${e.featured ? ' featured' : ''}${e.status === 'cancelled' ? ' is-cancelled' : e.status === 'postponed' ? ' is-postponed' : ''}" style="animation-delay:${delay}s">
+      ${e.status === 'cancelled' ? '<div class="status-banner cancelled">Cancelled</div>' : ''}
+      ${e.status === 'postponed' ? '<div class="status-banner postponed">Postponed</div>' : ''}
       ${e.featured ? '<div class="featured-badge">Featured</div>' : ''}
       ${e.series_name ? `<div class="event-ribbon series">🔗 ${e.series_name}</div>` : ''}
       ${e.championship_name ? `<div class="event-ribbon championship">🏆 ${e.championship_name}</div>` : ''}
@@ -1828,6 +1875,7 @@ function renderEvents(list) {
           <a href="event.html?id=${e.id}" class="register-btn">View →</a>
         </div>
       </div>
+      <p class="card-disclaimer">Always confirm with organiser before registering</p>
     </div>`;
   }).join('');
 }
