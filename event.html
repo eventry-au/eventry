@@ -70,6 +70,18 @@
   .event-header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .event-badges { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .sport-badge { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 12px; border-radius: var(--pill-radius); }
+  .event-type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: var(--pill-radius);
+    background: var(--surface);
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+  }
+
   .featured-badge { background: var(--accent); color: white; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: var(--pill-radius); }
   .event-actions { display: flex; gap: 8px; align-items: center; }
   .action-btn { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--pill-radius); border: 1px solid var(--border); background: var(--white); font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--ink-muted); cursor: pointer; text-decoration: none; transition: all 0.15s; white-space: nowrap; }
@@ -425,6 +437,7 @@ function renderEvent(event) {
         <div class="event-badges">
           <span class="sport-badge ${sportClass}">${badgeLabel}</span>
           ${event.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
+          ${event.event_type ? `<span class="event-type-badge">${event.event_type === 'race' ? '🏁 Race' : event.event_type === 'training' ? '🏋️ Training' : event.event_type === 'social' ? '🎉 Social' : '🤝 Mixed'}</span>` : ''}
         </div>
         <div class="event-actions">
           <button class="action-btn" onclick="shareEvent('${event.event_name.replace(/'/g,"\\'")}','${event.submission_id}')">
