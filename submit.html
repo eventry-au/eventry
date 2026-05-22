@@ -843,6 +843,15 @@ async function handleSubmit(e) {
 
   const form = document.getElementById('eventForm');
   const fd = new FormData(form);
+  const recurring = fd.get('recurring') || '';
+
+  // Collect monthly dates
+  const monthlyDates = [];
+  for (let i = 1; i <= 12; i++) {
+    const d = fd.get(`monthly_date_${i}`);
+    if (d && isValidDateValue(d)) monthlyDates.push(d);
+  }
+
   const payload = {
     org_name: (fd.get('org_name') || '').trim(),
     org_email: (fd.get('contact_email') || '').trim(),
@@ -850,23 +859,22 @@ async function handleSubmit(e) {
     org_website: (fd.get('website') || '').trim(),
     contact_name: (fd.get('contact_name') || '').trim(),
     event_name: (fd.get('event_name') || '').trim(),
-    event_date: fd.get('event_date'),
-    event_end_date: fd.get('event_end_date'),
+    event_date: recurring === 'weekly' ? fd.get('weekly_start') : (recurring === 'monthly' ? (monthlyDates[0] || '') : fd.get('event_date')),
+    event_end_date: recurring === 'weekly' ? fd.get('weekly_end') : fd.get('event_end_date'),
     location: (fd.get('location') || '').trim(),
     state: fd.get('state'),
     venue: (fd.get('venue') || '').trim(),
     event_url: (fd.get('event_url') || '').trim(),
     description: (fd.get('description') || '').trim(),
-    recurring: fd.get('recurring') || '',
-    recurring_note: (fd.get('recurring_note') || '').trim(),
-    min_age: fd.get('min_age'),
-    max_participants: fd.get('max_participants'),
+    recurring,
+    monthly_dates: monthlyDates,
+    weekly_start: fd.get('weekly_start') || '',
+    weekly_end: fd.get('weekly_end') || '',
     notes: (fd.get('notes') || '').trim(),
     series_name: (fd.get('series_name') || '').trim(),
     championship_pending: (fd.get('championship_pending') || '').trim(),
     disciplines: collectDisciplines()
   };
-
   try {
     await fetch(SCRIPT_URL, {
       method: 'POST',
