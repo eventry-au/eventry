@@ -622,6 +622,19 @@
 
   .price-tag.free { color: #2e7d32; }
 
+  .event-type-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: var(--pill-radius);
+    background: var(--surface);
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
   .register-btn {
     background: var(--ink);
     color: var(--white);
@@ -1545,6 +1558,7 @@ async function loadLiveEvents() {
           organiser: e.org_name,
           link: e.event_url || '#',
           status: e.status || '',
+          event_type: e.event_type || '',
           featured: e.featured || false,           series_name: e.series_name || '',           championship_name: e.championship_name || '',           recurring: e.recurring || '',
           disciplines: (e.disciplines || []).map(d => ({
             name: d.disc_name || '',
@@ -1846,6 +1860,7 @@ function renderEvents(list) {
       ${e.championship_name ? `<div class="event-ribbon championship">🏆 ${e.championship_name}</div>` : ''}
       <div class="card-header">
         <span class="sport-badge ${sportClass}">${badgeLabel}</span>
+        ${e.event_type ? `<span class="event-type-tag">${e.event_type === 'race' ? '🏁 Race' : e.event_type === 'training' ? '🏋️ Training' : e.event_type === 'social' ? '🎉 Social' : '🤝 Mixed'}</span>` : ''}
         <button class="share-btn" onclick="shareEvent('${e.id}','${e.name.replace(/'/g,"\\'")}',this)" title="Share this event">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Share
