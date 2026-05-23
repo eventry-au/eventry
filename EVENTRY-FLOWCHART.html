@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventry — Site Function Flowchart</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f3ef; margin: 0; padding: 2rem; }
+  h1 { font-size: 20px; color: #0d0d0d; margin-bottom: 0.25rem; }
+  p.meta { font-size: 13px; color: #888; margin-bottom: 2rem; }
+  .chart-wrap { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); max-width: 900px; margin: 0 auto; }
+  svg { width: 100%; height: auto; }
+
+  .node-page rect { fill: #f3e5f5; stroke: #9c27b0; }
+  .node-data rect { fill: #e0f7fa; stroke: #00838f; }
+  .node-action rect { fill: #e8f5e9; stroke: #2e7d32; }
+  .node-pending rect { fill: #fff8e1; stroke: #f57f17; }
+  .node-partner rect { fill: #fdf0eb; stroke: #e8572a; }
+  .node-neutral rect { fill: #f5f5f5; stroke: #9e9e9e; }
+  .node-gold rect { fill: #fdf8ee; stroke: #c8860a; }
+  .node-cancelled rect { fill: #fce8e6; stroke: #c62828; }
+  .node-postponed rect { fill: #fff3e0; stroke: #e65100; }
+
+  text { font-family: 'Segoe UI', sans-serif; fill: #0d0d0d; }
+  .label { font-size: 13px; font-weight: 600; }
+  .sublabel { font-size: 11px; fill: #666; }
+  line, path { stroke: #bbb; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .chart-wrap { box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="chart-wrap">
+<h1>Eventry — Site Function Map</h1>
+<p class="meta">eventry.au · Last updated 23 May 2026 · Session 9 · Print or save as PDF for reference</p>
+
+<svg viewBox="0 0 860 2500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+  </marker>
+</defs>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--              PARTICIPANT JOURNEY            -->
+<!-- ═══════════════════════════════════════════ -->
+
+<!-- VISITOR -->
+<g class="node-neutral">
+  <rect x="280" y="20" width="200" height="44" rx="8"/>
+  <text x="380" y="46" text-anchor="middle" class="label">Visitor arrives at eventry.au</text>
+</g>
+<line x1="380" y1="64" x2="380" y2="88" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- HOMEPAGE -->
+<g class="node-page">
+  <rect x="240" y="88" width="280" height="54" rx="8"/>
+  <text x="380" y="109" text-anchor="middle" class="label">Homepage (index.html)</text>
+  <text x="380" y="128" text-anchor="middle" class="sublabel">Hero · sport pills · events grid · event type filter</text>
+</g>
+<line x1="380" y1="142" x2="380" y2="166" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- LOAD EVENTS -->
+<g class="node-data">
+  <rect x="240" y="166" width="280" height="54" rx="8"/>
+  <text x="380" y="187" text-anchor="middle" class="label">Load events + partners from sheet</text>
+  <text x="380" y="206" text-anchor="middle" class="sublabel">Apps Script doGet → JSON · 10-min localStorage cache</text>
+</g>
+<line x1="380" y1="220" x2="380" y2="244" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- RENDER GRID -->
+<g class="node-data">
+  <rect x="240" y="244" width="280" height="64" rx="8"/>
+  <text x="380" y="265" text-anchor="middle" class="label">Render events grid</text>
+  <text x="380" y="282" text-anchor="middle" class="sublabel">Featured first → date → A–Z</text>
+  <text x="380" y="299" text-anchor="middle" class="sublabel">Cancelled/postponed sink to bottom</text>
+</g>
+
+<!-- PARTNER CARDS branch right -->
+<line x1="520" y1="276" x2="570" y2="276" stroke="#999" marker-end="url(#arr)"/>
+<g class="node-partner">
+  <rect x="570" y="250" width="160" height="54" rx="8"/>
+  <text x="650" y="271" text-anchor="middle" class="label">Partner cards</text>
+  <text x="650" y="288" text-anchor="middle" class="sublabel">Injected every 6 events</text>
+  <text x="650" y="301" text-anchor="middle" class="sublabel">State + sport matched</text>
+</g>
+
+<line x1="380" y1="308" x2="380" y2="332" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- FILTER -->
+<g class="node-page">
+  <rect x="240" y="332" width="280" height="54" rx="8"/>
+  <text x="380" y="353" text-anchor="middle" class="label">Filter &amp; search</text>
+  <text x="380" y="372" text-anchor="middle" class="sublabel">Sport · state · price · date · event type · sort</text>
+</g>
+
+<!-- SHARE branch left -->
+<line x1="240" y1="359" x2="190" y2="359" stroke="#999" stroke-dasharray="4 3"/>
+<line x1="190" y1="359" x2="190" y2="430" stroke="#999" marker-end="url(#arr)"/>
+<g class="node-partner">
+  <rect x="60" y="430" width="160" height="44" rx="8"/>
+  <text x="140" y="451" text-anchor="middle" class="label">Share event</text>
+  <text x="140" y="466" text-anchor="middle" class="sublabel">Copy link · native share</text>
+</g>
+
+<line x1="380" y1="386" x2="380" y2="410" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- EVENT CARD -->
+<g class="node-page">
+  <rect x="240" y="410" width="280" height="64" rx="8"/>
+  <text x="380" y="431" text-anchor="middle" class="label">Event card</text>
+  <text x="380" y="448" text-anchor="middle" class="sublabel">Sport badge · event type tag · series/championship ribbon</text>
+  <text x="380" y="465" text-anchor="middle" class="sublabel">Cancelled (red banner) · Postponed (orange banner)</text>
+</g>
+<line x1="380" y1="474" x2="380" y2="498" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- EVENT DETAIL -->
+<g class="node-page">
+  <rect x="240" y="498" width="280" height="64" rx="8"/>
+  <text x="380" y="519" text-anchor="middle" class="label">Event detail (event.html?id=X)</text>
+  <text x="380" y="536" text-anchor="middle" class="sublabel">Description · disciplines · event type badge</text>
+  <text x="380" y="553" text-anchor="middle" class="sublabel">Series/championship · cancellation banner</text>
+</g>
+
+<!-- Calendar branch right -->
+<line x1="520" y1="530" x2="570" y2="530" stroke="#999" marker-end="url(#arr)"/>
+<g class="node-data">
+  <rect x="570" y="506" width="150" height="44" rx="8"/>
+  <text x="645" y="527" text-anchor="middle" class="label">Add to calendar</text>
+  <text x="645" y="542" text-anchor="middle" class="sublabel">Google · iCal</text>
+</g>
+
+<!-- Organiser profile branch left -->
+<line x1="240" y1="530" x2="190" y2="530" stroke="#999" stroke-dasharray="4 3"/>
+<line x1="190" y1="530" x2="190" y2="620" stroke="#999" marker-end="url(#arr)"/>
+<g class="node-partner">
+  <rect x="60" y="620" width="160" height="44" rx="8"/>
+  <text x="140" y="641" text-anchor="middle" class="label">Organiser profile</text>
+  <text x="140" y="656" text-anchor="middle" class="sublabel">organiser.html?name=X</text>
+</g>
+
+<line x1="380" y1="562" x2="380" y2="586" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- REGISTER -->
+<g class="node-action">
+  <rect x="240" y="586" width="280" height="44" rx="8"/>
+  <text x="380" y="612" text-anchor="middle" class="label">Register → organiser's site</text>
+</g>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--              ORGANISER JOURNEY              -->
+<!-- ═══════════════════════════════════════════ -->
+
+<line x1="40" y1="680" x2="820" y2="680" stroke="#e0ddd8" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="430" y="700" text-anchor="middle" font-size="11" fill="#aaa">— organiser journey —</text>
+
+<!-- ORGANISER ARRIVES -->
+<g class="node-neutral">
+  <rect x="280" y="716" width="200" height="44" rx="8"/>
+  <text x="380" y="742" text-anchor="middle" class="label">Organiser visits site</text>
+</g>
+<line x1="380" y1="760" x2="380" y2="784" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- PRICING -->
+<g class="node-page">
+  <rect x="240" y="784" width="280" height="54" rx="8"/>
+  <text x="380" y="805" text-anchor="middle" class="label">Pricing page (pricing.html)</text>
+  <text x="380" y="824" text-anchor="middle" class="sublabel">Standard (free) · Featured ($49 AUD) · Partners</text>
+</g>
+
+<!-- Partner enquiry right -->
+<line x1="520" y1="811" x2="570" y2="811" stroke="#999" marker-end="url(#arr)"/>
+<g class="node-partner">
+  <rect x="570" y="784" width="160" height="54" rx="8"/>
+  <text x="650" y="805" text-anchor="middle" class="label">Partner enquiry</text>
+  <text x="650" y="822" text-anchor="middle" class="sublabel">Email to Eventry</text>
+  <text x="650" y="835" text-anchor="middle" class="sublabel">Adriaan adds manually</text>
+</g>
+
+<line x1="380" y1="838" x2="380" y2="862" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- SUBMIT FORM -->
+<g class="node-page">
+  <rect x="240" y="862" width="280" height="64" rx="8"/>
+  <text x="380" y="883" text-anchor="middle" class="label">Submit form (submit.html)</text>
+  <text x="380" y="900" text-anchor="middle" class="sublabel">S1: Organiser · S2: Event details · S3: Disciplines</text>
+  <text x="380" y="917" text-anchor="middle" class="sublabel">+ Featured upgrade checkbox ($49 AUD)</text>
+</g>
+<line x1="380" y1="926" x2="380" y2="950" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- FEATURED DECISION -->
+<g class="node-gold">
+  <rect x="240" y="950" width="280" height="54" rx="8"/>
+  <text x="380" y="971" text-anchor="middle" class="label">Featured checkbox checked?</text>
+  <text x="380" y="990" text-anchor="middle" class="sublabel">Intercepts click before form validation</text>
+</g>
+
+<!-- YES branch right -->
+<line x1="520" y1="977" x2="570" y2="977" stroke="#c8860a" marker-end="url(#arr)"/>
+<g class="node-gold">
+  <rect x="570" y="950" width="160" height="54" rx="8"/>
+  <text x="650" y="971" text-anchor="middle" class="label" style="fill:#c8860a">⭐ Yes → Featured</text>
+  <text x="650" y="990" text-anchor="middle" class="sublabel">Redirect to pricing.html</text>
+  <text x="650" y="1003" text-anchor="middle" class="sublabel">Contact Eventry to arrange</text>
+</g>
+
+<!-- NO branch down -->
+<text x="355" y="1022" text-anchor="middle" font-size="10" fill="#888">No (standard)</text>
+<line x1="380" y1="1004" x2="380" y2="1028" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- APPS SCRIPT POST -->
+<g class="node-data">
+  <rect x="240" y="1028" width="280" height="64" rx="8"/>
+  <text x="380" y="1049" text-anchor="middle" class="label">Apps Script doPost</text>
+  <text x="380" y="1066" text-anchor="middle" class="sublabel">Duplicate check · multi-date recurring</text>
+  <text x="380" y="1083" text-anchor="middle" class="sublabel">Write to Sheet · email notification + confirmation</text>
+</g>
+<line x1="380" y1="1092" x2="380" y2="1116" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- PENDING -->
+<g class="node-pending">
+  <rect x="240" y="1116" width="280" height="54" rx="8"/>
+  <text x="380" y="1137" text-anchor="middle" class="label">Sheet: status = pending</text>
+  <text x="380" y="1156" text-anchor="middle" class="sublabel">Awaiting Eventry review · email sent to organiser</text>
+</g>
+<line x1="380" y1="1170" x2="380" y2="1194" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- APPROVAL DECISION -->
+<g class="node-page">
+  <rect x="240" y="1194" width="280" height="64" rx="8"/>
+  <text x="380" y="1215" text-anchor="middle" class="label">Eventry reviews in sheet</text>
+  <text x="380" y="1232" text-anchor="middle" class="sublabel">Set col B status:</text>
+  <text x="380" y="1249" text-anchor="middle" class="sublabel">approved / featured / duplicate / cancelled / postponed</text>
+</g>
+
+<!-- CANCELLED branch left -->
+<line x1="240" y1="1226" x2="160" y2="1226" stroke="#c62828" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+<g class="node-cancelled">
+  <rect x="20" y="1200" width="140" height="54" rx="8"/>
+  <text x="90" y="1221" text-anchor="middle" class="label" style="fill:#c62828">Cancelled</text>
+  <text x="90" y="1238" text-anchor="middle" class="sublabel">Shows greyed on site</text>
+  <text x="90" y="1251" text-anchor="middle" class="sublabel">Red banner on card</text>
+</g>
+
+<!-- POSTPONED branch left lower -->
+<line x1="240" y1="1246" x2="160" y2="1246" stroke="#e65100" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+<g class="node-postponed">
+  <rect x="20" y="1260" width="140" height="54" rx="8"/>
+  <text x="90" y="1281" text-anchor="middle" class="label" style="fill:#e65100">Postponed</text>
+  <text x="90" y="1298" text-anchor="middle" class="sublabel">Shows greyed on site</text>
+  <text x="90" y="1311" text-anchor="middle" class="sublabel">Orange banner on card</text>
+</g>
+
+<line x1="380" y1="1258" x2="380" y2="1282" stroke="#999" marker-end="url(#arr)"/>
+
+<!-- LIVE -->
+<g class="node-action">
+  <rect x="240" y="1282" width="280" height="44" rx="8"/>
+  <text x="380" y="1308" text-anchor="middle" class="label">Event live on eventry.au ✓</text>
+</g>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--           NEWSLETTER & COOKIES              -->
+<!-- ═══════════════════════════════════════════ -->
+
+<line x1="40" y1="1370" x2="820" y2="1370" stroke="#e0ddd8" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="430" y="1390" text-anchor="middle" font-size="11" fill="#aaa">— newsletter &amp; cookies —</text>
+
+<!-- NEWSLETTER -->
+<g class="node-page">
+  <rect x="60" y="1406" width="260" height="44" rx="8"/>
+  <text x="190" y="1427" text-anchor="middle" class="label">Newsletter signup</text>
+  <text x="190" y="1442" text-anchor="middle" class="sublabel">Name · email · state · sport</text>
+</g>
+<line x1="190" y1="1450" x2="190" y2="1474" stroke="#999" marker-end="url(#arr)"/>
+<g class="node-data">
+  <rect x="60" y="1474" width="260" height="44" rx="8"/>
+  <text x="190" y="1500" text-anchor="middle" class="label">Saved → Newsletter Subscribers tab</text>
+</g>
+
+<!-- COOKIES -->
+<g class="node-neutral">
+  <rect x="400" y="1406" width="260" height="44" rx="8"/>
+  <text x="530" y="1427" text-anchor="middle" class="label">Cookie banner</text>
+  <text x="530" y="1442" text-anchor="middle" class="sublabel">Accept → GA on · Decline → GA off</text>
+</g>
+<line x1="530" y1="1450" x2="530" y2="1474" stroke="#999" marker-end="url(#arr)"/>
+<g class="node-data">
+  <rect x="400" y="1474" width="260" height="44" rx="8"/>
+  <text x="530" y="1500" text-anchor="middle" class="label">Saved to localStorage</text>
+</g>
+
+<!-- GA -->
+<line x1="190" y1="1518" x2="350" y2="1558" stroke="#ccc" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+<line x1="530" y1="1518" x2="410" y2="1558" stroke="#ccc" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+<g class="node-neutral">
+  <rect x="240" y="1558" width="280" height="44" rx="8"/>
+  <text x="380" y="1584" text-anchor="middle" class="label">Google Analytics G-FM7R4KLD57</text>
+</g>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--                   LEGEND                    -->
+<!-- ═══════════════════════════════════════════ -->
+
+<line x1="40" y1="1640" x2="820" y2="1640" stroke="#e0ddd8" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="430" y="1660" text-anchor="middle" font-size="11" fill="#aaa">— legend —</text>
+
+<g class="node-page"><rect x="60" y="1676" width="20" height="20" rx="4"/></g>
+<text x="90" y="1691" font-size="12" fill="#555">Pages / UI</text>
+
+<g class="node-data"><rect x="200" y="1676" width="20" height="20" rx="4"/></g>
+<text x="230" y="1691" font-size="12" fill="#555">Data / backend</text>
+
+<g class="node-pending"><rect x="360" y="1676" width="20" height="20" rx="4"/></g>
+<text x="390" y="1691" font-size="12" fill="#555">Pending / waiting</text>
+
+<g class="node-action"><rect x="520" y="1676" width="20" height="20" rx="4"/></g>
+<text x="550" y="1691" font-size="12" fill="#555">Success / live</text>
+
+<g class="node-partner"><rect x="660" y="1676" width="20" height="20" rx="4"/></g>
+<text x="690" y="1691" font-size="12" fill="#555">Partner / feature</text>
+
+<g class="node-neutral"><rect x="60" y="1710" width="20" height="20" rx="4"/></g>
+<text x="90" y="1725" font-size="12" fill="#555">Entry / neutral</text>
+
+<g class="node-gold"><rect x="200" y="1710" width="20" height="20" rx="4"/></g>
+<text x="230" y="1725" font-size="12" fill="#555">Featured / paid</text>
+
+<g class="node-cancelled"><rect x="360" y="1710" width="20" height="20" rx="4"/></g>
+<text x="390" y="1725" font-size="12" fill="#555">Cancelled</text>
+
+<g class="node-postponed"><rect x="520" y="1710" width="20" height="20" rx="4"/></g>
+<text x="550" y="1725" font-size="12" fill="#555">Postponed</text>
+
+<line x1="60" y1="1748" x2="90" y2="1748" stroke="#999" stroke-dasharray="4 3"/>
+<text x="100" y="1752" font-size="12" fill="#555">Optional / branch path</text>
+
+<line x1="260" y1="1748" x2="290" y2="1748" stroke="#999" marker-end="url(#arr)"/>
+<text x="300" y="1752" font-size="12" fill="#555">Main flow</text>
+
+</svg>
+</div>
+</body>
+</html>
