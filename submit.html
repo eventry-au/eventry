@@ -16,6 +16,8 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
+    --gold: #c8860a;
+    --gold-light: #fdf8ee;
     --ink: #0d0d0d;
     --ink-muted: #5a5a5a;
     --ink-faint: #9a9a9a;
@@ -366,8 +368,17 @@
       </button>
     </div>
 
+    <!-- FEATURED UPGRADE -->
+    <div style="background:var(--gold-light);border:2px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:1rem">
+      <input type="checkbox" id="featuredUpgrade" style="margin-top:4px;width:18px;height:18px;accent-color:var(--gold);flex-shrink:0;cursor:pointer">
+      <label for="featuredUpgrade" style="cursor:pointer;line-height:1.5">
+        <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px">⭐ Feature this event — $49 AUD</span><br>
+        <span style="font-size:13px;color:var(--ink-muted)">Top of search results, featured badge, social shoutout, priority review and 30-day featured window.</span>
+      </label>
+    </div>
+
     <div class="submit-section">
-      <button type="submit" class="submit-btn">
+      <button type="submit" class="submit-btn" id="submitBtn">
         Submit event for review
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
@@ -857,6 +868,10 @@ function collectDisciplines() {
 }
 
 async function handleSubmit(e) {
+  if (document.getElementById('featuredUpgrade').checked) {
+    window.location.href = 'pricing.html#featured';
+    return;
+  }
   e.preventDefault();
   const btn = document.querySelector('.submit-btn');
   btn.innerHTML = 'Submitting... <span style="opacity:0.6">please wait</span>';
@@ -973,7 +988,17 @@ function toggleChampionshipField() {
 }
 
 addDiscipline();
-
+// Featured upgrade intercept
+document.getElementById('featuredUpgrade').addEventListener('change', function() {
+  const btn = document.getElementById('submitBtn');
+  if (this.checked) {
+    btn.innerHTML = 'Continue to Featured ⭐ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.style.background = 'var(--gold)';
+  } else {
+    btn.innerHTML = 'Submit event for review <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.style.background = '';
+  }
+});
 // Set min date to today to prevent past event submissions
 const today = new Date().toISOString().split('T')[0];
 const startInput = document.getElementById('eventDateInput');
