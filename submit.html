@@ -988,7 +988,14 @@ function toggleChampionshipField() {
 }
 
 addDiscipline();
-// Featured upgrade intercept
+  // Featured redirect — fires on button click before form validation
+document.getElementById('submitBtn').addEventListener('click', function(e) {
+  if (document.getElementById('featuredUpgrade').checked) {
+    e.preventDefault();
+    window.location.href = 'pricing.html#featured';
+  }
+});
+  // Featured upgrade intercept
 document.getElementById('featuredUpgrade').addEventListener('change', function() {
   const btn = document.getElementById('submitBtn');
   if (this.checked) {
