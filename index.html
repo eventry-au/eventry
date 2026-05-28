@@ -652,6 +652,36 @@
 
   .register-btn:hover { background: var(--accent); }
 
+  /* CARD IMAGE PANEL */
+  .card-image {
+    width: 100%;
+    height: 130px;
+    position: relative;
+    overflow: hidden;
+    background: #1a1a1a;
+  }
+  .card-image img.bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card-image .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+  }
+  .card-image .event-logo {
+    position: absolute;
+    top: 50%;
+    right: 1.25rem;
+    transform: translateY(-50%);
+    max-width: 80px;
+    max-height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  }
+
   /* FEATURED CARD */
   .event-card.featured {
     border-color: var(--accent);
@@ -1243,6 +1273,17 @@ const SPORT_CLASSES = {
   'Rowing': 'sport-rowing',
 };
 
+const SPORT_BACKGROUNDS = {
+  'Running': '/running.jpg',
+  'Adventure Racing': '/adventure_racing.jpg',
+  'Cycling MTB': '/cycling_mtb.jpg',
+  'Open Water Swimming': '/openwater.jpg',
+  'Triathlon': '/triathlon.jpg',
+  'Cycling': '/cycling.jpg',
+  'Hiking': '/hiking.jpg',
+  'Paddling': '/paddling.jpg',
+};
+
 const ORG_COLORS = {
   'Adventure Co': '#e8572a',
   'Peak Events': '#1565c0',
@@ -1570,6 +1611,10 @@ async function loadLiveEvents() {
           status: e.status || '',
           event_type: e.event_type || '',
           featured: e.featured || false,           series_name: e.series_name || '',           championship_name: e.championship_name || '',           recurring: e.recurring || '',
+          event_image_enabled: e.event_image_enabled || false,
+          event_image_url: e.event_image_url || '',
+          event_logo_enabled: e.event_logo_enabled || false,
+          event_logo_url: e.event_logo_url || '',
           disciplines: (e.disciplines || []).map(d => ({
             name: d.disc_name || '',
             dist: d.dist_display || '',
@@ -1864,6 +1909,11 @@ function renderEvents(list) {
         ? '<span class="price-tag">Free – <span style="font-size:13px">$' + maxPrice + '</span></span>'
         : '<span class="price-tag">From $' + minPrice + '</span>';
 
+    const bgImage = e.event_image_enabled
+      ? (e.event_image_url || SPORT_BACKGROUNDS[e.sport] || null)
+      : null;
+    const showLogo = e.event_logo_enabled && e.event_logo_url;
+
     return `
     <div class="event-card${e.featured ? ' featured' : ''}${e.status === 'cancelled' ? ' is-cancelled' : e.status === 'postponed' ? ' is-postponed' : ''}" style="animation-delay:${delay}s">
       ${e.status === 'cancelled' ? '<div class="status-banner cancelled">Cancelled</div>' : ''}
@@ -1871,6 +1921,12 @@ function renderEvents(list) {
       ${e.featured ? '<div class="featured-badge">Featured</div>' : ''}
       ${e.series_name ? `<div class="event-ribbon series">🔗 ${e.series_name}</div>` : ''}
       ${e.championship_name ? `<div class="event-ribbon championship">🏆 ${e.championship_name}</div>` : ''}
+      ${bgImage ? `
+      <div class="card-image">
+        <img class="bg" src="${bgImage}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
+        <div class="bg-overlay"></div>
+        ${showLogo ? `<img class="event-logo" src="${e.event_logo_url}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
+      </div>` : ''}
       <div class="card-header">
         <span class="sport-badge ${sportClass}">${badgeLabel}</span>
         ${e.event_type ? `<span class="event-type-tag">${e.event_type === 'race' ? '🏁 Race' : e.event_type === 'training' ? '🏋️ Training' : e.event_type === 'social' ? '🎉 Social' : '🤝 Mixed'}</span>` : ''}
@@ -1907,6 +1963,7 @@ function renderEvents(list) {
       </div>
       <p class="card-disclaimer">Always confirm with organiser before registering</p>
     </div>`;
+    
   }).join('');
 }
 
