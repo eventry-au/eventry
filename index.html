@@ -1274,14 +1274,14 @@ const SPORT_CLASSES = {
 };
 
 const SPORT_BACKGROUNDS = {
-  'Running': '/running.jpg',
-  'Adventure Racing': '/adventure_racing.jpg',
-  'Cycling MTB': '/cycling_mtb.jpg',
-  'Open Water Swimming': '/openwater.jpg',
-  'Triathlon': '/triathlon.jpg',
-  'Cycling': '/cycling.jpg',
-  'Hiking': '/hiking.jpg',
-  'Paddling': '/paddling.jpg',
+  'Running': '/assets/images/sports/running.jpg',
+  'Adventure Racing': '/assets/images/sports/adventure_racing.jpg',
+  'Cycling MTB': '/assets/images/sports/cycling_mtb.jpg',
+  'Open Water Swimming': '/assets/images/sports/openwater.jpg',
+  'Triathlon': '/assets/images/sports/triathlon.jpg',
+  'Cycling': '/assets/images/sports/cycling.jpg',
+  'Hiking': '/assets/images/sports/hiking.jpg',
+  'Paddling': '/assets/images/sports/paddling.jpg',
 };
 
 const ORG_COLORS = {
@@ -1590,7 +1590,11 @@ async function loadLiveEvents() {
           location: `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           location_display: p.partner_location_display || `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           state: p.state,
-          website: p.website || p.partner_website,
+          website: p.org_website || p.partner_website,
+          event_image_enabled: p.event_image_enabled || false,
+          event_image_url: p.event_image_url || '',
+          event_logo_enabled: p.event_logo_enabled || false,
+          event_logo_url: p.event_logo_url || '',
           type: 'partner'
         }));
       }
@@ -1872,8 +1876,18 @@ function renderEvents(list) {
         .map(s => `<span class="partner-sport-tag">${s}</span>`).join('');
       const initials = orgInitials(p.name);
       const locationDisplay = p.location_display || p.location || '';
+      const bgImage = p.event_image_enabled
+        ? (p.event_image_url || null)
+        : null;
+      const showLogo = p.event_logo_enabled && p.event_logo_url;
       return `
       <div class="partner-card" style="animation-delay:${delay}s">
+        ${bgImage ? `
+        <div class="card-image">
+          <img class="bg" src="${bgImage}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
+          <div class="bg-overlay"></div>
+          ${showLogo ? `<img class="event-logo" src="${p.event_logo_url}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
+        </div>` : ''}
         <div class="card-header">
           <span class="partner-badge">Partner</span>
         </div>
