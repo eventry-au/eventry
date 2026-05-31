@@ -410,7 +410,7 @@ function renderEvent(event) {
   const badgeLabel = subtype ? `${sport} · ${subtype}` :
     (sport === 'other' || sport === 'Other') ? 'Other / Custom' : sport;
 
-  const isSameDate = event.event_date === event.event_end_date;
+  const isSameDate = !event.event_end_date || event.event_date === event.event_end_date;
   const dateDisplay = isSameDate
     ? formatDate(event.event_date)
     : `${formatDateShort(event.event_date)} – ${formatDateShort(event.event_end_date)}`;
@@ -576,13 +576,14 @@ function renderEvent(event) {
       </table>
     </div>
 
-    <!-- NOTES -->
-    ${event.notes ? `
+    ${(() => {
+      const cleanNotes = (event.notes || '').replace(/\[(RECURRING|DUPLICATE)[^\]]*\]/gi, '').replace(/\|/g, ' ').replace(/\s+/g, ' ').trim();
+      return cleanNotes ? `
     <div class="section-card">
       <div class="section-title"><span class="section-title-icon">📌</span> Additional information</div>
-      <div class="event-description">${event.notes}</div>
-    </div>` : ''}
-
+      <div class="event-description">${cleanNotes}</div>
+    </div>` : '';
+    })()}
   </div>`;
 }
 
