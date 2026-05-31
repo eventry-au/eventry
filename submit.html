@@ -242,7 +242,36 @@
         <option value="monthly">Monthly</option>
         <option value="annual">Annual</option>
       </select>
-      <span class="field-hint">For recurring events (e.g. parkrun, club races) we'll remind you to update dates as needed.</span>
+      <span class="field-hint">Same event, same place, on repeating dates (e.g. parkrun, weekly club races). We'll remind you to keep dates up to date.</span>
+    </div>
+
+    <!-- SERIES TOGGLE -->
+    <div class="field col-span-2">
+      <label>Is this event part of a series?</label>
+      <select name="series_toggle" id="seriesToggle" onchange="toggleSeriesField()">
+        <option value="">No</option>
+        <option value="yes">Yes</option>
+      </select>
+      <span class="field-hint">Choose <strong>Yes</strong> if the location changes between dates (e.g. a race series across several venues). You'll add each round below with its own date, venue and registration link.</span>
+    </div>
+    <div class="field col-span-2" id="seriesNameField" style="display:none">
+      <label>Series name</label>
+      <input type="text" name="series_name" placeholder="e.g. RunThrough Summer Series 2026" />
+      <span class="field-hint">The series name will appear as a label on each round's card.</span>
+    </div>
+
+    <!-- CHAMPIONSHIP TOGGLE -->
+    <div class="field col-span-2">
+      <label>Is this event part of a championship?</label>
+      <select name="championship_toggle" id="championshipToggle" onchange="toggleChampionshipField()">
+        <option value="">No</option>
+        <option value="yes">Yes</option>
+      </select>
+    </div>
+    <div class="field col-span-2" id="championshipNameField" style="display:none">
+      <label>Championship name</label>
+      <input type="text" name="championship_pending" placeholder="e.g. Hunter Triathlon Club Championship 2026" />
+      <span class="field-hint">Championship listings are subject to Eventry review before appearing on your event card.</span>
     </div>
 
     <div class="field">
@@ -294,6 +323,14 @@
       <span class="field-hint">Add up to 12 dates — one per month. Leave unused dates blank.</span>
     </div>
 
+    <!-- SERIES ROUNDS (shown when "part of a series" = Yes) -->
+    <div class="field col-span-2" id="seriesRoundsWrap" style="display:none">
+      <label>Series rounds <span class="req">*</span></label>
+      <span class="field-hint" style="margin-bottom:10px">Add each round of your series. Each round becomes its own listing with its own date, venue and registration link.</span>
+      <div id="seriesRoundsContainer"></div>
+      <button type="button" class="add-disc-btn" style="margin-top:8px" id="addRoundBtn" onclick="addRound()">+ Add round</button>
+    </div>
+
     <div class="field">
       <label>Suburb / Town <span class="req">*</span></label>
       <input type="text" name="location" placeholder="e.g. Katoomba" required />
@@ -307,41 +344,13 @@
         <option>ACT</option><option>NT</option>
       </select>
     </div>
-    <div class="field col-span-2">
+    <div class="field col-span-2" id="venueWrap">
       <label>Venue / Address</label>
-      <input type="text" name="venue" placeholder="e.g. Echo Point Car Park, Katoomba NSW 2780" />
+      <input type="text" name="venue" id="venueInput" placeholder="e.g. Echo Point Car Park, Katoomba NSW 2780" />
     </div>
-    <div class="field col-span-2">
+    <div class="field col-span-2" id="eventUrlWrap">
       <label>Event website / Registration URL <span class="req">*</span></label>
-      <input type="url" name="event_url" placeholder="https://youreventregistration.com" required />
-    </div>
-
-    <!-- SERIES TOGGLE -->
-    <div class="field col-span-2">
-      <label>Is this event part of a series?</label>
-      <select name="series_toggle" id="seriesToggle" onchange="toggleSeriesField()">
-        <option value="">No</option>
-        <option value="yes">Yes</option>
-      </select>
-    </div>
-    <div class="field col-span-2" id="seriesNameField" style="display:none">
-      <label>Series name</label>
-      <input type="text" name="series_name" placeholder="e.g. RunThrough Summer Series 2026" />
-      <span class="field-hint">The series name will appear as a label on your event card.</span>
-    </div>
-
-    <!-- CHAMPIONSHIP TOGGLE -->
-    <div class="field col-span-2">
-      <label>Is this event part of a championship?</label>
-      <select name="championship_toggle" id="championshipToggle" onchange="toggleChampionshipField()">
-        <option value="">No</option>
-        <option value="yes">Yes</option>
-      </select>
-    </div>
-    <div class="field col-span-2" id="championshipNameField" style="display:none">
-      <label>Championship name</label>
-      <input type="text" name="championship_pending" placeholder="e.g. Hunter Triathlon Club Championship 2026" />
-      <span class="field-hint">Championship listings are subject to Eventry review before appearing on your event card.</span>
+      <input type="url" name="event_url" id="eventUrlInput" placeholder="https://youreventregistration.com" required />
     </div>
 
     <!-- NOTES -->
@@ -879,7 +888,8 @@ async function handleSubmit(e) {
 
   const form = document.getElementById('eventForm');
   const fd = new FormData(form);
-  const recurring = fd.get('recurring') || '';
+  const seriesMode = document.getElementById('seriesToggle')?.value === 'yes';
+  const recurring = seriesMode ? '' : (fd.get('recurring') || '');
 
   // Collect monthly dates
   const monthlyDates = [];
@@ -888,6 +898,27 @@ async function handleSubmit(e) {
     if (d && isValidDateValue(d)) monthlyDates.push(d);
   }
 
+  // Collect series rounds (series mode only)
+  const rounds = seriesMode ? collectRounds() : [];
+  if (seriesMode) {
+    const incomplete = rounds.some(r => !r.event_url);
+    if (rounds.length === 0 || incomplete) {
+      btn.innerHTML = 'Submit event for review →';
+      btn.disabled = false;
+      alert(rounds.length === 0
+        ? 'Please add at least one round with a date and registration link.'
+        : 'Each round needs a registration link. Please complete every round before submitting.');
+      return;
+    }
+  }
+
+  // Top-level date/venue/URL: in series mode, mirror the first round so emails and the duplicate check have sensible values.
+  const topDate = seriesMode
+    ? (rounds[0]?.date || '')
+    : (recurring === 'weekly' ? fd.get('weekly_start') : (recurring === 'monthly' ? (monthlyDates[0] || '') : fd.get('event_date')));
+  const topVenue = seriesMode ? (rounds[0]?.venue || '') : (fd.get('venue') || '').trim();
+  const topUrl = seriesMode ? (rounds[0]?.event_url || '') : (fd.get('event_url') || '').trim();
+
   const payload = {
     org_name: (fd.get('org_name') || '').trim(),
     org_email: (fd.get('contact_email') || '').trim(),
@@ -895,17 +926,19 @@ async function handleSubmit(e) {
     org_website: (fd.get('website') || '').trim(),
     contact_name: (fd.get('contact_name') || '').trim(),
     event_name: (fd.get('event_name') || '').trim(),
-    event_date: recurring === 'weekly' ? fd.get('weekly_start') : (recurring === 'monthly' ? (monthlyDates[0] || '') : fd.get('event_date')),
+    event_date: topDate,
     event_end_date: recurring === 'weekly' ? fd.get('weekly_end') : fd.get('event_end_date'),
     location: (fd.get('location') || '').trim(),
     state: fd.get('state'),
-    venue: (fd.get('venue') || '').trim(),
-    event_url: (fd.get('event_url') || '').trim(),
+    venue: topVenue,
+    event_url: topUrl,
     description: (fd.get('description') || '').trim(),
     recurring,
     monthly_dates: monthlyDates,
     weekly_start: fd.get('weekly_start') || '',
     weekly_end: fd.get('weekly_end') || '',
+    series_mode: seriesMode,
+    rounds,
     event_type: (fd.get('event_type') || '').trim(),
     notes: (fd.get('notes') || '').trim(),
     series_name: (fd.get('series_name') || '').trim(),
@@ -932,6 +965,7 @@ async function handleSubmit(e) {
 let monthlyDateCount = 1;
 
 function toggleDateFields() {
+  const seriesOn = document.getElementById('seriesToggle')?.value === 'yes';
   const val = document.getElementById('recurringSelect')?.value;
   const dateStartWrap = document.getElementById('dateStartWrap');
   const dateEndWrap = document.getElementById('dateEndWrap');
@@ -945,6 +979,9 @@ function toggleDateFields() {
   weeklyStartWrap.style.display = 'none';
   weeklyEndWrap.style.display = 'none';
   monthlyDatesWrap.style.display = 'none';
+
+  // In series mode the round blocks own the dates — keep all single date fields hidden.
+  if (seriesOn) return;
 
   if (val === 'weekly') {
     weeklyStartWrap.style.display = 'flex';
@@ -976,9 +1013,92 @@ function addMonthlyDate() {
 }
 
 function toggleSeriesField() {
-  const val = document.getElementById('seriesToggle')?.value;
-  const field = document.getElementById('seriesNameField');
-  if (field) field.style.display = val === 'yes' ? 'flex' : 'none';
+  const seriesOn = document.getElementById('seriesToggle')?.value === 'yes';
+  const nameField = document.getElementById('seriesNameField');
+  const roundsWrap = document.getElementById('seriesRoundsWrap');
+  const recurringSel = document.getElementById('recurringSelect');
+  const venueWrap = document.getElementById('venueWrap');
+  const urlWrap = document.getElementById('eventUrlWrap');
+  const urlInput = document.getElementById('eventUrlInput');
+
+  if (nameField) nameField.style.display = seriesOn ? 'flex' : 'none';
+  if (roundsWrap) roundsWrap.style.display = seriesOn ? 'flex' : 'none';
+
+  if (seriesOn) {
+    // Series mode: each round owns its own date, venue and URL.
+    // Disable the recurring selector and hide the single date/venue/URL fields.
+    if (recurringSel) { recurringSel.value = ''; recurringSel.disabled = true; recurringSel.style.opacity = '0.5'; }
+    if (venueWrap) venueWrap.style.display = 'none';
+    if (urlWrap) urlWrap.style.display = 'none';
+    if (urlInput) urlInput.required = false;
+    toggleDateFields();
+    if (document.getElementById('seriesRoundsContainer').children.length === 0) addRound();
+  } else {
+    if (recurringSel) { recurringSel.disabled = false; recurringSel.style.opacity = ''; }
+    if (venueWrap) venueWrap.style.display = 'flex';
+    if (urlWrap) urlWrap.style.display = 'flex';
+    if (urlInput) urlInput.required = true;
+    toggleDateFields();
+  }
+}
+
+let roundCount = 0;
+
+function addRound() {
+  roundCount++;
+  const idx = roundCount;
+  const container = document.getElementById('seriesRoundsContainer');
+  const div = document.createElement('div');
+  div.className = 'discipline-card';
+  div.id = `round_${idx}`;
+  div.innerHTML = `
+    <div class="disc-header">
+      <span class="disc-num">Round ${container.children.length + 1}</span>
+      <button type="button" class="disc-remove" onclick="removeRound(${idx})">Remove</button>
+    </div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" name="round_${idx}_date" class="round-date" />
+      </div>
+      <div class="field">
+        <label>Venue / Address</label>
+        <input type="text" name="round_${idx}_venue" class="round-venue" placeholder="e.g. Lane Cove National Park" />
+      </div>
+      <div class="field col-span-2">
+        <label>Registration URL <span class="req">*</span></label>
+        <input type="url" name="round_${idx}_url" class="round-url" placeholder="https://link-to-this-rounds-entry-page" />
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+  renumberRounds();
+  const di = div.querySelector('.round-date');
+  if (di) di.min = new Date().toISOString().split('T')[0];
+}
+
+function removeRound(idx) {
+  const el = document.getElementById(`round_${idx}`);
+  if (el) el.remove();
+  renumberRounds();
+}
+
+function renumberRounds() {
+  document.querySelectorAll('#seriesRoundsContainer .discipline-card').forEach((c, i) => {
+    const num = c.querySelector('.disc-num');
+    if (num) num.textContent = `Round ${i + 1}`;
+  });
+}
+
+function collectRounds() {
+  const rounds = [];
+  document.querySelectorAll('#seriesRoundsContainer .discipline-card').forEach(card => {
+    const date = card.querySelector('.round-date')?.value || '';
+    const venue = (card.querySelector('.round-venue')?.value || '').trim();
+    const url = (card.querySelector('.round-url')?.value || '').trim();
+    if (date && isValidDateValue(date)) rounds.push({ date, venue, event_url: url });
+  });
+  return rounds;
 }
 
 function toggleChampionshipField() {
