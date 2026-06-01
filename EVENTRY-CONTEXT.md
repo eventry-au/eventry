@@ -2,7 +2,7 @@
 
 Session Handover Document
 
-*Last updated: 28 May 2026 (Session 15)*
+*Last updated: 1 June 2026 (Session 19)*
 
 # 1. Purpose & Concept
 
@@ -23,233 +23,326 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 
 # 4. Partner Network
 
-*Local-first strategy — Northern Beaches & Newcastle/Lake Macquarie focus. All partner data held at pending status until outreach is complete.*
+*Local-first strategy — Northern Beaches & Newcastle/Lake Macquarie focus, now expanding to SA and TAS. All partner data held at pending status until outreach is complete.*
 
-## Outreach Sent (awaiting response)
+## Current Partners — Approved (live on site)
 
-- FlowiTri — Lucas McBeath (hello@flowitri.com.au) — resent 25 May 2026, opened, no reply. Follow up ~8 June.
-- Mauro Swim Team — Peter Mauro (coach@mauroswimteam.com) — resent 25 May 2026, untracked. Follow up ~8 June.
-- Warners Bay Physiotherapy — Jeandre Theunissen (reception@warnersbayphysiotherapy.com.au) — resent 25 May 2026, opened, no reply. Follow up ~8 June.
-- Tailwind Nutrition (info@tailwindnutrition.com.au) — resent 25 May 2026, untracked. Follow up ~8 June.
+- FlowiTri — Lucas McBeath (hello@flowitri.com.au) — card upgrade pitch sent 29 May. Follow up ~12 June.
+- Mauro Swim Team — Peter Mauro (coach@mauroswimteam.com) — card upgrade pitch sent 29 May. Follow up ~12 June.
+- Warners Bay Physiotherapy — Jeandre Theunissen (reception@warnersbayphysiotherapy.com.au) — card upgrade pitch sent 29 May, opened same day, no reply. 3rd touch total. Follow up ~12 June. **Primary physio relationship — activate Hunter Physio only if Warners Bay doesn't respond after 12 June.**
+- Tailwind Nutrition — retail@tailwindnutrition.com.au — card upgrade email sent 1 June (web form blocked, used retail@ instead). Awaiting response.
 
-## Outreach Pending (partners)
+## Current Partners — Pending (in sheet, outreach sent)
 
-- Cycle Fitness Nutrition — existing partner (PTR-CFN, status: pending)
-- Hunter Physio Sports Clinic — existing partner (PTR-HUNTERPHYSIO, status: pending)
-- Vert Nutrition (vertnutrition.com.au) — potential partner from research
-- Neopro Cycling (neoprocycling.com.au) — potential partner from research
-- Activate Muscle Therapy — sports therapy business active in regional NSW trail running community; no website found, check Instagram before assessing
-- PB Events / Justin (justin@pbevents.com.au) — organiser of You Yangs / Werribee / Great Rail Run events; outreach not yet sent
+- Cycle Fitness Nutrition (PTR-CFN) — Glen, info@cyclefitnessnutrition.com — card upgrade email sent 1 June. First contact. Awaiting response.
+- Hunter Physio Sports Clinic (PTR-HUNTERPHYSIO) — office@hunterphysio.com.au — **ON HOLD.** Activate after 12 June if Warners Bay Physio still no response.
+- Vertigo MTB (PTR-VERTIGOMTB) — bookings@vertigomtb.com.au — **NOT CONTACTED YET.** Reach out after Icarus race dust settles (post 7 June). TAS MTB hire + shuttles, St Helens. First TAS partner.
+
+## Partner Outreach Pipeline
+
+**Warm contacts (approach first):**
+- **Footmotion Newcastle — Jody** (personal connection, previously Pure Run Newcastle) — NOT YET CONTACTED. Call or DM directly. Running shoe store + weekly social run. Multiple Footmotion stores each with own weekly runs. Each weekly run = recurring social event listing on Eventry. HIGH PRIORITY.
+- **Super Elliotts Cycles** — bikes@superelliotts.com.au — email sent 1 June. Awaiting response. 200 Rundle St Adelaide SA. In-person visit same day. First SA partner.
+
+**Research leads (Tier A):**
+- **Pace Athletic** — 7 Sydney running stores + own Blue Mountains Running Co in Glenbrook (same business). Weekly run clubs at Manly (Tue), Rozelle (Wed), Castle Hill (Thu), Crows Nest + more. Find contact email at paceathletic.com. Tier A partner + social run event listings.
+- **Blue Mountains Running Co** — OWNED BY PACE ATHLETIC. Approach via Pace Athletic head office, not separately.
+- **Lake Mac Penguins** — Coach Spot Anderson (hello@lakemacpenguins.com). Swim/tri coaching + monthly Swim Runs around Lake Mac. Dual partner + event source.
+
+**Research leads (Tier B):**
+- Vert Nutrition (vertnutrition.com.au)
+- Neopro Cycling (neoprocycling.com.au)
+- Activate Muscle Therapy — check Instagram first (no website found)
+- Endu (endu1.com) — endurance fuel, surfaced as Run Forrest sponsor
+
+**Partner review at 12 June:** Assess FlowiTri, Warners Bay, Mauro — if still no response after multiple touches, consider moving to pending and redirecting energy to new partners.
 
 ## Organiser Outreach Sent
 
-- Those Guys Events — web form 28 May 2026. Guzzler Ultra, Yarrabilba Trail Fest, Hidden Vale Trail Running Festival, SEQ Trail Running Series, runher Races.
-- Coastal Track and Trail Runners — web form 28 May 2026. Elephant Trail Race + Deep Creek Backyard Ultra + Bottlebutt Bash + Trails & Tails.
-- EventMatrix Pty Ltd (events@eventmatrix.com.au) — web form 28 May 2026. Cape to Cape MTB + Geo Bay Swim.
-- Quad Events Australia — web form 28 May 2026. The Black Pearl (Newcastle/Lake Macquarie, Nov 6–8 2026).
-- RunThrough Australia — email 28 May 2026 to hello@runthroughaustralia.com — **BOUNCED** (address not found). Need to find correct contact — try site contact form or social media DM.
-- Terrigal Trotters (admin@terrigaltrotters.com.au) — email 28 May 2026. Automated response received.
-- Western Districts Joggers & Harriers (festivalofthefeet@westiesjoggers.com) — email 28 May 2026.
-- Sydney Striders (info@sydneystriders.org.au) — email 28 May 2026. Opened, no reply.
-- Jase Kerr (Facebook DM) — 28 May 2026. Run clubs list in 2026 Sydney Marathon Runners group — invited to list club events on Eventry.
+- Those Guys Events — web form 28 May. Awaiting response.
+- Coastal Track and Trail Runners (CTTR) — web form 28 May. Awaiting response.
+- EventMatrix Pty Ltd (events@eventmatrix.com.au) — web form 28 May. Awaiting response.
+- Quad Events Australia — web form 28 May. Awaiting response.
+- RunThrough Australia — hello@runthroughaustralia.com — **BOUNCED.** Find correct contact via runthroughaustralia.com contact form or social DM.
+- Terrigal Trotters (admin@terrigaltrotters.com.au) — email 28 May. Automated response received.
+- Western Districts Joggers & Harriers (festivalofthefeet@westiesjoggers.com) — email 28 May. Opened, no reply.
+- Sydney Striders — **CONVERTED.** Bruce Inglis self-submitted 10K Series (6 rounds live). Go-live + thank-you + logo request email sent Session 18.
+- Newcastle Orienteering Club — Justin Stafford (president@newcastleorienteering.asn.au) — email 29 May. Follow up ~12 June.
+- SARRC / Lindsay Gunn (office@sarrc.asn.au) — email 1 June. Barossa Marathon + Yurrebilla listed. Follow up ~15 June.
+- Southern Exposure / Run Forrest — auto go-live email fired on approval 1 June. First contact via system trigger.
+
+## Organiser Outreach Pending
+
+- **Pedal Heads Inc** (info@pedalheads.org.au) — NOT YET. Reach out early next week after 7 June Icarus race. Congratulate on comeback, ask about future series rounds. Could be 4-6 events/year at St Helens TAS.
+- **Wonderland Run / Adelaide Trail Runners** — no email found publicly. Contact via adelaidetrailrunners.com.au. Event now live on site.
+- PB Events / Justin (justin@pbevents.com.au) — You Yangs / Werribee / Great Rail Run. Not yet contacted.
 
 # 5. Current State
 
-## Completed as of 28 May 2026 (Session 15)
+## Sheet status as of 1 June 2026 (Session 19)
 
-- **Outreach tracker cleaned up** — removed duplicate Quad Crown row, fixed date errors, confirmed all 16 rows accurate.
-- **Card image feature built and tested** — event cards now support per-event background images and logos, controlled by 4 new sheet columns.
-- **Sheet1 expanded to 47 columns** — added AR: event_image_enabled, AS: event_image_url, AT: event_logo_enabled, AU: event_logo_url.
-- **Apps Script updated** — doGet reads 47 columns, includes 4 new fields with boolean coercion; doPost writes 4 empty values for new submissions. Redeployed as new version.
-- **8 sport background images committed** to repo root: running.jpg, adventure_racing.jpg, cycling_mtb.jpg, openwater.jpg, triathlon.jpg, cycling.jpg, hiking.jpg, paddling.jpg. All free under Unsplash License.
-- **index.html updated** — SPORT_BACKGROUNDS map, card-image CSS panel, rendering logic (bgImage + showLogo conditionals). Confirmed working live on EVT-CAIRNSMARATHON-2026.
-- **RunThrough Australia email bounced** — hello@runthroughaustralia.com does not exist. Site is React-rendered (Lovable/Supabase stack), contact page didn't load via fetch.
-- **75 events now showing** on live site.
-
-## Sheet status as of 28 May 2026 (Session 15)
-
-- **~90+ approved events** on site
+- **~93 events showing** on live site (7 new events added this session)
 - **4 approved partners** live (FlowiTri, Mauro Swim Team, Tailwind Nutrition, Warners Bay Physio)
-- **2 pending partners** in sheet (Cycle Fitness Nutrition, Hunter Physio Sports Clinic)
-- **Sheet1: 47 columns** (AR–AU are new image/logo fields)
-- **Event format standard updated: now 47 columns** — tab-separated rows must include 4 trailing empty values for new image/logo fields
+- **3 pending partners** in sheet (Cycle Fitness Nutrition, Hunter Physio Sports Clinic, Vertigo MTB)
+- **Sheet1: 47 columns** (AR–AU are image/logo fields). Key indices: B=status(1), I=event_name(8), J=event_date(9), N=venue(13), O=event_url(14), E=org_email(4), H=contact_name(7), AF=timestamp(31)
+- **Test row "scocial tester"** still in sheet — delete it (it's showing live on the site)
+
+## Events added Session 19 (1 June 2026)
+
+| Submission ID | Event | Date | State |
+|---|---|---|---|
+| EVT-BAROSSAMARATHON-2026 | Barossa Marathon Festival | 23 Aug | SA |
+| EVT-YURREBILLA-2026 | Yurrebilla 56K Ultra | 27 Sep | SA |
+| EVT-RUNFORREST-2026 | Run Forrest Trail Run | 6 Jun | VIC |
+| EVT-NOOSAENDURO-TRAIL-2026 | Noosa Enduro Trail Runs | 20 Jun | QLD |
+| EVT-KIMARATHON-2026 | Kangaroo Island Marathon | 23 Aug | SA |
+| EVT-WONDERLAND-2026 | Wonderland Run | 29–30 Aug | VIC |
+| EVT-BARECREEK-2026 | Bare Creek Trail Run | 8 Nov | NSW |
+
+## Key decisions / notes from Session 19
+
+- **Views/clicks columns in sheet are NOT auto-populated from GA.** GA tracks independently. Build GA→Sheets sync later when monetisation is live — not now.
+- **Social run cards** — `Social — fun, community or non-competitive` event type already exists in submit.html with its own card banner. No code changes needed. Use for Footmotion and Pace Athletic weekly run listings.
+- **Non-responsive partner strategy** — partners who don't engage after multiple touches should move to pending at 12 June review. Partner section needs to be curated and meaningful.
+- **SA coverage** — was zero SA events before this session. Now 3 SA events (Barossa Marathon, Yurrebilla, KI Marathon) + Super Elliotts as first SA partner candidate.
+- **RunDais** (rundais.org) — direct Eventry competitor. Has surfaced twice now. Add to research/monitor list.
+- **Pace Athletic owns Blue Mountains Running Co** — same business. Approach via Pace Athletic head office.
 
 # 6. Immediate To-Do Queue (Priority Order)
 
-- **Follow up FlowiTri + Warners Bay Physio ~8 June** (both opened, no reply)
-- **RunThrough Australia** — find correct contact; try site contact form at runthroughaustralia.com or Instagram/Facebook DM
-- **Remove debugCairns function** from Apps Script before next deploy
-- **Move sport images to /assets/images/sports/** — currently at repo root, should be tidied into a folder; update SPORT_BACKGROUNDS paths in index.html accordingly
-- **Riverina Trail Series Round 5 (Fed Hill)** — date not yet confirmed on riverinatrails.com.au; add when published
-- **CTTR events** — Trails and Tails Coopernook (Aug) + Deep Creek Backyard Ultra (Oct/Nov) — await CTTR response
-- **Those Guys Events** — if they respond, bulk-add: Yarrabilba Trail Fest, Hidden Vale Trail Running Festival, SEQ Trail Series rounds, runher Races
-- **Sydney Striders 10K Series** — if they respond, add remaining 2026 rounds (Jun–Nov)
-- **Sprint Series Lane Cove NSW + Anglesea VIC** — 2026 dates still not published on adventuresprint.com.au; check again next session
-- **Backfill event_image_enabled** — enable backgrounds on key events in the sheet once image rollout is approved
-- **Backfill event_logo_url** — source logos for key events and populate column AU
+## This week:
+1. **Delete "scocial tester" test row** from live Google Sheet — it's showing on the site
+2. **Reach out to Footmotion / Jody** — warm personal contact, call or DM. Partner listing + weekly social run event. HIGH PRIORITY.
+3. **Reach out to Vertigo MTB** (bookings@vertigomtb.com.au) — after Icarus race dust settles post 7 June
+4. **Reach out to Pedal Heads** (info@pedalheads.org.au) — early next week after 7 June race
+5. **Find Pace Athletic contact email** — paceathletic.com — then draft partner + social run pitch
 
-# 7. Card Image Feature — Design & Logic
+## 12 June follow-ups:
+6. FlowiTri (Lucas McBeath) — 3 touches, opened, no reply
+7. Warners Bay Physio (Jeandre Theunissen) — 3 touches, opened, no reply. **Decision point: if no response, move to pending and activate Hunter Physio**
+8. Mauro Swim Team (Peter Mauro) — 2 touches
+9. Newcastle Orienteering Club (Justin Stafford) — 1 touch
 
-## Card states (per-event toggles in sheet)
+## ~15 June:
+10. SARRC (Lindsay Gunn) — follow up if no response
 
-- **Base card** (default): current style, no background — all events default to this
-- **Background on** (`event_image_enabled = TRUE`): sport-type generic background image with darkened overlay
-- **Supplied background** (`event_image_url` populated + enabled): organiser's own photo replaces generic
-- **Logo** (`event_logo_enabled = TRUE` + `event_logo_url` populated): event logo shown centre-right over background
+## Events still to add:
+11. Riverina Trail Series Round 5 (Fed Hill) — date TBC, check riverinatrails.com.au
+12. CTTR events (Trails & Tails Coopernook Aug + Deep Creek Backyard Ultra Oct/Nov) — await response
+13. Those Guys Events bulk add — await response
+14. Newcastle Orienteering Club bulk add — await response
+15. Barossa Run (13 Sep, SARRC, Lyndoch SA) — add when SARRC responds
+16. Five Peaks Running Festival (SA, Yurrebilla trail) — check trailrunningsa.com
+17. Bare Events portfolio — check bareevents.com.au for other Sydney trail events beyond Bare Creek
 
-## Rendering logic in index.html
+## Admin:
+18. Update outreach tracker — downloaded and reloaded this session ✅
+19. RunThrough Australia — find correct contact via site form or social DM
 
-```javascript
-const bgImage = e.event_image_enabled
-  ? (e.event_image_url || SPORT_BACKGROUNDS[e.sport] || null)
-  : null;
-const showLogo = e.event_logo_enabled && e.event_logo_url;
-```
+# 7. NEXT BUILD SESSION — Recurring Events Overhaul (HIGH PRIORITY)
+
+**This is the priority build for the next dev session. Full spec below.**
+
+## Problem with current recurring behaviour
+
+When a weekly recurring event is submitted without an end date, doPost generates 10 rows and all 10 show as active cards simultaneously. This clutters the feed, inflates the event count, and is wrong UX.
+
+## New behaviour spec
+
+**What the organiser sees (submit.html):**
+- When recurring = weekly or monthly is selected, an end date field becomes **required** (not optional)
+- Guiding text: "We'll show one upcoming card at a time and auto-generate the next one as each date passes"
+
+**What the system does (doPost):**
+- Write only the **first upcoming occurrence** as a single row
+- Store the recurrence frequency (weekly/monthly) and end date on that row (already have `recurring` column for frequency; may need to store end date somewhere — options: new col AV, or encode in notes as `[RECUR_END:YYYY-MM-DD]`)
+
+**What happens when an occurrence passes (markPastEvents + new logic):**
+- When a recurring row flips to `past`, check if next occurrence date ≤ end date
+- If yes: write a new row for the next occurrence (copy all fields from the past row, update date only)
+- If no: it was the last occurrence — trigger end-of-listing email (see below)
+- **Second-to-last occurrence:** when the penultimate occurrence goes live (i.e. one more after this), send a **renewal warning email** to the organiser: "Your last [Event Name] is coming up on [date] — want to extend your listing?"
+- **Last occurrence flips to past:** send **stats + relist email**: "Your [Event Name] listing has ended. Here's how it performed: X views, Y clicks. Want to relist?"
+
+**Dedup guard:** Before writing a new row, check Script Properties for key `recur_next:<submission_id>:<date>` — only write if not already written. Prevents double-generation if trigger fires twice.
+
+**Email dependency note:** The stats email (views/clicks) requires those columns to be populated. Currently they're 0. GA→Sheets sync is a future build. For now, the email can say "check your organiser page for stats" or omit stats until the sync is built.
+
+## Files to change
+
+- **submit.html** — add end date required validation when recurring selected
+- **Apps Script doPost** — change recurring logic: write 1 row not N rows; store end date
+- **Apps Script markPastEvents** — add auto-generation logic for next occurrence; add second-to-last detection; trigger emails
+- **Apps Script** — add `sendRecurringRenewalEmail()` and `sendRecurringEndEmail()` functions
+
+## Test recipe
+
+1. Submit a weekly recurring event with start date = next Saturday, end date = 4 weeks later
+2. Verify only 1 row written to sheet
+3. Manually flip status to `past` on that row
+4. Verify markPastEvents (or manual run) writes a new row for the following week
+5. Repeat until second-to-last — verify renewal email fires once
+6. Flip last row to past — verify end email fires
+
+## Cleanup after build
+
+- Delete Speers Point parkrun row and resubmit via new system
+- Delete any existing test recurring rows
+
+# 8. Card Image Feature — Design & Logic
+
+## Card states
+
+- **Base card** (default): plain white card, no background
+- **Background on** (`event_image_enabled = TRUE`): sport-type generic background for events; partner-supplied image only for partners
+- **Supplied background** (`event_image_url` populated + enabled): organiser/partner's own photo
+- **Logo** (`event_logo_enabled = TRUE` + `event_logo_url` populated): logo shown centre-right over background
+
+## Event type card banners (already built)
+
+submit.html event type options with card badges:
+- 🏁 Race — competitive, with results/timing
+- 🏋 Training — structured training session
+- 🎉 Social — fun, community or non-competitive ← **use this for weekly run clubs**
+- 🥇 Mixed — competitive and social combined
+
+Social event cards show plain white (no background image) with the 🎉 SOCIAL badge. Correct and working.
 
 ## Sport background image map
 
 ```javascript
 const SPORT_BACKGROUNDS = {
-  'Running': '/running.jpg',
-  'Adventure Racing': '/adventure_racing.jpg',
-  'Cycling MTB': '/cycling_mtb.jpg',
-  'Open Water Swimming': '/openwater.jpg',
-  'Triathlon': '/triathlon.jpg',
-  'Cycling': '/cycling.jpg',
-  'Hiking': '/hiking.jpg',
-  'Paddling': '/paddling.jpg',
+  'Running': '/assets/images/sports/running.jpg',
+  'Adventure Racing': '/assets/images/sports/adventure_racing.jpg',
+  'Cycling MTB': '/assets/images/sports/cycling_mtb.jpg',
+  'Open Water Swimming': '/assets/images/sports/openwater.jpg',
+  'Triathlon': '/assets/images/sports/triathlon.jpg',
+  'Cycling': '/assets/images/sports/cycling.jpg',
+  'Hiking': '/assets/images/sports/hiking.jpg',
+  'Paddling': '/assets/images/sports/paddling.jpg',
 };
 ```
 
-## Image sources (Unsplash, free commercial use)
+# 9. Series & Go-Live Email — Design & Logic (Session 17)
 
-| Sport | Photographer | Unsplash URL |
-|---|---|---|
-| Running | Brian Erickson | unsplash.com/photos/XFneC_rHR48 |
-| Adventure Racing | Massimo Sartirana | unsplash.com/photos/iz_HuFCttA8 |
-| Cycling MTB | Sunil Chandra Sharma | unsplash.com/photos/pprI3KVUaag |
-| Open Water | Arisa Chattasa | unsplash.com/photos/9HLURpkNpXI |
-| Triathlon | Jorge Romero | unsplash.com/photos/mfCFuPfTtdU |
-| Cycling | Markus Spiske | unsplash.com/photos/WUehAgqO5hE |
-| Hiking | Spencer Goggin (Mt Keira NSW) | unsplash.com/photos/M3UHrqGPfnw |
-| Paddling | Aleksandar Andreev | unsplash.com/photos/heeKsWrqgUs |
+## Series submission (rotating events)
 
-## Logo storage approach
+- **Recurring** = same event, same place, repeating dates (parkrun). Vary date only, single venue/URL.
+- **Series** = rotating venues, each round its own date/venue/URL (Sydney Striders, Newcastle OC).
+- submit.html series toggle drives rotating mode. Payload: `series_mode: true` + `rounds: [{date, venue, event_url}]`
+- doPost builds `rowSpecs`; one row per round. Top-level event_date/venue/url mirror round 1.
 
-URL-first (organiser supplies URL in event_logo_url), GitHub /assets/logos/ as fallback for hosted logos.
+## Go-live-on-approval email
 
-# 8. On the Horizon
+- `onApprovalEdit(e)` — installable On-edit trigger. Fires when col B → `approved`.
+- Dedup key: `live:<timestamp>:<org_email>` in Script Properties. One email per submission.
+- **Must be installable trigger, not simple onEdit** — simple triggers can't send email.
+- Won't fire on markPastEvents (only acts on 'approved'; installable triggers don't fire on script-made edits).
 
-- **Past events toggle** — "View past events" filter on index.html; low priority but useful once archive grows
-- **submit.html update** — add event_image_url and event_logo_url fields to organiser submission form
-- Recurring events feature: Add option in submit.html to mark events as recurring (weekly/monthly/annual) with frequency selector; build automated organiser reminder emails. Key use cases: parkrun, orienteering, weekly club events
-- Event cancellation detection: Research feasibility of periodic checks against event URLs/organiser sites to flag cancelled/postponed events
-- Athlete profiles and event history (Future roadmap): Track events, log completions, build a profile — prerequisite is user accounts
-- What's Next (Future roadmap): Personalised event feed matching history, location, preferences
-- Fitness platform integration (Future roadmap): Sync training apps, build complete sporting record
-- St Helens MTB Trails race (Icarus Track) — 7 June 2026, St Helens TAS, Adults $35 / Youngins $25, cycling_mtb — find proper organiser/event URL before adding (registration currently via ClickFunnels/hrgurus domain — unusual)
+# 10. Outreach Strategy Notes
 
-# 9. Outreach Tracker Notes
+## Email deliverability rules
+- No "free" in subject lines
+- No hyperlinks in body — plain text only
+- Single clear CTA per email
+- Web forms bypass spam filters entirely — use where available
+- Opens without replies are normal — don't follow up before 14-day mark
+- Mailtrack/Mailsuite installed on eventry.au@gmail.com for open tracking
 
-Google Sheets tab: Outreach Tracker. 16 rows. Columns: Contact Name, Organisation, Email Address, Type, Event/Context, Date Sent, Subject Line, Delivered, Opened, Response Received, Response Date, Outcome, Notes.
+## Social runs — listing approach
+- Use event type `Social` in submit.html
+- Recurring: weekly
+- Price: free / 0
+- No registration link required
+- Each store location = its own listing (e.g. Footmotion Newcastle, Footmotion Maitland etc)
+- These are good for community building and attracting run club partners
 
-Conditional formatting rule: Highlight rows amber where Date Sent >14 days ago AND Outcome = No response. Formula: =AND($F2<>"", TODAY()-$F2>14, $L2="No response")
+## Partner card upgrade pitch
+- Visual approach: screenshot showing bland partner card between image-backed event cards
+- Ask: send logo (PNG, transparent bg preferred) + background photo
+- Subject line: "Your Eventry listing — wanted to show you something"
 
-Deliverability issues identified: New Gmail account (low send history), free in subject lines, hyperlinks in body, cold email to business addresses. Fixes applied to new templates. Mailtrack now installed — all future sends will have open tracking.
+## Auto go-live email caveat
+- Events added manually by Adriaan (not via submit.html) will trigger the go-live email when approved
+- This is generally fine — organisers are happy to hear their event is live
+- Be ready for occasional "we didn't submit this" response — have a friendly explanation ready
 
-Resend template subject line: "Eventry — wanted to make sure this reached you" (used 25 May for all four resends).
-
-Web forms preferred over cold email where available — bypasses spam filters entirely.
-
-**Run clubs outreach note:** Most clubs on Jase Kerr's list (2026 Sydney Marathon Runners FB group) run socially — not raceable events. The pitch to clubs is: "for the events you do organise — fun runs, charity races, time trials — Eventry is where runners outside Facebook find them." Facebook DM sent to Jase 28 May.
-
-# 10. Key Learnings & Principles
-
-- Content originality: Partner taglines and event descriptions must be written in original language — caught in audit and corrected
-- Legal clarity on public data: Listing publicly available organiser/business information is generally acceptable in Australia with appropriate safeguards
-- Partner data discipline: Keep all partner records at pending until outreach is complete
-- Root-cause over workarounds: Sport pill filter fixed properly via normaliseSport() normalisation
-- Visual confirmation caution: Browser automation screenshots can incorrectly show fixes as resolved; javascript_exec is more reliable for confirming DOM state
-- Batch deploys: Changes should be batched before uploading to conserve deploy resources
-- Sheet backup before structural changes: Duplicate the Google Sheet tab before making structural changes
-- Email deliverability: Remove free from subject lines, no hyperlinks in body, plain text only, single clear CTA per email; web forms bypass spam filters entirely
-- Opens without replies are normal for first contact — don't follow up before the 14-day mark
-- Context doc can drift: verify live before actioning to-dos from previous sessions
-- **Event format standard:** Tab-separated, **47 columns** matching Sheet1 exactly. Present as code block with event name header. Dates in YYYY-MM-DD format — Google Sheets auto-formats. Watch for empty org_email/org_phone fields causing column shift. Last 4 columns are image/logo fields — leave empty for new events unless enabling immediately.
-- **Domain cross-checks:** Always verify event URLs — brisbanetrailultra.com.au redirects to The Guzzler; btu.org.au is correct BTU site.
-- **Organiser intelligence:** Mathieu Dore Coaching organises both Riverina Trail Running Series and Pub to Pelican. Those Guys Events (thoseguysevents.com.au) organise 5+ QLD trail events. EventMatrix Pty Ltd (events@eventmatrix.com.au) organise Cape to Cape MTB and Geo Bay Swim — use this email, not hello@capetocapemtb.com. Quad Events Australia (formerly Quad Crown MTB) — rebranded, run The Black Pearl (Newcastle) and The Mystic Yak (Bright VIC).
-- **Run clubs vs event organisers:** Most run clubs operate socially — weekly group runs, no public registration. The subset that matter for Eventry are clubs that organise proper open events. Confirmed event-organising clubs: Terrigal Trotters (GNW Trail + Bay to Bay), Western Districts Joggers & Harriers (Festival of the Feet), Sydney Striders (10K Series). Social-only confirmed: most of Jase Kerr's list.
-- **event_type column:** Use cycling_mtb for MTB stage races, not trail_run. Applies to Cape to Cape and The Black Pearl.
-- **Apps Script column reading:** getRange(1, 1, lastRow, 47) reads all 47 columns. New columns beyond last data column return empty string until data is added. Boolean TRUE in sheet comes through as boolean true in Apps Script — coercion `=== true || === 'TRUE'` handles both.
-- **GitHub image uploads:** Can't rename files during upload via drag-and-drop UI. Upload first to root, then tidy paths later. Images at repo root are served at eventry.au/filename.jpg.
-- **Google Sheets column drift:** Adding new header columns to Sheet1 won't take effect until you confirm the tab is Sheet1 (not a backup tab). Always verify active tab before editing structure.
-
-# 11. Tools & Resources
-
-- Claude in Chrome MCP — browser automation throughout development sessions
-- Mailtrack / Mailsuite — installed on eventry.au@gmail.com for open tracking
-- Debugging globals: window._allPartners, window._allEvents, window._apiDebug; Apps Script endpoint directly fetchable from browser console
-- Mobile preview pattern: Navigate tab to about:blank, use document.write() to create 390px phone-frame wrapper with iframe loading eventry.au
-- Cache-busting: Hard refresh via ctrl+shift+r; iframe cache-bust by appending ? + Date.now() to iframe src; also try ?nocache=1 on the URL
-- GitHub file operations: Must navigate into the specific file before the three-dot delete menu appears
-- DNS issues: Restart Starlink router to clear DNS cache if needed
-- Crazy Domains for domain/DNS management
-- GitHub editor find/replace: Ctrl+H in the web editor; works well for simple text replacements
-- **Apps Script trigger:** markPastEvents — Time-driven, Day timer, Midnight–1am AEST. Live as of 28 May 2026.
-- **Apps Script debug pattern:** Add debug function at bottom of script, select from dropdown, run, check execution log. Remove before next deploy.
-
-# 12. Research URL Audit — Status
+# 11. Research URL Audit — Status
 
 ## Already in sheet ✅
-hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, parkrun.com.au, Rocky Trail Entertainment, eventlist.com.au, Coffs Running Festival, Rumble in the Jungle, Maitland River Run, Raffertys Coastal Run, Bouddi Coastal Run, Elephant Trail Race, Hounslow Classic, Pub to Pelican, Brisbane Trail Ultra, Blackall 100, Cairns Marathon Festival, The Guzzler Ultra, Cape to Cape MTB, Geo Bay Swim, The Black Pearl, Festival of the Feet, RunThrough AU (Sydney IRC + Olympic Park), Riverina Trail Series Rounds 3–4
+hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, parkrun.com.au, Rocky Trail Entertainment, eventlist.com.au, Coffs Running Festival, Rumble in the Jungle, Maitland River Run, Raffertys Coastal Run, Bouddi Coastal Run, Elephant Trail Race, Hounslow Classic, Pub to Pelican, Brisbane Trail Ultra, Blackall 100, Cairns Marathon Festival, The Guzzler Ultra, Cape to Cape MTB, Geo Bay Swim, The Black Pearl, Festival of the Feet, RunThrough AU (Sydney IRC + Olympic Park), Riverina Trail Series Rounds 3–4, Barossa Marathon Festival, Yurrebilla 56K Ultra, Run Forrest Trail Run, Noosa Enduro Trail Runs, Kangaroo Island Marathon, Wonderland Run, Bare Creek Trail Run
 
 ## Pending — confirm dates/details before adding
 - Riverina Trail Series Round 5 (Fed Hill) — date TBC, check riverinatrails.com.au
-- CTTR — Trails and Tails Coopernook (Aug 2026) + Deep Creek Backyard Ultra (Oct/Nov) — 2026 dates not yet confirmed; await CTTR response
+- CTTR — Trails and Tails Coopernook (Aug 2026) + Deep Creek Backyard Ultra (Oct/Nov) — await CTTR response
 - Sprint Series Lane Cove NSW + Anglesea VIC — 2026 dates not yet published on adventuresprint.com.au
-- Those Guys Events remaining events — Yarrabilba Trail Fest, Hidden Vale Trail Running Festival, SEQ Trail Series, runher Races (await response)
-- Sydney Striders 10K Series remaining 2026 rounds (Jun–Nov) — await response before bulk-adding
+- Those Guys Events remaining events — await response
+- Newcastle Orienteering Club — await Justin Stafford response
+- Barossa Run (13 Sep 2026, Lyndoch SA, SARRC) — add when SARRC responds
+- Five Peaks Running Festival (SA, Yurrebilla trail) — trailrunningsa.com
+- Bare Events portfolio — check bareevents.com.au for additional Sydney trail events
+- St Helens MTB Icarus Race — entries closed for June 2026. Watch for future Pedal Heads series rounds.
 
 ## Categorised — not events to add
 - runningcalendar.com.au — competitor/aggregator
-- ironman.com — too large/commercial for now, revisit later
+- rundais.org — direct competitor (surfaced twice — monitor)
+- ironman.com — too large/commercial for now
 - rowingnsw.asn.au — governing body, source for future rowing events
-- tenpin.org.au — out of scope
-- bowlsnsw.com.au — out of scope
-- swimming.org.au — pool swimming governing body, out of scope
-- oceanswims.com — competitor + good source for future open water swim events
-- First Light Marathon — New Zealand event, not Australian
-- Campbelltown Joggers — internal club racing only, no public-facing events to list
-- Pakenham Road Runners — no organised public events found
+- tenpin.org.au, bowlsnsw.com.au, swimming.org.au — out of scope
+- oceanswims.com — competitor + open water event source
+- First Light Marathon — New Zealand, out of scope
+- activelocals.com.au — competitor (app-based)
 
-# 13. About Page — Locked Copy
+# 12. On the Horizon
 
-*Committed to GitHub 25 May 2026. Reference copy below for future edits.*
+- **Recurring events overhaul** — see Section 7 for full spec. **Next build session priority.**
+- **GA → Sheets sync** — Apps Script + GA Data API to populate views/clicks columns. Dependency for stats emails. Build when monetisation is live.
+- **Past events toggle** — "View past events" filter on index.html. Low priority.
+- **submit.html update** — add event_image_url and event_logo_url fields to organiser submission form
+- **Location-based sorting** — show events closest to user's state first. Implement as auto-selected state filter pill (not hard geo-sort). Build when per-state event count is high enough to matter. SA currently has 3 events.
+- **Member pricing** — optional member_price per discipline. Plan: new col 48. Card shows non-member price; detail page shows member note. Designed, not built.
+- Event cancellation detection — feasibility research
+- Athlete profiles, What's Next feed, fitness platform integration — future roadmap
 
-## Hero
+# 13. Key Learnings & Principles
 
-Eyebrow: OUR STORY
+- **Column alignment discipline:** Removing a sheet column requires adding a placeholder in Apps Script. Missing this caused `combinedNotes` to land in wrong column.
+- **Cross-session continuity via EVENTRY-CONTEXT.md:** Regenerate at end of every session.
+- **Batch changes before uploading:** Adriaan prefers to batch code changes before GitHub upload.
+- **Partner data discipline:** Keep all partner records at pending until outreach is complete.
+- **Duplicate the sheet tab** before structural changes as a backup.
+- **no-cors masks all server failures:** submit.html posts with `mode: 'no-cors'`, so fetch resolves and success screen shows even when server never ran. Always verify via sheet, notification email, or Apps Script Executions log.
+- **Apps Script Executions log is source of truth:** Executions panel (real-time toggle) shows every run + status.
+- **Installable vs simple triggers:** Function literally named `onEdit` runs as simple trigger and CANNOT send email. Name it something else and add via Triggers panel as installable.
+- **Series rows aren't grouped by submission_id:** Reliable same-submission key is `timestamp` col (AF, idx 31) + org_email.
+- **GitHub image rename caveat:** Renaming on case-insensitive OS may produce corrupt file on Linux server. Re-upload the actual file after case-change rename.
+- **Event format standard:** 47 columns matching Sheet1. Dates in YYYY-MM-DD. Leave image/logo cols (AR–AU) empty unless enabling immediately. **Always add events via xlsx file rather than tab-separated rows** — tab-separated causes column alignment errors.
+- **Domain cross-checks:** Always verify event URLs.
+- **Auto go-live email fires on any approval** — including events Adriaan added manually. Generally fine, be ready to explain if organiser is surprised.
+- **Social event cards** already work — event type 'Social' shows 🎉 SOCIAL badge, plain white card. No code change needed for run club listings.
+- **Pace Athletic owns Blue Mountains Running Co** — same business (Trasa Holdings Pty Ltd). Approach via Pace Athletic head office only.
 
-Headline: Built by athletes, for athletes.
+# 14. Tools & Resources
 
+- Claude in Chrome MCP — browser automation
+- Mailtrack / Mailsuite — installed on eventry.au@gmail.com for open tracking
+- Debugging globals: window._allPartners, window._allEvents, window._apiDebug
+- Mobile preview: Navigate to about:blank, document.write() to create 390px phone-frame iframe
+- Cache-busting: ctrl+shift+r; iframe cache-bust via ? + Date.now(); ?nocache=1
+- GitHub file operations: navigate into file before three-dot delete menu appears
+- GitHub folder upload: github.com/eventry-au/eventry/upload/main/path/to/folder
+- DNS issues: Restart Starlink router to clear DNS cache
+- **Apps Script triggers:**
+  - markPastEvents — Time-driven, Day timer, Midnight–1am AEST. Live 28 May 2026.
+  - onApprovalEdit — installable On-edit. Live 31 May 2026. Sends go-live email on status→approved, deduped per submission.
+
+# 15. About Page — Locked Copy
+
+*Committed to GitHub 25 May 2026.*
+
+Eyebrow: OUR STORY | Headline: Built by athletes, for athletes.
 Subtext: Eventry started with a simple question — what's next? Searching for that answer shouldn't be this hard. So we built the place we always wished existed.
 
-## Origin Story
+Pull Quote: "What's next? We built the answer."
 
-After finishing an event — that post-race buzz still in your legs, already thinking about what's next — you pull out your phone and start searching. Five different websites. A few Facebook groups. A club newsletter you're not sure is still active. Half the events are out of date. Some links are broken. A few have already closed registrations.
-
-Australia has thousands of incredible sporting events every year — trail runs, triathlons, ocean swims, obstacle races, cycling tours, paddling classics. But finding them, comparing them, and actually entering them has always been more work than it should be.
-
-We thought so too.
-
-## Pull Quote
-
-"What's next? We built the answer."
-
-## Roadmap
-
-- NOW: Australia's sports events directory — browse, filter, and enter events across every sport and every state. Free to list, simple to find.
-- SOON: Featured listings and partner network — organisers can feature events for more visibility; coaches and sports businesses can reach active athletes.
-- FUTURE: Athlete profiles and event history — track events, log completions, build a profile.
-- FUTURE: What's Next — personalised feed matching history, location, preferences.
-- FUTURE: Fitness platform integration — sync training apps, build a complete record of your sporting life.
+Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and partner network. FUTURE: Athlete profiles, What's Next feed, fitness platform integration.
