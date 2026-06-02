@@ -1065,7 +1065,7 @@
     <span class="tagline-text">"Every race, ride, paddle and plunge — all in one place."</span>
   </div>
   <div class="search-wrap">
-    <input type="text" id="searchInput" placeholder="Search events, sports, locations..." />
+    <input type="text" id="searchInput" placeholder="Search events, sports, locations..." onkeydown="if(event.key==='Enter') applyFilters()" />
     <button class="search-btn" onclick="applyFilters()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     </button>
