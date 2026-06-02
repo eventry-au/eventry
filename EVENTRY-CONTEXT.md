@@ -420,3 +420,62 @@ Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and p
 - **Database migration** — Google Sheets → Supabase or similar when hitting 500+ events or performance issues.
 - **Mailchimp migration** — newsletter subscribers currently in Google Sheet tab. Migrate at 100+ subscribers (Mailchimp free tier: 500 contacts, 1,000 emails/month).
 - **hello@eventry.au branded email** — Google Workspace ~$8 AUD/month. Deferred, still using eventry.au@gmail.com.
+
+# 17. Side Chat — Outstanding Items (as of Session 20)
+
+Items surfaced in the side chat that haven't yet been actioned or fully captured in the main context doc. To be processed each session start.
+
+## Events to add (enough info to proceed)
+
+- **Campbell's Shepparton Running Festival** — 15–16 Aug 2026, Shepparton VIC. 27th annual. Marathon/HM/10K/5K/2K family fun run. AIMS-certified, Goulburn River course. Entry via RaceRoster. **NOTE: All distances SOLD OUT for 2026** — still worth listing for discovery + 2027 awareness. Organiser: Fit City Events (+61 430 472 975, contact via shepparton.run/contact). Add sold-out note in description.
+- **Sole Motive remaining events** — Brighton Beach Marathon (30 Aug, VIC), Carmans Fun Run Sydney (20 Sep, NSW), Canberra Times Fun Run (date TBC). Follow up: name these events specifically in next Sole Motive contact.
+- **180 Cadence remaining events** — Sydney's Backyard Ultra, Sydney Trail Marathon, STHM Night + Summer + Autumn editions, Parramatta HM. Follow up: name these in next 180 Cadence contact.
+- **GNW Trail Running Festival** — 20 Sep 2026, 10K/30K/50K, Six Foot Track qualifier, NSW. Ready to add.
+- **Sydney Backyard Ultra at St Ives** — 19 Sep 2026. Ready to add.
+- **Lizard Log Trail Run** — Western Sydney Parklands. Research dates before adding.
+- **Run Port Douglas** — 5 Sep 2026, QLD. Contact: info@runportdouglas.com.au. Entry via RaceRoster. Ready to add.
+
+## Organiser outreach — new contacts surfaced
+
+- **Fit City Events** — organiser behind Shepparton Running Festival. Check if they run other events beyond Shepparton. Contact: +61 430 472 975, shepparton.run/contact.
+- **Fit City Tours** (fitcitytours.com.au) — appeared as Shepparton sponsor AND in Sydney Marathon Runners Facebook marketplace post (running tours of Sydney, Brisbane, Melbourne). May be same business as Fit City Events — worth checking. Potential warm connection.
+- **SingleTrack Events** — top priority organiser. 11+ VIC trail events including Buffalo Stampede, Roller Coaster Run, Mt Buller SkyRun, Snow Gum Run, Razorback Run, Alpine Challenge, Wilsons Prom Running Festival, Kilcunda. One contact reaches 11 events.
+- **The Event Team (WA)** — 6+ WA events including Dwellingup 100, Rottnest Channel Swim, HBF Run for a Reason, Perth Kilt Run, Backroads Gravel, Busselton Jetty Swim.
+- **Cycling Classics / Yaffa Media** — Bowral Classic (18 Oct 2026, NSW). Ready to list. Not yet contacted.
+- **AAA Racing** — D'Aguilar Two 'Ups' Marathon + Wildhorse event. QLD.
+- **PB Events / Justin** (justin@pbevents.com.au) — You Yangs, Werribee, Great Rail Run. Not yet contacted.
+
+## Partner outreach — new contacts surfaced
+
+- **Bourkes Bicycles** — bikes@bourkesbicycles.com.au. Draft ready. Send 4 June (may already be sent — check tracker).
+- **Pace Athletic** — if no reply by 16 June, email individual stores directly rather than head office.
+- **Supplement Co** — Tier C partner. Not contacted.
+- **Hennika Health** — Tier C partner. Not contacted.
+- **MaraThongs** — Tier C partner. Not contacted.
+
+## Events still to confirm/research
+
+- **Runaway Noosa Marathon** — dates TBC. Research before adding.
+- **Launceston Running Festival** — dates TBC. Research before adding.
+- **Balmoral Burn** — dates TBC. Research before adding.
+- **Washpool World Heritage Trail** — NSW. Research before adding.
+- **Rainbow Beach Trail Run** — QLD. Research before adding.
+- **Two Bays Trail, Kowen Trail Run, Stromlo Running Festival, UTA** — all confirmed events, not yet in sheet.
+- **Brisbane Marathon, GC50** — confirmed events, not yet in sheet.
+- **Six Inch Trail (WA), Perth Marathon** — confirmed events, not yet in sheet.
+
+## RunThrough Australia — status
+
+hello@runthroughaustralia.com is PERMANENTLY DEAD (bounced twice). Forward original email to info@runthrough.co.uk (UK head office) next session. 3 AU events already in sheet (Albert Park Melbourne 12 Jul, SIRC + Olympic Park Sydney).
+
+## Destination Sport Experiences — new inbound (2 June)
+
+Tessa Tumen-Ulzii (tsesun.tumen-ulzii@destinationsport.com) — CONVERTED inbound. Manages HYROX AU, Tri Travel, Sportive Breaks. KI Run Festival corrected (name + price updated). Logo + other events requested. CC list: Tessa, Jenna-belle, Shannon, Ashleigh. Follow up: logo (PNG transparent bg) + full 2026/27 AU event calendar.
+
+## Outreach — follow-up timing reminders
+
+- **Sole Motive** — follow up: name Brighton Beach Marathon, Carmans Fun Run Sydney, Canberra Times Fun Run specifically
+- **180 Cadence** — follow up: name Backyard Ultra, Sydney Trail Marathon, STHM Night + Summer, Parramatta HM
+- **TRSA** — follow up: ask about Twilight event
+- **Pace Athletic** — if no reply by 16 June, email individual stores directly
+- **Bourkes Bicycles** — send/sent 4 June (check tracker)
