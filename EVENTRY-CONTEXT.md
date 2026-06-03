@@ -2,7 +2,9 @@
 
 Session Handover Document
 
-*Last updated: 3 June 2026 (Session 22)*
+*Last updated: 3 June 2026 (Session 22 — late)*
+
+*For the full project backstory (Sessions 1–22), see EVENTRY-HISTORY.md — the narrative archive. This document is the working handover: current state, live to-do queue, active outreach.*
 
 # 1. Purpose & Concept
 
@@ -23,12 +25,12 @@ Eventry (eventry.au) is Australia's sports events directory — a side project r
 - **Sheet1** — all events and partners (EVT- and PTR- prefixed rows)
 - **Newsletter Subscribers** — people who signed up for the newsletter (SUB- prefixed rows)
 
-When auditing the sheet, only reference these two tabs. Do not reference backup tabs — old backup tabs have been deleted as of Session 22. Sheet1 has 48 columns (AV = `recurring_end_date`).
+When auditing the sheet, only reference these two tabs. All old backup tabs were deleted in Session 22. Sheet1 has 48 columns (AV = `recurring_end_date`).
 
-**Sheet1 key column indices:** B=status(1), I=event_name(8), J=event_date(9), AB=recurring(27), AV=recurring_end_date(47)
+**Sheet1 key column indices:** B=status(1), I=event_name(8), J=event_date(9), Q=sport(16), R=disc_subtype(17), S=disc_name(18), AB=recurring(27), AC=event_type(28), AV=recurring_end_date(47)
 
-**Current sheet counts (as of 3 June 2026):**
-- 105 approved events + 9 past events
+**Current sheet counts (as of 3 June 2026, end of Session 22):**
+- 114 approved events + 9 past events
 - 5 approved partners (FlowiTri, Mauro Swim Team, Cycle Fitness Nutrition, Tailwind Nutrition, Warners Bay Physio)
 - 2 pending partners (Hunter Physio Sports Clinic, Vertigo MTB)
 - 2 newsletter subscribers
@@ -45,7 +47,7 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 
 - **FlowiTri** — Lucas McBeath (hello@flowitri.com.au) — card upgrade pitch sent 29 May. Follow up ~12 June.
 - **Mauro Swim Team** — Peter Mauro (coach@mauroswimteam.com) — card upgrade pitch sent 29 May. Follow up ~12 June.
-- **Warners Bay Physiotherapy** — Jeandre Theunissen (reception@warnersbayphysiotherapy.com.au) — card upgrade pitch sent 29 May, opened same day, no reply. 3rd touch total. Follow up ~12 June. **Primary physio relationship — activate Hunter Physio only if Warners Bay doesn't respond after 12 June.**
+- **Warners Bay Physiotherapy** — Jeandre Theunissen (reception@warnersbayphysiotherapy.com.au) — card upgrade pitch sent 29 May, opened same day. **Re-opened the 25 May email again on 3 June (old-conversation revival per Mailsuite) — mild positive signal, still no reply.** 3 touches total. Follow up ~12 June. **Primary physio relationship — activate Hunter Physio only if Warners Bay doesn't respond after 12 June.**
 - **Tailwind Nutrition** — retail@tailwindnutrition.com.au — card upgrade email sent 1 June (web form blocked, used retail@). Awaiting response. Follow up ~16 June.
 - **Cycle Fitness Nutrition** (PTR-CFN) — Glen, info@cyclefitnessnutrition.com — card upgrade email sent 1 June. Opened within 24hrs (Mailsuite). No reply. Follow up ~15 June.
 
@@ -59,7 +61,7 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 **Warm contacts (approach first):**
 - **Footmotion Newcastle — Jody** (personal connection, previously Pure Run Newcastle) — NOT YET CONTACTED. Call or DM directly. Running shoe store + weekly social run. Multiple Footmotion stores each with own weekly runs. Each weekly run = recurring social event listing on Eventry. HIGH PRIORITY.
 - **Super Elliotts Cycles** — bikes@superelliotts.com.au — email sent 1 June. In-person visit same day (200 Rundle St Adelaide SA). Awaiting response. First SA partner.
-- **Bourkes Bicycles** — info@bourkesbicycles.com.au — email sent/to send 4 June. Owner-operated est. 1979, Taree NSW. Co-organises Coopernook Gravel + Bourkes Bikes Road Race with MVCC.
+- **Bourkes Bicycles** — info@bourkesbicycles.com.au — email due ~4 June. Owner-operated est. 1979, Taree NSW. Co-organises Coopernook Gravel + Bourkes Bikes Road Race with MVCC.
 
 **Research leads (Tier A):**
 - **Pace Athletic** — rosebery@paceathletic.com — email sent 2 June. 7 Sydney stores + Blue Mountains Running Co (same business). If no reply by ~16 June, email individual stores: castlehill@, manly@, rozelle@, crowsnest@, mosman@, waverley@paceathletic.com + info@bluemtnsrunningco.com.au
@@ -91,7 +93,7 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 - EventMatrix Pty Ltd (events@eventmatrix.com.au) — web form 28 May. Awaiting response.
 - Quad Events Australia — web form 28 May. Awaiting response.
 - RunThrough Australia — hello@runthroughaustralia.com — **BOUNCED TWICE. PERMANENTLY DEAD.** Fallback: info@runthrough.co.uk (UK head office). 3 AU events already in sheet.
-- Terrigal Trotters (admin@terrigaltrotters.com.au) — email 28 May. Automated response received.
+- Terrigal Trotters (admin@terrigaltrotters.com.au) — email 28 May. Automated response received. NOTE: GNW Trail Running Festival (added today) is their event — good re-engagement hook.
 - Western Districts Joggers & Harriers (festivalofthefeet@westiesjoggers.com) — email 28 May. Opened, no reply.
 - Sydney Striders — **CONVERTED.** Bruce Inglis self-submitted 10K Series (6 rounds live). Go-live + thank-you + logo request email sent Session 18.
 - Newcastle Orienteering Club — Justin Stafford (president@newcastleorienteering.asn.au) — email 29 May. Follow up ~12 June.
@@ -101,9 +103,10 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 - NHCC (info@newcastlehuntercc.com.au) — email 2 June. HEZ Road Race listed. Auto go-live fired (error — org_email was populated). Human follow-up sent same day. Follow up ~16 June.
 - TRSA (events@trailrunningsa.com) — email 2 June. Full 2026 SA trail calendar listed. Ask about Twilight event in follow-up. Follow up ~16 June.
 - Sole Motive (runmelbourne@solemotive.com) — email 2 June. ASICS Run Melbourne listed. Follow up: name Brighton Beach Marathon (30 Aug), Carmans Fun Run Sydney (20 Sep), Canberra Times Fun Run specifically. Follow up ~16 June.
-- 180 Cadence (alex@180cadence.au) — email 2 June. STHM Winter + SUM 30/50/100 listed. Follow up: name Backyard Ultra, Sydney Trail Marathon, STHM Night + Summer, Parramatta HM. Follow up ~16 June.
+- 180 Cadence (alex@180cadence.au) — email 2 June. STHM Winter + SUM 30/50/100 listed. **Sydney's Backyard Ultra (added today) is also theirs.** Follow up: name Backyard Ultra, Sydney Trail Marathon, STHM Night + Summer, Parramatta HM. Follow up ~16 June.
 - Running Wild NSW (info@runningwildnsw.com) — email 2 June. Burralow Bush Run listed. Ask about TBC 2026 dates for Narrowneck, Megalong, Fairmont, Wentworth Falls. Follow up ~16 June.
 - Destination Sport Experiences — Tessa Tumen-Ulzii (tsesun.tumen-ulzii@destinationsport.com) — **CONVERTED inbound 2 June.** Manages HYROX AU, Tri Travel, Sportive Breaks. KI Run Festival corrected. CC: Jenna-belle, Shannon, Ashleigh. Follow up ~16 June: logo (PNG transparent bg) + full 2026/27 AU event calendar.
+- **Sport 3 Event Management — Adam Goodger (info@goldcoast50.com) — CONVERTED 3 June.** Replied positively to GC50 go-live ("Thanks team!"). Auto go-live worked correctly. TO DO: research Sport 3's full portfolio — likely a multi-event contact like Destination Sport / Sole Motive. Consider outreach to Adam for additional listings.
 
 ## Organiser Outreach Pending
 
@@ -111,39 +114,58 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 - **Wonderland Run / Adelaide Trail Runners** — no email found publicly. Contact via adelaidetrailrunners.com.au. Event now live on site.
 - **PB Events / Justin** (justin@pbevents.com.au) — You Yangs / Werribee / Great Rail Run. Not yet contacted.
 - **SingleTrack Events** (singletrack.com.au/contact) — **TOP PRIORITY.** 11 VIC trail events: GPT100, Buffalo Stampede, Roller Coaster Run, Mt Buller SkyRun, Snow Gum Run, Razorback Run, Alpine Challenge, Wilsons Prom Running Festival, Kilcunda + more. One contact = many listings. Note: Six Foot page links Wonderland to adelaidetrailrunners.com.au and Buffalo Stampede to buffalostampede.com.au — verify current organiser URL before listing.
+- **Race Hub Australia** (racehubaustralia.com/contactus/) — **TOP PRIORITY — major find (Side note 2.0, 3 June).** 15+ running festivals nationally from one contact. Portfolio: Yarra River RF, Cooks River Fun Run, Parklands RF, Parklands Trail RF, Parramatta Race Series, Raging Waters RF (Sydney); Albury RF, Carcoar Cup, Highlands RF, Goulburn Race Series, Wollongong RF, Wagga Race Series (regional NSW); Stromlo RF (ACT — already in sheet, theirs); Gumbuya World RF, Wodonga RF, Yarra River RF (VIC); Brighton RF, Kedron RF (QLD); River Torrens RF (SA). Timing by Multisport Australia. Same tier as SingleTrack.
 - **The Event Team (WA)** (info@theeventteam.com.au) — 6+ WA events: Dwellingup 100, Rottnest Channel Swim, HBF Run for a Reason, Perth Kilt Run, Backroads Gravel, Busselton Jetty Swim. Not yet contacted.
 - **Cycling Classics / Yaffa Media** (cyclingclassics.com.au/contact-us) — Bowral Classic (18 Oct 2026, NSW) ready to list. Not yet contacted.
 - **AAA Racing** (aaaracing.com.au) — D'Aguilar Two 'Ups' Marathon + Wildhorse event. QLD. Not yet contacted.
 - **Coffs Trail Runners** (coffstrailrunners.com) — Washpool World Heritage Trail + Rumble in the Jungle (Rumble in sheet). Not yet contacted.
 - **Run QLD** (runqld.com.au) — Rainbow Beach Trail Run + Blackall 100 (Blackall in sheet). Not yet contacted.
-- **Fit City Events** (+61 430 472 975, shepparton.run/contact) — Shepparton Running Festival organiser. Check if they run other events. May be same business as Fit City Tours (fitcitytours.com.au).
+- **Fit City Events** (+61 430 472 975, shepparton.run/contact) — Shepparton Running Festival organiser (now in sheet). Check if they run other events. May be same business as Fit City Tours (fitcitytours.com.au).
+- **Kokoda Youth Foundation** (kokodachallenge.com) — runs Kokoda Challenge Sydney + Gold Coast + Brisbane + Sunshine Coast (+ possible Lake Mac). One contact = 4–5 listings. Gold Coast already in sheet. See "events to add" below.
+- **Mito Foundation** (bloodylongwalk.com.au) — runs The Bloody Long Walk national series (8+ rounds). One contact = 8+ listings. See "events to add" below.
+- **Rapid Ascent** (rapidascent.com.au) — **already in sheet for trail running (Trail Running Series + Run Larapinta). Now confirmed multi-discipline:** also runs Shimano Gravel Muster (gravel) + Surf Coast Century (ultra). Pitch as a multi-sport organiser contact covering trail running, gravel and ultra. See "events to add" below.
 - **Sri Chinmoy Marathon Team Australia** — add to top-tier outreach list alongside Race Hub Australia, Atlas Events, H Events.
+- **Atlas Events** (brisbanemarathon.com.au) — organiser of Brisbane Marathon Festival (now in sheet). Research portfolio.
 
 # 5. Current State
 
-## Sheet status as of 3 June 2026 (Session 22)
+## Sheet status as of 3 June 2026 (end of Session 22)
 
-- **105 approved events** on live site
+- **114 approved events** on live site
+- **9 past events**
 - **5 approved partners** live (FlowiTri, Mauro Swim Team, Cycle Fitness Nutrition, Tailwind Nutrition, Warners Bay Physio)
 - **2 pending partners** in sheet (Hunter Physio Sports Clinic, Vertigo MTB)
 - **2 newsletter subscribers** (Newsletter Subscribers tab)
-- Sheet cleaned up Session 22: all test rows deleted, all backup tabs deleted, duplicate RunThrough rows (EVT-RUNTHRU-*) removed
-- parkrun Speers Point (EVT-PARKRUN-SPEERSPOINT) deleted — needs resubmission via new recurring form
+
+## Events added this session (Session 22)
+
+10 events added across two batches:
+- **GNW Trail Running Festival** (EVT-GNW-TRAIL-2026) — 20 Sep 2026, Patonga NSW, Terrigal Trotters. Six Foot qualifier.
+- **Sydney's Backyard Ultra** (EVT-SYDBACKYARD-2026) — 19 Sep 2026, St Ives NSW, 180 Cadence.
+- **Run Port Douglas** (EVT-RUNPORTDOUGLAS-2026) — 5 Sep 2026, Port Douglas QLD.
+- **Campbell's Shepparton Running Festival** (EVT-SHEPPARTONRF-2026) — 15–16 Aug 2026, Shepparton VIC. SOLD OUT 2026 — listed for discovery + 2027.
+- **Kowen Winter Trails** (EVT-KOWEN-WINTER-2026) — 21 Jun 2026, Wamboin NSW. Six Foot qualifier.
+- **Stromlo Running Festival** (EVT-STROMLO-2026) — 14–15 Nov 2026, Canberra ACT. (Race Hub Australia event.)
+- **fisiocrem GC50 Run Festival** (EVT-GC50-2026) — 10–11 Oct 2026, Coolangatta QLD. (Sport 3 / Adam Goodger — CONVERTED.)
+- **Six Inch Trail Marathon** (EVT-SIXINCH-2026) — ~Dec 2026 TBC, Dwellingup WA.
+- **Perth Running Festival** (EVT-PERTHRF-2026) — 11 Oct 2026, Burswood WA.
+- **EVA Air Brisbane Marathon Festival** (EVT-BRISBANEMARATHON-2026) — 7 Jun 2026, Brisbane QLD. (Atlas Events.)
+
+## Session 22 housekeeping completed
+
+- All test rows deleted (TRIM TEST, BADGE-TEST, Suzzieboozie, 4 orienteering/duplicate test rows, parkrun Speers Point).
+- Duplicate RunThrough rows (EVT-RUNTHRU-*) removed — only the correct EVT-RUNTHROUGH-* rows remain.
+- All old backup tabs deleted — sheet now has only Sheet1 + Newsletter Subscribers.
+- Confirmed two-tab rule as permanent principle.
+- EVENTRY-HISTORY.md created — narrative archive of Sessions 1–22 so old chats can be retired.
+- Side note 2.0 content folded into this doc; original side chat + Side note 2.0 to be retired, fresh side chat to start.
 
 ## Key decisions / notes from Session 22
 
-- **Sheet is now clean** — only Sheet1 and Newsletter Subscribers tabs remain. No backup tabs.
-- **SUB- rows live in Newsletter Subscribers tab** — these are newsletter signups, not events or partners. Do not flag as test rows.
-- **Always add events via xlsx file** — tab-separated rows cause column alignment errors.
+- **Add events via the xlsx file, not tab-separated paste** — alignment errors otherwise.
+- **Strip blank trailing rows before appending** to the sheet (the project file accumulates empty rows that push new rows far down).
+- **parkrun Speers Point still needs resubmission** via submit.html as weekly recurring with proper end date.
 - **Eventry_Events.xlsx in project files is the reference sheet** — always read this file for audits, not memory or prior sessions.
-
-## Key decisions / notes from Session 20–21
-
-- **Recurring events overhaul complete** — see Section 7 for full design. Fully tested and live.
-- **Monthly recurring uses multi-date picker** — organiser enters each date individually. Last date = implicit end date.
-- **GitHub web editor large file paste can silently produce 0-byte files** — use upload/replace for files over ~500 lines.
-- **Google Sheets auto-converts bare date strings to Date objects** — use `instanceof Date` guard → `.toISOString().split('T')[0]`.
-- **Script Properties dedup keys persist between test runs** — use `clearRecurringProps()` or delete via Project Settings.
 
 # 6. Immediate To-Do Queue (Priority Order)
 
@@ -151,66 +173,64 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 
 1. **Resubmit Speers Point parkrun** — deleted in Session 22. Resubmit via submit.html as weekly recurring with proper end date.
 2. **Contact Footmotion / Jody** — warm personal contact, call or DM. Partner listing + weekly social run events. HIGH PRIORITY.
-3. **Send Bourkes Bicycles email** — info@bourkesbicycles.com.au — draft ready, send 4 June if not already sent. Check outreach tracker.
+3. **Send Bourkes Bicycles email** — info@bourkesbicycles.com.au — draft ready, due ~4 June. Check outreach tracker.
 4. **Reach out to Vertigo MTB** (bookings@vertigomtb.com.au) — after Icarus race settles post 7 June.
 5. **Reach out to Pedal Heads** (info@pedalheads.org.au) — early next week after 7 June race.
 6. **Contact SingleTrack Events** (singletrack.com.au/contact) — TOP PRIORITY organiser. 11 VIC trail events.
+7. **Contact Race Hub Australia** (racehubaustralia.com/contactus/) — TOP PRIORITY organiser. 15+ running festivals nationally.
 
 ## 12 June follow-ups:
-7. FlowiTri (Lucas McBeath) — 3 touches, opened, no reply
-8. Warners Bay Physio (Jeandre Theunissen) — 3 touches, opened, no reply. **Decision point: if no response, activate Hunter Physio**
-9. Mauro Swim Team (Peter Mauro) — 2 touches
-10. Newcastle Orienteering Club (Justin Stafford) — 1 touch
+8. FlowiTri (Lucas McBeath) — 3 touches, opened, no reply
+9. Warners Bay Physio (Jeandre Theunissen) — 3 touches, re-opened 3 June, no reply. **Decision point: if no response, activate Hunter Physio**
+10. Mauro Swim Team (Peter Mauro) — 2 touches
+11. Newcastle Orienteering Club (Justin Stafford) — 1 touch
 
 ## ~15–16 June follow-ups:
-11. SARRC (Lindsay Gunn)
-12. Cycle Fitness Nutrition (Glen)
-13. Tailwind Nutrition
-14. Super Elliotts Cycles
-15. Pace Athletic — if no reply, email individual stores directly
-16. Lake Mac Penguins (Spot Anderson)
-17. Vert Nutrition (Ben Paris)
-18. MVCC, NHCC, TRSA, Sole Motive, 180 Cadence, Running Wild NSW
-19. Destination Sport Experiences (Tessa) — logo + full event calendar
+12. SARRC (Lindsay Gunn)
+13. Cycle Fitness Nutrition (Glen)
+14. Tailwind Nutrition
+15. Super Elliotts Cycles
+16. Pace Athletic — if no reply, email individual stores directly
+17. Lake Mac Penguins (Spot Anderson)
+18. Vert Nutrition (Ben Paris)
+19. MVCC, NHCC, TRSA, Sole Motive, 180 Cadence, Running Wild NSW
+20. Destination Sport Experiences (Tessa) — logo + full event calendar
 
-## Events still to add:
-20. **Campbell's Shepparton Running Festival** — 15–16 Aug 2026, Shepparton VIC. **SOLD OUT for 2026** — still worth listing for discovery + 2027 awareness. Organiser: Fit City Events.
-21. **GNW Trail Running Festival** — 20 Sep 2026, 10K/30K/50K, NSW. Ready to add.
-22. **Sydney Backyard Ultra at St Ives** — 19 Sep 2026. Ready to add.
-23. **Run Port Douglas** — 5 Sep 2026, QLD. info@runportdouglas.com.au. Ready to add.
-24. **Bowral Classic** — 18 Oct 2026, NSW. Ready to list once Cycling Classics contacted.
-25. **Two Bays Trail, Kowen Trail Run, Stromlo Running Festival, UTA** — confirmed events, not yet in sheet.
-26. **Brisbane Marathon, GC50** — confirmed events, not yet in sheet.
-27. **Six Inch Trail (WA), Perth Marathon** — confirmed events, not yet in sheet.
-28. CTTR events (Trails & Tails Coopernook Aug + Deep Creek Backyard Ultra Oct/Nov) — await CTTR response.
-29. Those Guys Events bulk add — await response.
-30. Newcastle Orienteering Club bulk add — await Justin Stafford response.
-31. Riverina Trail Series Round 5 (Fed Hill) — in sheet as EVT-RTRS-FEDHILL-2026, date TBC — verify date at riverinatrails.com.au
-32. Sole Motive: Brighton Beach Marathon (30 Aug VIC), Carmans Fun Run Sydney (20 Sep NSW), Canberra Times Fun Run
-33. 180 Cadence: Backyard Ultra, Sydney Trail Marathon, STHM Night + Summer + Autumn editions, Parramatta HM
-34. Running Wild NSW: Narrowneck, Megalong, Fairmont, Wentworth Falls — dates TBC
-35. Destination Sport: HYROX AU dates + full Tri Travel / Sportive Breaks AU calendar
+## Events to add — from Side note 2.0 (3 June), confirmed for discussion/listing:
+21. **Kokoda Challenge — Sydney** (19–20 Sep 2026, Royal NP NSW). **AGREED TO LIST.** Plus Gold Coast 96km (already in sheet), Brisbane, Sunshine Coast. **Check for Lake Macquarie event — high priority given local focus.** Flag fundraising requirement in listing. Kokoda Youth Foundation = one contact.
+22. **The Bloody Long Walk — Newcastle** (23 Aug 2026) + national series (Perth 13 Sep, Adelaide 18 Oct, Mornington 25 Oct, Sydney 15 Nov, + Sunshine Coast/Brisbane/Wollongong/Melbourne TBC). **AGREED TO LIST.** Mito Foundation = one contact, 8+ listings. **OPEN QUESTION: sport-type classification** — walking challenge doesn't fit current pills. Options: Hiking, Running, or new "Walking" type? Decide before listing.
+23. **Shimano Gravel Muster** (20–23 Aug 2026, Alice Springs NT) — Rapid Ascent gravel stage race. Add + use as multi-discipline pitch.
+24. **Surf Coast Century** (12 Sep 2026, Anglesea VIC, 100km/50km) — Rapid Ascent ultra. Add under Rapid Ascent.
+25. **Transcend Trails** (22 Aug 2026, Avon Valley WA) — independent trail event, 65km–6km. Find organiser contact, then add.
+26. **Brooks Surf Coast Trail Marathon** (20 Jun 2026, Torquay VIC) — independent, 12th edition. Find contact, then add.
+27. **ARA Ride for Good** (19–25 Oct 2026, SA) — corporate charity ride, 50 places, $10K fundraising. **LEAN: SKIP** — poor fit (invite-flavoured, high barrier). Confirm decision and close out.
 
-## Events to research before adding:
-36. Runaway Noosa Marathon (runawaynoosa.com.au) — QLD, dates TBC
-37. Launceston Running Festival — TAS, dates TBC
-38. Balmoral Burn (Balmoral Run Club) — NSW hill run, confirm it's a standalone listable event
-39. Washpool World Heritage Trail — NSW
-40. Rainbow Beach Trail Run — QLD
-41. Lizard Log Trail Run — Western Sydney Parklands, dates TBC
-42. D'Aguilar Two 'Ups' Marathon + Wildhorse — QLD (AAA Racing)
-43. Dwellingup 100, Rottnest Channel Swim, HBF Run for a Reason, Perth Kilt Run, Backroads Gravel, Busselton Jetty Swim (The Event Team WA)
-44. GPT100, Buffalo Stampede, Roller Coaster Run, Mt Buller SkyRun, Snow Gum Run, Razorback Run, Alpine Challenge, Wilsons Prom, Kilcunda (SingleTrack Events)
-45. GYG Coffs Harbour Triathlon Festival — past (9–10 May 2026); note for 2027
+## Events still to add (confirmed, from earlier sessions):
+28. **Bowral Classic** — 18 Oct 2026, NSW. Ready once Cycling Classics contacted.
+29. **Two Bays Trail, UTA** — 2026 editions already past; note for 2027 when dates open.
+30. CTTR events (Trails & Tails Coopernook Aug + Deep Creek Backyard Ultra Oct/Nov) — await CTTR response.
+31. Those Guys Events bulk add — await response.
+32. Newcastle Orienteering Club bulk add — await Justin Stafford response.
+33. Riverina Trail Series Round 5 (Fed Hill) — in sheet as EVT-RTRS-FEDHILL-2026, verify date at riverinatrails.com.au
+34. Sole Motive: Brighton Beach Marathon (30 Aug VIC), Carmans Fun Run Sydney (20 Sep NSW), Canberra Times Fun Run
+35. 180 Cadence: Sydney Trail Marathon, STHM Night + Summer + Autumn editions, Parramatta HM
+36. Running Wild NSW: Narrowneck, Megalong, Fairmont, Wentworth Falls — dates TBC
+37. Destination Sport: HYROX AU dates + full Tri Travel / Sportive Breaks AU calendar
+38. The Event Team WA: Dwellingup 100, Rottnest Channel Swim, HBF Run for a Reason, Perth Kilt Run, Backroads Gravel, Busselton Jetty Swim
+39. SingleTrack Events: GPT100, Buffalo Stampede, Roller Coaster Run, Mt Buller SkyRun, Snow Gum Run, Razorback Run, Alpine Challenge, Wilsons Prom, Kilcunda
+40. Race Hub Australia: full 15+ festival portfolio once contacted
+41. AAA Racing: D'Aguilar Two 'Ups' Marathon + Wildhorse
+42. Washpool World Heritage Trail, Rainbow Beach Trail Run, Lizard Log Trail Run, Runaway Noosa Marathon, Launceston Running Festival, Balmoral Burn — research before adding
 
 ## Newsletter & Socials (outstanding — not being tracked elsewhere):
-46. **Newsletter strategy** — plan content, cadence, and platform (Mailchimp free tier: 500 contacts, 1,000 emails/month). Currently 2 subscribers in sheet.
-47. **Social media accounts** — set up Instagram (minimum). Strategy and content plan needed.
-48. **Newsletter content pipeline** — what goes in it (new events, partner spotlights, race recaps?), how often, who writes it.
+43. **Newsletter strategy** — plan content, cadence, and platform (Mailchimp free tier: 500 contacts, 1,000 emails/month). Currently 2 subscribers in sheet.
+44. **Social media accounts** — set up Instagram (minimum). Strategy and content plan needed.
+45. **Newsletter content pipeline** — what goes in it (new events, partner spotlights, race recaps?), how often, who writes it.
 
 ## Admin:
-49. RunThrough Australia — forward to info@runthrough.co.uk (UK head office). hello@runthroughaustralia.com permanently dead.
-50. NHCC — monitor for "we didn't submit this" reply; have friendly explanation ready.
+46. RunThrough Australia — forward to info@runthrough.co.uk (UK head office). hello@runthroughaustralia.com permanently dead.
+47. NHCC — monitor for "we didn't submit this" reply; have friendly explanation ready.
+48. **Settle the charity/fundraising-event listing rule** — Kokoda + Bloody Long Walk = list (participatory, flag fundraising); ARA Ride for Good = skip (invite-flavoured, high barrier). Document as a standing policy so future judgement calls are consistent.
 
 # 7. Recurring Events — Design & Logic (Session 20)
 
@@ -313,7 +333,7 @@ const SPORT_BACKGROUNDS = {
 - Dedup key: `live:<timestamp>:<org_email>` in Script Properties.
 - **Must be installable trigger** — simple triggers can't send email.
 - Won't fire on markPastEvents (installable triggers don't fire on script-made edits).
-- **Fires on manually-added events too** — be ready to explain to surprised organisers.
+- **Fires on manually-added events too** — leave org_email blank when adding on an organiser's behalf to suppress it. (This caused accidental sends to MVCC + NHCC in Session 21.)
 
 # 10. Outreach Strategy Notes
 
@@ -336,10 +356,14 @@ const SPORT_BACKGROUNDS = {
 - Ask: logo (PNG, transparent bg preferred) + background photo
 - Subject: "Your Eventry listing — wanted to show you something"
 
+## Charity/fundraising event listing rule (provisional — confirm Session 23)
+- **List** participatory fundraising events with open entry (Kokoda Challenge, The Bloody Long Walk) — flag the fundraising requirement clearly in the listing notes.
+- **Skip** invite-flavoured / high-barrier corporate rides (ARA Ride for Good — 50 places, $10K commitment).
+
 # 11. Research URL Audit — Status
 
 ## Already in sheet ✅
-hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, parkrun.com.au, Rocky Trail Entertainment, Coffs Running Festival, Rumble in the Jungle, Maitland River Run, Raffertys Coastal Run, Bouddi Coastal Run, Elephant Trail Race, Hounslow Classic, Pub to Pelican, Brisbane Trail Ultra, Blackall 100, Cairns Marathon Festival, The Guzzler Ultra, Cape to Cape MTB, Geo Bay Swim, The Black Pearl, Festival of the Feet, RunThrough AU (SIRC + Olympic Park + Albert Park), Riverina Trail Series Rounds 3–5, Barossa Marathon Festival, Yurrebilla 56K Ultra, Run Forrest Trail Run, Noosa Enduro (Trail + MTB + Gravel), Kangaroo Island Run Festival, Wonderland Run, Bare Creek Trail Run, ASICS Run Melbourne, Townsville Running Festival, Manly Dam Trail Run, Ten Trails of Garigal, SUM 30/50/100, Southern Sydney Track Ultra, STHM Winter, Burralow Bush Run, Wooton Classic, Coopernook Gravel, NHCC HEZ Road Race, MVCC Criterium + Road Race, Five Peaks Running Festival, TRSA On The Trails series (5 rounds), SAC 6 Hour Track, GNW Trail Running Festival, Sydney Backyard Ultra at St Ives, Kunanyi Trail Series (4 rounds), Rapid Ascent Trail Running Series (3 rounds)
+hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, parkrun.com.au, Rocky Trail Entertainment, Coffs Running Festival, Rumble in the Jungle, Maitland River Run, Raffertys Coastal Run, Bouddi Coastal Run, Elephant Trail Race, Hounslow Classic, Pub to Pelican, Brisbane Trail Ultra, Blackall 100, Cairns Marathon Festival, The Guzzler Ultra, Cape to Cape MTB, Geo Bay Swim, The Black Pearl, Festival of the Feet, RunThrough AU (SIRC + Olympic Park + Albert Park), Riverina Trail Series Rounds 3–5, Barossa Marathon Festival, Yurrebilla 56K Ultra, Run Forrest Trail Run, Noosa Enduro (Trail + MTB + Gravel), Kangaroo Island Run Festival, Wonderland Run, Bare Creek Trail Run, ASICS Run Melbourne, Townsville Running Festival, Manly Dam Trail Run, Ten Trails of Garigal, SUM 30/50/100, Southern Sydney Track Ultra, STHM Winter, Burralow Bush Run, Wooton Classic, Coopernook Gravel, NHCC HEZ Road Race, MVCC Criterium + Road Race, Five Peaks Running Festival, TRSA On The Trails series (5 rounds), SAC 6 Hour Track, GNW Trail Running Festival, Sydney's Backyard Ultra, Run Port Douglas, Shepparton Running Festival, Kowen Winter Trails, Stromlo Running Festival, GC50, Six Inch Trail, Perth Running Festival, Brisbane Marathon, Kunanyi Trail Series (4 rounds), Rapid Ascent Trail Running Series (3 rounds), Run Larapinta, Sydney Marathon, Gold Coast Marathon, Melbourne Marathon, Perth City to Surf, City2Surf, Noosa Triathlon, Hunter Valley Triathlon, RunFest Central Coast, Bay to Bay, Hawkesbury Canoe Classic, Kokoda Challenge Gold Coast
 
 ## Pending — confirm details before adding
 - CTTR — Trails & Tails Coopernook (Aug) + Deep Creek Backyard Ultra (Oct/Nov) — await CTTR response
@@ -359,11 +383,13 @@ hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, p
 - activelocals.com.au — competitor (app-based)
 - First Light Marathon — New Zealand, out of scope
 - Comrades ZA, Kepler Challenge NZ — overseas, out of scope
+- ARA Ride for Good — corporate charity ride, poor fit (lean: skip)
 
 # 12. On the Horizon
 
 - **Newsletter** — platform (Mailchimp), content strategy, cadence. Currently 2 subscribers. Migrate at 100+ subscribers (Mailchimp free: 500 contacts, 1,000 emails/month).
 - **Social media** — Instagram account (minimum). Content plan, posting cadence.
+- **Walking sport type** — decide whether to add a "Walking" classification (triggered by The Bloody Long Walk). Currently walking challenges don't fit the pills cleanly.
 - **GA → Sheets sync** — Apps Script + GA Data API to populate views/clicks columns. Build when monetisation is live.
 - **Past events toggle** — "View past events" filter on index.html. Low priority.
 - **submit.html image/logo URL fields** — expose event_image_url and event_logo_url to organisers.
@@ -376,23 +402,25 @@ hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, p
 # 13. Key Learnings & Principles
 
 - **Sheet structure is fixed:** Eventry_Events.xlsx has exactly two tabs — Sheet1 (events + partners) and Newsletter Subscribers (SUB- rows). Backup tabs were deleted Session 22. Do not reference other tabs.
-- **Always add events via xlsx file** — tab-separated rows cause column alignment errors.
+- **Add events via the xlsx file** — tab-separated rows cause column alignment errors.
+- **Strip blank trailing rows before appending** — the reference sheet accumulates empty rows.
 - **Column alignment discipline:** Removing a sheet column requires a placeholder in Apps Script.
-- **Cross-session continuity via EVENTRY-CONTEXT.md:** Regenerate at end of every session.
+- **Cross-session continuity via EVENTRY-CONTEXT.md:** Regenerate at end of every session. EVENTRY-HISTORY.md is the deeper archive (Sessions 1–22).
 - **Batch changes before uploading:** Adriaan prefers to batch code changes before GitHub upload.
 - **Partner data discipline:** Keep records at pending until outreach is complete.
 - **Duplicate the sheet tab** before structural changes as a backup.
 - **no-cors masks all server failures:** Always verify via sheet, notification email, or Apps Script Executions log.
 - **Apps Script Executions log is source of truth.**
 - **Installable vs simple triggers:** Function named `onEdit` runs as simple trigger and CANNOT send email.
+- **Leave org_email blank when adding events on an organiser's behalf** — otherwise the auto go-live email fires (caused accidental MVCC + NHCC sends in Session 21).
 - **GitHub large file paste (web editor) can silently produce 0-byte files** — use upload/replace for files over ~500 lines.
 - **Google Sheets Date object auto-conversion:** Use `instanceof Date` guard before `.toString()` on any date cell.
 - **Script Properties dedup keys persist across test runs** — clear with `clearRecurringProps()` when retesting.
 - **Pace Athletic owns Blue Mountains Running Co** — same business (Trasa Holdings Pty Ltd). Approach via Pace Athletic only.
-- **Auto go-live email fires on any approval** — including manually-added events. Be ready to explain.
 - **Social event cards** work — event type 'Social' shows 🎉 SOCIAL badge, plain white card.
 - **Series rows:** Reliable same-submission key is timestamp col (AF, idx 31) + org_email.
 - **GitHub image rename caveat:** Re-upload the actual file after case-change rename on case-insensitive OS.
+- **Multi-discipline organisers are high-value** — one contact can yield many listings across sports (Rapid Ascent, Race Hub, SingleTrack, Kokoda, Mito Foundation, Destination Sport).
 
 # 14. Tools & Resources
 
@@ -404,7 +432,7 @@ hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, p
 - GitHub file operations: navigate into file before three-dot delete menu appears
 - GitHub folder upload: github.com/eventry-au/eventry/upload/main/path/to/folder
 - **For large files (>500 lines): use GitHub upload/replace, NOT the web editor paste**
-- DNS issues: Restart Starlink router to clear DNS cache
+- DNS issues: Restart Starlink router to clear DNS cache (permanent fix: Cloudflare 1.1.1.1 on desktop adapter)
 - **Apps Script triggers:**
   - markPastEvents — Time-driven, Day timer, Midnight–1am AEST. Live 28 May 2026.
   - onApprovalEdit — installable On-edit. Live 31 May 2026. Sends go-live email on status→approved, deduped per submission.
@@ -451,23 +479,21 @@ Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and p
 - **submit.html image/logo URL fields** — sheet cols exist; form doesn't expose them yet.
 - **Newsletter** — platform, content, cadence. Not started.
 - **Social media (Instagram)** — not started.
+- **Walking sport type** — pending decision.
 
 ## ❌ Not Yet Started
 
 ### Near-term (no blockers)
-
 - **Top 5 sport pills + "More sports ▾" dropdown**
 - **Admin dashboard** (password protected) — approve/reject without opening Google Sheet
 - **Suburb/state cross-validation on submit form** — soft warning
 - **Google Places autocomplete on venue field**
 
 ### Blocked on monetisation legal clearance
-
 - **Stripe payments** — Featured listings $49 AUD per event
 - **GA reporting for organisers** — monthly stats email
 
 ### Blocked on user accounts
-
 - **User accounts** — email + password or Google SSO
 - **Organiser self-service portal**
 - **QR event check-in**
@@ -475,7 +501,6 @@ Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and p
 - **"What's Next?" personalised discovery** — product north star
 
 ### Infrastructure (trigger-based)
-
 - **Database migration** — Google Sheets → Supabase when hitting 500+ events
 - **Mailchimp migration** — at 100+ newsletter subscribers
 - **hello@eventry.au branded email** — Google Workspace ~$8 AUD/month. Deferred.
