@@ -1909,19 +1909,22 @@ function renderEvents(list) {
     const e = item.data;
     const sportClass = SPORT_CLASSES[e.sport] || 'sport-fitness';
     const orgColor = ORG_COLORS[e.organiser] || '#555';
-    const minPrice = Math.min(...e.disciplines.map(d => d.price));
-    const maxPrice = Math.max(...e.disciplines.map(d => d.price));
-    const discCount = e.disciplines.length;
+    const rawPrices = e.disciplines.map(d => d.price);
+    const hasVaries = rawPrices.some(p => isNaN(p) || p === null);
+    const minPrice = hasVaries ? NaN : Math.min(...rawPrices);
+    const maxPrice = hasVaries ? NaN : Math.max(...rawPrices);    const discCount = e.disciplines.length;
     const badgeLabel = e.subtype
       ? `${e.sport} · ${e.subtype}`
       : e.sport === 'other' || e.sport === 'Other'
         ? `Other / Custom`
         : e.sport;
-    const priceDisplay = minPrice === 0 && maxPrice === 0
-      ? '<span class="price-tag free">Free</span>'
-      : minPrice === 0
-        ? '<span class="price-tag">Free – <span style="font-size:13px">$' + maxPrice + '</span></span>'
-        : '<span class="price-tag">From $' + minPrice + '</span>';
+    const priceDisplay = hasVaries
+  ? '<span class="price-tag">Varies</span>'
+  : minPrice === 0 && maxPrice === 0
+    ? '<span class="price-tag free">Free</span>'
+    : minPrice === 0
+      ? '<span class="price-tag">Free – <span style="font-size:13px">$' + maxPrice + '</span></span>'
+      : '<span class="price-tag">From $' + minPrice + '</span>';
 
     const bgImage = e.event_image_enabled
       ? (e.event_image_url || SPORT_BACKGROUNDS[e.sport] || null)
