@@ -1622,7 +1622,7 @@ async function loadLiveEvents() {
           disciplines: (e.disciplines || []).map(d => ({
             name: d.disc_name || '',
             dist: d.dist_display || '',
-            price: parseFloat(d.price) || 0
+            price: isNaN(parseFloat(d.price)) ? d.price : parseFloat(d.price)
           }))
         }));
       }
@@ -1910,7 +1910,7 @@ function renderEvents(list) {
     const sportClass = SPORT_CLASSES[e.sport] || 'sport-fitness';
     const orgColor = ORG_COLORS[e.organiser] || '#555';
     const rawPrices = e.disciplines.map(d => d.price);
-    const hasVaries = rawPrices.some(p => isNaN(p) || p === null);
+    const hasVaries = rawPrices.some(p => isNaN(parseFloat(p)) || p === null);
     const minPrice = hasVaries ? NaN : Math.min(...rawPrices);
     const maxPrice = hasVaries ? NaN : Math.max(...rawPrices);    const discCount = e.disciplines.length;
     const badgeLabel = e.subtype
