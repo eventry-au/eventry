@@ -13,6 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Submit Your Event — Eventry</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlTeahoSQo214ve2-iRpNbvM0qjb2MkMo&libraries=places&callback=initPlacesAutocomplete" async defer></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -346,7 +347,10 @@
     </div>
     <div class="field col-span-2" id="venueWrap">
       <label>Venue / Address</label>
-      <input type="text" name="venue" id="venueInput" placeholder="e.g. Echo Point Car Park, Katoomba NSW 2780" />
+      <input type="text" name="venue" id="venueInput" placeholder="e.g. Echo Point Car Park, Katoomba NSW 2780" autocomplete="off" />
+      <span class="field-hint">Start typing and select from the suggestions — this will auto-fill suburb and state for you.</span>
+      <input type="hidden" name="event_lat" id="eventLat" />
+      <input type="hidden" name="event_lng" id="eventLng" />
     </div>
     <div class="field col-span-2" id="eventUrlWrap">
       <label>Event website / Registration URL <span class="req">*</span></label>
@@ -954,6 +958,8 @@ async function handleSubmit(e) {
     location:             (fd.get('location') || '').trim(),
     state:                fd.get('state'),
     venue:                topVenue,
+    event_lat:            (fd.get('event_lat') || '').trim(),
+    event_lng:            (fd.get('event_lng') || '').trim(),
     event_url:            topUrl,
     description:          (fd.get('description') || '').trim(),
     recurring,
@@ -1219,6 +1225,61 @@ if (endInput) {
     }
     if (startInput && startInput.value && this.value < startInput.value) {
       this.value = startInput.value;
+    }
+  });
+}
+
+// GOOGLE PLACES AUTOCOMPLETE
+function initPlacesAutocomplete() {
+  const input = document.getElementById('venueInput');
+  if (!input) return;
+
+  const autocomplete = new google.maps.places.Autocomplete(input, {
+    componentRestrictions: { country: 'au' },
+    fields: ['address_components', 'geometry', 'name', 'formatted_address'],
+    types: ['establishment', 'geocode']
+  });
+
+  autocomplete.addListener('place_changed', () => {
+    const place = autocomplete.getPlace();
+    if (!place.geometry) return;
+
+    // Extract lat/lng
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+    document.getElementById('eventLat').value = lat.toFixed(6);
+    document.getElementById('eventLng').value = lng.toFixed(6);
+
+    // Extract suburb and state from address components
+    let suburb = '';
+    let state = '';
+    for (const component of place.address_components) {
+      const types = component.types;
+      if (types.includes('locality') || types.includes('sublocality')) {
+        suburb = component.long_name;
+      }
+      if (types.includes('administrative_area_level_2') && !suburb) {
+        suburb = component.long_name;
+      }
+      if (types.includes('administrative_area_level_1')) {
+        // Map full state name to abbreviation
+        const stateMap = {
+          'New South Wales': 'NSW', 'Victoria': 'VIC', 'Queensland': 'QLD',
+          'Western Australia': 'WA', 'South Australia': 'SA', 'Tasmania': 'TAS',
+          'Australian Capital Territory': 'ACT', 'Northern Territory': 'NT'
+        };
+        state = stateMap[component.long_name] || component.short_name;
+      }
+    }
+
+    // Auto-fill suburb/town and state fields if we got them
+    const locationInput = document.querySelector('input[name="location"]');
+    const stateSelect = document.querySelector('select[name="state"]');
+    if (suburb && locationInput && !locationInput.value) {
+      locationInput.value = suburb;
+    }
+    if (state && stateSelect) {
+      stateSelect.value = state;
     }
   });
 }
