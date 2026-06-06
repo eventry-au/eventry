@@ -2,67 +2,58 @@
 
 Session Handover Document
 
-*Last updated: 5 June 2026 (Session 24)*
+*Last updated: 6 June 2026 (Session 25)*
 
 *For the full project backstory (Sessions 1–22), see EVENTRY-HISTORY.md — the narrative archive. This document is the working handover: current state, live to-do queue, active outreach.*
 
 ---
 
-# Session 24 Summary (5 June 2026)
+# Session 25 Summary (6 June 2026)
 
-Urgent fixes, price bug, card images, Kokoda + Bloody Long Walk events added, outreach corrections.
+Location-based sorting, Google Places autocomplete, coord backfill for all existing events, GCP setup and API key security.
 
-## Fixes deployed this session
+## Built & Shipped This Session
 
-- **doGet date guard** — `event_date` and `event_end_date` now use `instanceof Date` guard in doGet. Deployed. Fixes `#########` on cards.
-- **"Varies" price bug** — `price: parseFloat(d.price) || 0` in `loadLiveEvents` was converting `"varies"` to `0` → showing as "Free". Fixed in two places: doGet (`price: isNaN(parseFloat(obj.price)) ? (obj.price || '') : parseFloat(obj.price)`) and index.html (`loadLiveEvents` mapping + `hasVaries` check in `renderEvents`). All three deployed.
-- **Event card images** — 43 approved events had `event_image_enabled = FALSE`. All set to `TRUE` in sheet. Every card now has a background image.
-- **`cycling_road` sport type** — maps to `'Cycling'` via `normaliseSport()`, which already has a background in `SPORT_BACKGROUNDS`. No code change needed.
+- **Location-based "Nearest first" sorting** — auto-detects GPS on page load (silent, no button). If location granted, sort switches to Nearest first automatically and a blue banner appears: "📍 Sorted by distance from your location". Falls back gracefully if denied.
+- **Manual location picker** — dropdown of 50+ Australian cities/regions grouped by state, always visible in the filter panel under "Or set location". Selecting a city switches sort to Nearest first and updates the banner.
+- **Byron Bay / distance sort fix** — pure distance sort across all states, no state filter applied. A Byron Bay user sees Gold Coast events before Sydney events. Correct.
+- **Google Places autocomplete on venue field (submit.html)** — when organiser types a venue and selects from the dropdown, suburb/town and state auto-fill. Real lat/lng captured in hidden fields `event_lat` and `event_lng`.
+- **Sheet columns AW (event_lat) and AX (event_lng) added** — doPost writes coords on every new submission. doGet now reads 50 columns.
+- **Coord backfill for all 136 existing events** — geocoded via browser-based tool (geocoder_corrections.html) using corrected venue addresses. All coords now in sheet AW/AX.
+- **Google Cloud Platform setup** — Eventry project created, three APIs enabled (Maps JavaScript, Places, Geocoding). Two keys created: Eventry Frontend Key (HTTP referrers restricted, 3 APIs) and Eventry Server Key (Geocoding API only, no referrer restriction). Apps Script linked to Eventry GCP project.
 
-## Events added this session
+## API Keys
 
-**Kokoda Challenge (3 new — Gold Coast already existed):**
-- EVT-KOKODA-SC-2026 — Sunshine Coast — past (9 May, Kenilworth QLD, Imbil State Forest)
-- EVT-KOKODA-BNE-2026 — Brisbane — approved (13 Jun, Brookfield Reserve QLD)
-- EVT-KOKODA-SYD-2026 — Sydney — approved (19–20 Sep, Helensburgh NSW, Royal & Heathcote NPs)
+- **Eventry Frontend Key** — `AIzaSyBPQjamKqe5yV-sP_AkuN_jeK1YJJLJmBM` — Maps JS + Places + Geocoding APIs, restricted to eventry.au/*, www.eventry.au/*, localhost/*
+- **Eventry Server Key** — `AIzaSyD-g71pC_V6W68XI3Yubn0Wxk16L2hJI38` — Geocoding API only, no referrer restriction (for server-side use)
+- **Maps Platform API Key** — still exists with 33 APIs — DELETE next session (cleanup)
+- Keys are in the **Eventry GCP project** (project number: 244352788914, ID: eventry-498605)
+- Personal Google account (adriaanmoore@gmail.com) is Owner; eventry.au@gmail.com is Editor
+- **My First Project** still exists with old keys — DELETE next session (cleanup)
 
-**The Bloody Long Walk (9 events, Mito Foundation):**
-- EVT-BLW-MEL-2026 — Melbourne — past (17 May, Yarra Bend → St Kilda)
-- EVT-BLW-SC-2026 — Sunshine Coast — past (31 May, Coolum → Mooloolaba)
-- EVT-BLW-BNE-2026 — Brisbane — approved (21 Jun, Sandgate → Brisbane Botanic Gardens)
-- EVT-BLW-SYDNORTH-2026 — Sydney North — approved (2 Aug, Palm Beach → Manly)
-- EVT-BLW-NEWCASTLE-2026 — Newcastle — approved (23 Aug, Barton Field Maitland → Newcastle Foreshore)
-- EVT-BLW-PERTH-2026 — Perth — approved (13 Sep, South Perth → Cottesloe)
-- EVT-BLW-ADL-2026 — Adelaide — approved (18 Oct, Carrick Hill → Glenelg)
-- EVT-BLW-MORNINGTON-2026 — Mornington Peninsula — approved (25 Oct, Point Nepean → Martha Cove)
-- EVT-BLW-SYDEAST-2026 — Sydney East — approved (15 Nov, Malabar → The Rocks)
+## Data Quality Fixes — Queued from Side Chat (do next session)
 
-## Decisions made this session
+- **Hunter Valley Triathlon** — fix `org_website` from `zealfutures.com.au` → `hevents.com.au`
+- **Bay to Bay Running Festival** — fix `org_website` from `qualitycounts.com.au` → `baytobay.org.au`
+- **Perth City to Surf** — fix `event_url` (currently raisely.com link, needs correct URL)
+- **Noosa Enduro Trail Runs** — possible duplicate card, investigate
 
-- **Ten Trails of Garigal** — Instagram "postponed" note was unverified. Registration is open at $120 for 6 Sep 2026. Left as approved/active. ✅
-- **Coast to Kosciuszko** — ballot/invitational note added to sheet notes column. ✅
-- **Charity/fundraising listing policy** — formalised:
-  - **List** participatory events with open entry + fundraising requirement (Kokoda, Bloody Long Walk). Flag in notes.
-  - **Skip** invite-only/corporate/high-barrier events (ARA Ride for Good — 50 places, $10K commitment). ✅
+## Sheet State at End of Session 25
 
-## Outreach this session
-
-- **Mito Foundation** — go-live emails bounced (info@bloodylongwalk.com.au dead). Correct address: **bloodylongwalk@mito.org.au**. Sheet updated. Manual intro sent 5 June. Auto-reply received. Follow up ~19 June.
-- **SingleTrack Events** (hello@singletrack.com.au) — intro sent 5 June (drafted 4 June, not sent until today). Follow up ~19 June.
-- **Race Hub Australia** (sara@racehubaustralia.com) — intro sent 5 June (drafted 4 June). Follow up ~19 June.
-- **Pedalheads Inc** (info@pedalheads.org.au) — intro sent 5 June post-Icarus race. Follow up ~19 June.
-
-## Apps Script quota note
-
-On 4 June, `onApprovalEdit` hit Google's 100 emails/day quota during a large batch approval. No action needed — quota resets at midnight. **For future large batch approvals (>80 rows with org_email): spread across two days.**
-
-## Sheet state at end of Session 24
-
-- **~149 approved events** (136 + 12 new Kokoda/BLW + 1 past adjustment)
+- **~150 approved events** (149 from Session 24 + 1 test submission added/deleted)
 - **13 past events**
-- **7 partners** (5 approved + 2 pending: Hunter Physio, Vertigo MTB)
+- **7 partners** (5 approved + 2 pending)
 - **2 newsletter subscribers**
-- Sheet still two tabs only: Sheet1 + Newsletter Subscribers.
+- **50 columns** — AW = event_lat, AX = event_lng (new this session)
+- Column AY (geocode_type temp column) — deleted ✅
+
+## Upgrade Path for Location Sorting
+
+1. ✅ **Now** — state capital coords as proxy (all existing events). Distance sort works at state level.
+2. ✅ **New submissions** — Google Places captures real lat/lng from today onwards.
+3. ✅ **Backfill** — all 136 existing events geocoded and coords written to sheet.
+4. **Next** — update `getDistanceKm()` in index.html to use `event_lat`/`event_lng` from API response when available, fall back to state capitals when not. This makes distance sort precise for all events.
+5. **Future** — Google Places autocomplete will keep improving coord quality for new submissions automatically.
 
 ---
 
@@ -78,6 +69,7 @@ Eventry (eventry.au) is Australia's sports events directory — a side project r
 - Stack: Pure HTML/CSS/JavaScript, no frameworks
 - Analytics: Google Analytics G-FM7R4KLD57
 - Contact: eventry.au@gmail.com
+- Google Cloud: Eventry project (eventry-498605), owned by adriaanmoore@gmail.com, eventry.au@gmail.com as Editor
 
 ## Google Sheet structure
 
@@ -85,12 +77,12 @@ Eventry (eventry.au) is Australia's sports events directory — a side project r
 - **Sheet1** — all events and partners (EVT- and PTR- prefixed rows)
 - **Newsletter Subscribers** — people who signed up for the newsletter (SUB- prefixed rows)
 
-When auditing the sheet, only reference these two tabs. All old backup tabs were deleted in Session 22. Sheet1 has 48 columns (AV = `recurring_end_date`).
+When auditing the sheet, only reference these two tabs. All old backup tabs were deleted in Session 22. Sheet1 now has **50 columns** (AW = `event_lat`, AX = `event_lng` added Session 25).
 
-**Sheet1 key column indices:** B=status(1), I=event_name(8), J=event_date(9), Q=sport(16), R=disc_subtype(17), S=disc_name(18), AB=recurring(27), AC=event_type(28), AV=recurring_end_date(47)
+**Sheet1 key column indices (0-based):** B=status(1), I=event_name(8), J=event_date(9), Q=sport(16), R=disc_subtype(17), S=disc_name(18), AB=recurring(27), AC=event_type(28), AV=recurring_end_date(47), AW=event_lat(48), AX=event_lng(49)
 
-**Current sheet counts (as of 5 June 2026, end of Session 24):**
-- ~149 approved events + 13 past events
+**Current sheet counts (as of 6 June 2026, end of Session 25):**
+- ~150 approved events + 13 past events
 - 5 approved partners (FlowiTri, Mauro Swim Team, Cycle Fitness Nutrition, Tailwind Nutrition, Warners Bay Physio)
 - 2 pending partners (Hunter Physio Sports Clinic, Vertigo MTB)
 - 2 newsletter subscribers
@@ -155,6 +147,7 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 - **The Event Team WA** (info@theeventteam.com.au) — intro sent 4 June. 4 events listed. Follow up ~19 June.
 - **H Events** (admin@hevents.com.au) — intro sent 4 June. Local Newcastle. Follow up ~19 June.
 - **Rapid Ascent** (info@rapidascent.com.au) — intro sent 4 June. Multi-discipline. Gravel Muster + Surf Coast Century still to add. Follow up ~19 June.
+- **Sole Motive / Run Melbourne** (runmelbourne@solemotive.com) — email sent 2 June, multiple opens/forwards (HOT). Follow up ~16 June. Hooks: Brighton Beach Marathon (30 Aug), Carmans Fun Run Sydney (20 Sep), Canberra Times Fun Run.
 
 **12 June follow-ups:**
 - FlowiTri (Lucas McBeath) — 3 touches, opened, no reply
@@ -179,56 +172,63 @@ index.html, event.html, organiser.html, about.html, submit.html, pricing.html, g
 - **PB Events / Justin** (justin@pbevents.com.au) — You Yangs, Werribee, Great Rail Run
 - **AAA Racing** (aaaracing.com.au) — D'Aguilar Two 'Ups' + Wildhorse (QLD)
 - **SingleTrack Events** — Mt Buller SkyRun still to list
-- **Mito Foundation** — follow-up due ~19 June (already contacted)
 - **The Event Team WA** — Rottnest Channel Swim, HBF Run for a Reason, Busselton Jetty Swim still to list
 
 # 5. Current State
 
-## Sheet status as of 5 June 2026 (end of Session 24)
+## Sheet status as of 6 June 2026 (end of Session 25)
 
-- **~149 approved events** on live site
+- **~150 approved events** on live site
 - **13 past events**
 - **5 approved partners** live
 - **2 pending partners** in sheet
 - **2 newsletter subscribers**
+- **50 columns** in Sheet1 (AW=event_lat, AX=event_lng new this session)
 
 # 6. Immediate To-Do Queue (Priority Order)
 
-## This week:
-1. **Contact Footmotion / Jody** — warm personal contact, call or DM. HIGH PRIORITY.
-2. **Reach out to Vertigo MTB** (bookings@vertigomtb.com.au) — post-Icarus, reach out now.
-3. **Add Shimano Gravel Muster** (20–23 Aug, Alice Springs NT) — Rapid Ascent.
-4. **Add Surf Coast Century** (12 Sep, Anglesea VIC) — Rapid Ascent.
-5. **Add Mt Buller SkyRun** (6 Dec) — SingleTrack.
-6. **Add remaining Race Hub portfolio** (9+ events).
-7. **Nordic Kayaks Beach to Beach Ocean Paddle** (13 Jun, Mooloolaba QLD, ~16km) — from side chat. Reg closes 10 June — decide whether to add. Organisers: Mooloolaba Paddlers Inc / Nordic Kayaks. Website: oceanpaddle.com.au.
+## Next session — dev fixes first:
+1. **Wire up real coords in index.html sort** — update `getDistanceKm()` to use `event.event_lat`/`event.event_lng` from API response when available, fall back to `STATE_COORDS[state]` when blank. This completes the location sort upgrade path.
+2. **Data quality fixes** (from Side Chat):
+   - Hunter Valley Triathlon — fix `org_website` zealfutures.com.au → hevents.com.au
+   - Bay to Bay — fix `org_website` qualitycounts.com.au → baytobay.org.au
+   - Perth City to Surf — fix `event_url` (raisely.com → correct URL)
+   - Noosa Enduro Trail Runs — investigate duplicate card
+3. **GCP cleanup** — delete "My First Project" and its keys, delete Maps Platform API Key (33 APIs) from Eventry project
+
+## This week — outreach:
+4. **Contact Footmotion / Jody** — warm personal contact, call or DM. HIGH PRIORITY.
+5. **Reach out to Vertigo MTB** (bookings@vertigomtb.com.au) — post-Icarus, reach out now.
+6. **Add Shimano Gravel Muster** (20–23 Aug, Alice Springs NT) — Rapid Ascent.
+7. **Add Surf Coast Century** (12 Sep, Anglesea VIC) — Rapid Ascent.
+8. **Add Mt Buller SkyRun** (6 Dec) — SingleTrack.
+9. **Add remaining Race Hub portfolio** (9+ events).
+10. **Nordic Kayaks Beach to Beach Ocean Paddle** (13 Jun, Mooloolaba QLD) — reg closed 10 June, decide whether to still add post-event.
 
 ## 12 June follow-ups:
-8. FlowiTri, Warners Bay Physio (decision point — Hunter Physio), Mauro, Newcastle Orienteering
+11. FlowiTri, Warners Bay Physio (decision point — Hunter Physio), Mauro, Newcastle Orienteering
 
 ## ~15–16 June follow-ups:
-9. SARRC, Cycle Fitness Nutrition, Tailwind, Super Elliotts, Pace Athletic, Lake Mac Penguins, Vert Nutrition, MVCC, NHCC, TRSA, Sole Motive, 180 Cadence, Running Wild NSW, Destination Sport
+12. SARRC, Cycle Fitness Nutrition, Tailwind, Super Elliotts, Pace Athletic, Lake Mac Penguins, Vert Nutrition, MVCC, NHCC, TRSA, Sole Motive, 180 Cadence, Running Wild NSW, Destination Sport
 
 ## ~18–19 June follow-ups:
-10. Bourkes Bicycles + all ~34 intros sent 4–5 June
+13. Bourkes Bicycles + all ~34 intros sent 4–5 June
 
 ## Events still to add:
-11. Transcend Trails (22 Aug, Avon Valley WA) — find organiser contact first
-12. Brooks Surf Coast Trail Marathon (20 Jun, Torquay VIC) — find contact first
-13. Bowral Classic (18 Oct NSW) — Cycling Classics / Yaffa Media (not yet contacted)
-14. Sole Motive: Brighton Beach Marathon (30 Aug VIC), Carmans Fun Run Sydney (20 Sep), Canberra Times Fun Run
-15. 180 Cadence: Sydney Trail Marathon, STHM Night + Summer + Autumn, Parramatta HM
-16. Running Wild NSW: Narrowneck, Megalong, Fairmont, Wentworth Falls (dates TBC)
-17. Destination Sport: HYROX AU dates + full Tri Travel / Sportive Breaks AU calendar
-18. The Event Team WA: Rottnest Channel Swim, HBF Run for a Reason, Perth Kilt Run (already listed), Busselton Jetty Swim
-19. Race Hub Australia: full remaining portfolio (~9 events)
-20. Kokoda Challenge: Brisbane (listed), Sydney (listed) — check if Sunshine Coast 2027 dates announced
-21. AAA Racing: D'Aguilar Two 'Ups' Marathon + Wildhorse (QLD)
+14. Transcend Trails (22 Aug, Avon Valley WA) — find organiser contact first
+15. Brooks Surf Coast Trail Marathon (20 Jun, Torquay VIC) — find contact first
+16. Bowral Classic (18 Oct NSW) — Cycling Classics / Yaffa Media (not yet contacted)
+17. Sole Motive: Brighton Beach Marathon (30 Aug VIC), Carmans Fun Run Sydney (20 Sep), Canberra Times Fun Run
+18. 180 Cadence: Sydney Trail Marathon, STHM Night + Summer + Autumn, Parramatta HM
+19. Running Wild NSW: Narrowneck, Megalong, Fairmont, Wentworth Falls (dates TBC)
+20. Destination Sport: HYROX AU dates + full Tri Travel / Sportive Breaks AU calendar
+21. The Event Team WA: Rottnest Channel Swim, HBF Run for a Reason, Busselton Jetty Swim
+22. Race Hub Australia: full remaining portfolio (~9 events)
+23. AAA Racing: D'Aguilar Two 'Ups' Marathon + Wildhorse (QLD)
 
 ## Admin:
-22. RunThrough Australia — forward to info@runthrough.co.uk (AU email permanently dead)
-23. Newsletter strategy + Instagram setup (still outstanding)
-24. Update EVENTRY-CONTEXT.md next session ✅ (done this session)
+24. Newsletter strategy + Instagram setup (still outstanding)
+25. Update EVENTRY-CONTEXT.md next session ✅ (done this session)
 
 # 7. Recurring Events — Design & Logic (Session 20)
 
@@ -327,14 +327,13 @@ Add events with org_email populated (go-live email fires automatically), then se
 hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, parkrun.com.au, Rocky Trail Entertainment, Coffs Running Festival, Rumble in the Jungle, Maitland River Run, Raffertys Coastal Run, Bouddi Coastal Run, Elephant Trail Race, Hounslow Classic, Pub to Pelican, Brisbane Trail Ultra, Blackall 100, Cairns Marathon Festival, The Guzzler Ultra, Cape to Cape MTB, Geo Bay Swim, The Black Pearl, Festival of the Feet, RunThrough AU (SIRC + Olympic Park + Albert Park), Riverina Trail Series Rounds 3–5, Barossa Marathon Festival, Yurrebilla 56K Ultra, Run Forrest Trail Run, Noosa Enduro (Trail + MTB + Gravel), Kangaroo Island Run Festival, Wonderland Run, Bare Creek Trail Run, ASICS Run Melbourne, Townsville Running Festival, Manly Dam Trail Run, Ten Trails of Garigal, SUM 30/50/100, Southern Sydney Track Ultra, STHM Winter, Burralow Bush Run, Wooton Classic, Coopernook Gravel, NHCC HEZ Road Race, MVCC Criterium + Road Race, Five Peaks Running Festival, TRSA On The Trails series (5 rounds), SAC 6 Hour Track, GNW Trail Running Festival, Sydney's Backyard Ultra, Run Port Douglas, Shepparton Running Festival, Kowen Winter Trails, Stromlo Running Festival, GC50, Six Inch Trail, Perth Running Festival, Brisbane Marathon, Kunanyi Trail Series (4 rounds), Rapid Ascent Trail Running Series (3 rounds), Run Larapinta, Sydney Marathon, Gold Coast Marathon, Melbourne Marathon, Perth City to Surf, City2Surf, Noosa Triathlon, Hunter Valley Triathlon, RunFest Central Coast, Bay to Bay, Hawkesbury Canoe Classic, Kokoda Challenge (Gold Coast + Sunshine Coast + Brisbane + Sydney), The Bloody Long Walk (9 events national series), Roller Coaster Run, GPT100, Yandina Five O, Rainbow Beach Trail Festival, Beerwah@Daybreak, Cobb and Co Backyard Ultra, Backroads Gravel, Dwellingup 100 MTB, Mighty Jarrah Trail Run, Perth Kilt Run, Wollongong RF, Parklands RF, Icarus MTB Race
 
 ## From side chat — to evaluate
-- **Nordic Kayaks Beach to Beach Ocean Paddle** (13 Jun 2026, Mooloolaba QLD, ~16km ocean paddle) — Mooloolaba Paddlers Inc / Nordic Kayaks. Website: oceanpaddle.com.au. Reg closes 10 June. Decide whether to add.
+- **Nordic Kayaks Beach to Beach Ocean Paddle** (13 Jun 2026, Mooloolaba QLD, ~16km ocean paddle) — Mooloolaba Paddlers Inc / Nordic Kayaks. Website: oceanpaddle.com.au. Reg closes 10 June. Decide whether to add post-event.
 
 ## Pending — confirm details before adding
 - CTTR — Trails & Tails Coopernook (Aug) + Deep Creek Backyard Ultra (Oct/Nov) — await CTTR response
 - Those Guys Events remaining events — await response
 - Newcastle Orienteering Club — await Justin Stafford response
 - Barossa Run (13 Sep 2026, Lyndoch SA, SARRC) — add when SARRC responds
-- Bare Events portfolio — check for additional Sydney trail events
 
 ## Categorised — not events to add
 - runningcalendar.com.au, rundais.org — competitors/aggregators (monitor)
@@ -350,11 +349,11 @@ hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, p
 - **GA → Sheets sync** — Apps Script + GA Data API. Build when monetisation is live.
 - **Past events toggle** — "View past events" filter on index.html. Low priority.
 - **submit.html image/logo URL fields** — expose event_image_url and event_logo_url to organisers.
-- **Location-based sorting** — auto-selected state filter pill. Build when per-state count is high enough.
 - **Member pricing** — optional member_price per discipline. New col planned.
 - **Recurring events feature** — weekly/monthly submit.html option, automated reminders. Built ✅
 - **Event cancellation detection** — feasibility research
 - **Athlete profiles, What's Next feed, fitness platform integration** — future roadmap
+- **Report a problem link** — a visible "Report a problem" link on event cards or the site footer. Clicking it opens a simple form (or mailto) so users can flag incorrect info, broken links, cancelled events, wrong venue etc. Direct feedback loop from the public. Build as a lightweight modal or dedicated page. Key for data quality at scale.
 
 # 13. Key Learnings & Principles
 
@@ -382,6 +381,10 @@ hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, p
 - **Charity/fundraising policy:** Kokoda + Bloody Long Walk = list with fundraising flag. ARA Ride for Good = skip.
 - **Bounced emails need immediate address correction** — check the sheet org_email and update before any follow-up (e.g. Mito Foundation: info@bloodylongwalk.com.au dead → bloodylongwalk@mito.org.au correct).
 - **Multi-discipline events** (same submission_id, multiple rows) count as ONE event on the site. 136 sheet rows = 127 unique events because of multi-discipline events.
+- **Google Places autocomplete key must be exact** — `AIzaSyBPQjamKqe5yV-sP_AkuN_jeK1YJJLJmBM` note the `AkuN` not `AkaN`. One character typo caused hours of debugging.
+- **UrlFetchApp in Apps Script needs GCP project linkage** — Apps Script must be linked to the same GCP project as the API key, and OAuth consent screen must be configured, for `UrlFetchApp.fetch()` to external APIs to work.
+- **API keys created under personal account, used via eventry account** — add eventry.au@gmail.com as Editor on the GCP project so Apps Script (running as eventry account) can link to it.
+- **Geocoder HTML tool** — `geocoder_corrections.html` and `geocoder.html` stored locally (OneDrive/Desktop). Run via `cd "C:\Users\amoore\OneDrive - Strata Worldwide\Desktop" && py -m http.server 8080` then open `http://localhost:8080/geocoder_corrections.html`.
 
 # 14. Tools & Resources
 
@@ -394,6 +397,7 @@ hevents.com.au, in2adventure.com.au, adventurejunkie.com.au, coasttokosci.com, p
 - **Apps Script triggers:**
   - markPastEvents — Time-driven, Day timer, Midnight–1am AEST. Live 28 May 2026.
   - onApprovalEdit — installable On-edit. Live 31 May 2026. Dedup key = `'live:' + id`.
+- **Local geocoder tool** — `geocoder_corrections.html` on OneDrive Desktop. Run via Python HTTP server (see learnings above).
 
 # 15. About Page — Locked Copy
 
@@ -406,7 +410,7 @@ Pull Quote: "What's next? We built the answer."
 
 Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and partner network. FUTURE: Athlete profiles, What's Next feed, fitness platform integration.
 
-# 16. Development Roadmap (reconciled to Session 24)
+# 16. Development Roadmap (reconciled to Session 25)
 
 ## ✅ Built & Live
 
@@ -431,9 +435,14 @@ Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and p
 | doGet date guard — instanceof Date fix for event_date + event_end_date | 24 |
 | "Varies" price fix — preserved through doGet → loadLiveEvents → renderEvents | 24 |
 | All 149 event cards have background images | 24 |
+| Location-based "Nearest first" sorting — auto GPS + manual city picker | 25 |
+| Google Places autocomplete on venue field (submit.html) | 25 |
+| Real lat/lng captured on new submissions → sheet cols AW/AX | 25 |
+| Coord backfill for all 136 existing events | 25 |
 
 ## ⏳ Designed, Not Yet Built
 
+- **Real coords in distance sort** — update index.html `getDistanceKm()` to use `event_lat`/`event_lng` from API when available, fall back to state capitals. Next session.
 - **Member pricing** — optional `member_price` per discipline.
 - **GA → Sheets sync** — Apps Script + GA Data API. Build when monetisation is live.
 - **submit.html image/logo URL fields** — sheet cols exist; form doesn't expose them yet.
@@ -443,10 +452,10 @@ Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and p
 ## ❌ Not Yet Started
 
 ### Near-term (no blockers)
+- **Report a problem link** — visible feedback link on cards/footer. Simple form or mailto. Users flag wrong info, broken links, cancelled events. Key for data quality at scale.
 - **Top 5 sport pills + "More sports ▾" dropdown**
 - **Admin dashboard** (password protected)
 - **Suburb/state cross-validation on submit form**
-- **Google Places autocomplete on venue field**
 
 ### Blocked on monetisation legal clearance
 - **Stripe payments** — Featured listings $49 AUD per event
