@@ -725,6 +725,37 @@
     border-bottom-color: #ffe082;
   }
 
+  /* LOCATION BANNER */
+  .location-banner {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #e8f4fd;
+    border: 1px solid #bbdefb;
+    border-radius: 10px;
+    padding: 9px 14px;
+    margin-bottom: 1rem;
+    font-size: 13px;
+    color: #1565c0;
+    font-weight: 500;
+  }
+  .location-banner.visible { display: flex; }
+  .location-banner-left { display: flex; align-items: center; gap: 7px; }
+  .location-banner-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .location-banner-change {
+    font-size: 12px; color: #1565c0; background: none; border: none;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500;
+    text-decoration: underline; padding: 0;
+  }
+  .location-banner-change:hover { color: var(--accent); }
+  .location-banner-dismiss {
+    font-size: 12px; color: #1565c0; background: none; border: none;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 0;
+    opacity: 0.6;
+  }
+  .location-banner-dismiss:hover { opacity: 1; }
+
   /* PARTNER CARD */
   .partner-card {
     background: var(--white);
@@ -1137,6 +1168,82 @@
       </div>
       <div class="location-status" id="locationStatus"></div>
 
+      <!-- MANUAL LOCATION PICKER -->
+      <span class="filter-label">Or set location</span>
+      <select id="manualLocation" onchange="setManualLocation(this.value)">
+        <option value="">Select your city / region</option>
+        <optgroup label="— Capital Cities —">
+          <option value="-33.8688,151.2093">Sydney, NSW</option>
+          <option value="-37.8136,144.9631">Melbourne, VIC</option>
+          <option value="-27.4698,153.0251">Brisbane, QLD</option>
+          <option value="-31.9505,115.8605">Perth, WA</option>
+          <option value="-34.9285,138.6007">Adelaide, SA</option>
+          <option value="-42.8821,147.3272">Hobart, TAS</option>
+          <option value="-35.2809,149.1300">Canberra, ACT</option>
+          <option value="-12.4634,130.8456">Darwin, NT</option>
+        </optgroup>
+        <optgroup label="— NSW —">
+          <option value="-32.9283,151.7817">Newcastle, NSW</option>
+          <option value="-34.4278,150.8931">Wollongong, NSW</option>
+          <option value="-28.6474,153.6020">Byron Bay, NSW</option>
+          <option value="-30.3328,153.1131">Coffs Harbour, NSW</option>
+          <option value="-31.0833,150.9167">Tamworth, NSW</option>
+          <option value="-32.2569,148.6011">Dubbo, NSW</option>
+          <option value="-36.3737,148.9877">Jindabyne, NSW</option>
+          <option value="-33.4153,149.5778">Bathurst, NSW</option>
+          <option value="-33.7160,150.3144">Penrith, NSW</option>
+          <option value="-33.4333,151.3333">Gosford / Central Coast, NSW</option>
+          <option value="-35.1081,147.3598">Wagga Wagga, NSW</option>
+          <option value="-29.6783,152.9228">Lismore, NSW</option>
+        </optgroup>
+        <optgroup label="— VIC —">
+          <option value="-38.1499,144.3617">Geelong, VIC</option>
+          <option value="-37.5622,143.8503">Ballarat, VIC</option>
+          <option value="-36.7570,144.2794">Bendigo, VIC</option>
+          <option value="-36.5782,146.9258">Wangaratta, VIC</option>
+          <option value="-37.8333,146.9167">Bairnsdale, VIC</option>
+          <option value="-38.3333,146.0000">Warrnambool, VIC</option>
+          <option value="-37.6500,145.9833">Bright / Alpine VIC</option>
+          <option value="-38.4333,145.9667">Phillip Island, VIC</option>
+          <option value="-38.3167,144.5667">Surf Coast / Torquay, VIC</option>
+        </optgroup>
+        <optgroup label="— QLD —">
+          <option value="-28.0167,153.4000">Gold Coast, QLD</option>
+          <option value="-26.6500,153.0667">Sunshine Coast, QLD</option>
+          <option value="-19.2564,146.8183">Townsville, QLD</option>
+          <option value="-16.9186,145.7781">Cairns, QLD</option>
+          <option value="-23.3818,150.5100">Rockhampton, QLD</option>
+          <option value="-24.8667,152.3500">Bundaberg, QLD</option>
+          <option value="-25.5333,152.7000">Maryborough, QLD</option>
+          <option value="-27.5667,152.3500">Toowoomba, QLD</option>
+          <option value="-26.4000,152.9667">Noosa, QLD</option>
+        </optgroup>
+        <optgroup label="— WA —">
+          <option value="-33.6333,115.3500">Busselton / Margaret River, WA</option>
+          <option value="-30.7333,121.4667">Kalgoorlie, WA</option>
+          <option value="-33.3667,115.6333">Bunbury, WA</option>
+          <option value="-17.9667,122.2333">Broome, WA</option>
+          <option value="-25.0000,115.0000">Geraldton, WA</option>
+        </optgroup>
+        <optgroup label="— SA —">
+          <option value="-34.9167,138.5833">Adelaide Hills, SA</option>
+          <option value="-34.7167,135.8667">Port Augusta, SA</option>
+          <option value="-37.8333,140.7833">Mount Gambier, SA</option>
+          <option value="-33.6833,138.5333">Clare Valley, SA</option>
+          <option value="-34.5333,138.6333">Barossa Valley, SA</option>
+        </optgroup>
+        <optgroup label="— TAS —">
+          <option value="-41.4333,147.1333">Launceston, TAS</option>
+          <option value="-41.9000,145.7500">Queenstown, TAS</option>
+          <option value="-41.1667,146.3667">Devonport, TAS</option>
+          <option value="-43.1500,147.3167">Huonville / Huon Valley, TAS</option>
+        </optgroup>
+        <optgroup label="— ACT / NT —">
+          <option value="-14.4667,132.2667">Katherine, NT</option>
+          <option value="-23.6980,133.8807">Alice Springs, NT</option>
+        </optgroup>
+      </select>
+
       <span class="filter-label">State</span>
       <select id="stateFilter" onchange="applyFilters()">
         <option value="">All States</option>
@@ -1186,6 +1293,7 @@
       <span class="filter-label">Sort by</span>
       <select id="sortSelect" onchange="applyFilters()">
         <option value="featured-date">Featured first, then soonest</option>
+        <option value="nearest">Nearest first</option>
         <option value="date">Date (soonest first)</option>
         <option value="price-asc">Price (low to high)</option>
         <option value="price-desc">Price (high to low)</option>
@@ -1197,6 +1305,18 @@
     <button class="filter-apply-btn" onclick="toggleFilters()">
       Apply & Close ✓
     </button>
+  </div>
+
+  <!-- LOCATION BANNER -->
+  <div class="location-banner" id="locationBanner">
+    <div class="location-banner-left">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      <span id="locationBannerText">Showing events near you</span>
+    </div>
+    <div class="location-banner-actions">
+      <button class="location-banner-change" onclick="changeLocationFilter()">Change</button>
+      <button class="location-banner-dismiss" onclick="dismissLocationBanner()" title="Dismiss">✕</button>
+    </div>
   </div>
 
   <!-- RESULTS -->
@@ -1423,6 +1543,20 @@ const STATE_COORDS = {
   'NT':  { lat: -12.4634, lng: 130.8456 }
 };
 
+// Detect which Australian state the user is in based on their coords
+function detectStateFromCoords(lat, lng) {
+  let closest = null;
+  let minDist = Infinity;
+  for (const [state, coords] of Object.entries(STATE_COORDS)) {
+    const d = getDistanceKm(lat, lng, coords.lat, coords.lng);
+    if (d < minDist) { minDist = d; closest = state; }
+  }
+  return closest;
+}
+
+// Track whether location was auto-detected on load (vs manually set)
+let autoLocationActive = false;
+
 function getDistanceKm(lat1, lng1, lat2, lng2) {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -1454,6 +1588,9 @@ function getLocation() {
       status.className = 'location-status success';
       document.getElementById('radiusSelect').style.display = 'inline-block';
       document.getElementById('locationClear').style.display = 'inline';
+      // Switch sort to nearest-first
+      document.getElementById('sortSelect').value = 'nearest';
+      showLocationBanner(false);
       applyFilters();
     },
     err => {
@@ -1466,6 +1603,35 @@ function getLocation() {
   );
 }
 
+function setManualLocation(value) {
+  if (!value) {
+    // Cleared — reset location
+    userLat = null;
+    userLng = null;
+    autoLocationActive = false;
+    dismissLocationBanner();
+    document.getElementById('sortSelect').value = 'featured-date';
+    applyFilters();
+    return;
+  }
+  const [lat, lng] = value.split(',').map(Number);
+  userLat = lat;
+  userLng = lng;
+  autoLocationActive = false;
+  // Clear GPS button state since manual is now active
+  const btn = document.getElementById('locationBtn');
+  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Use my location`;
+  btn.className = 'location-btn';
+  document.getElementById('locationStatus').textContent = '';
+  document.getElementById('radiusSelect').style.display = 'none';
+  document.getElementById('locationClear').style.display = 'none';
+  // Switch sort and show banner
+  document.getElementById('sortSelect').value = 'nearest';
+  const label = document.getElementById('manualLocation').options[document.getElementById('manualLocation').selectedIndex].text;
+  showLocationBanner(false, label);
+  applyFilters();
+}
+
 function clearLocation() {
   userLat = null;
   userLng = null;
@@ -1475,6 +1641,7 @@ function clearLocation() {
   document.getElementById('locationStatus').textContent = '';
   document.getElementById('radiusSelect').style.display = 'none';
   document.getElementById('locationClear').style.display = 'none';
+  document.getElementById('manualLocation').value = '';
   applyFilters();
 }
 
@@ -1635,6 +1802,54 @@ async function loadLiveEvents() {
   return null;
 }
 
+// LOCATION BANNER helpers
+function showLocationBanner(isAuto, label) {
+  const banner = document.getElementById('locationBanner');
+  const text = document.getElementById('locationBannerText');
+  if (!banner || !text) return;
+  if (label) {
+    text.textContent = `📍 Sorted by distance from ${label}`;
+  } else {
+    text.textContent = '📍 Sorted by distance from your location';
+  }
+  banner.classList.add('visible');
+}
+
+function dismissLocationBanner() {
+  document.getElementById('locationBanner')?.classList.remove('visible');
+}
+
+function changeLocationFilter() {
+  // Open filter panel so user can adjust state or radius
+  const section = document.getElementById('filterSection');
+  const btn = document.getElementById('filterToggleBtn');
+  if (section && !section.classList.contains('open')) {
+    section.classList.add('open');
+    btn.classList.add('active');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg> Close Filters`;
+  }
+  // Scroll to filter panel
+  section?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Auto-detect location silently on page load
+function autoDetectLocation() {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      userLat = pos.coords.latitude;
+      userLng = pos.coords.longitude;
+      autoLocationActive = true;
+      // Switch sort to nearest-first — no state filter, distance sort handles it
+      document.getElementById('sortSelect').value = 'nearest';
+      showLocationBanner(true);
+      applyFilters();
+    },
+    () => { /* silently fail — user denied or unavailable */ },
+    { timeout: 5000, maximumAge: 300000 }
+  );
+}
+
 async function initSite() {
   const grid = document.getElementById('eventsGrid');
   grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-muted)">
@@ -1670,6 +1885,9 @@ async function initSite() {
     if (dateDiff !== 0) return dateDiff;
     return a.name.localeCompare(b.name);
   }));
+
+  // After initial render, silently attempt to detect location and re-sort
+  autoDetectLocation();
 }
 
 function toggleSport(el) {
@@ -1739,6 +1957,25 @@ function applyFilters() {
   }
 
   filtered.sort((a, b) => {
+    // Always sink cancelled/postponed to bottom
+    const aInactive = a.status === 'cancelled' || a.status === 'postponed';
+    const bInactive = b.status === 'cancelled' || b.status === 'postponed';
+    if (aInactive && !bInactive) return 1;
+    if (!aInactive && bInactive) return -1;
+
+    if (sort === 'nearest' && userLat !== null && userLng !== null) {
+      const aCoords = STATE_COORDS[a.state];
+      const bCoords = STATE_COORDS[b.state];
+      const aDist = aCoords ? getDistanceKm(userLat, userLng, aCoords.lat, aCoords.lng) : 99999;
+      const bDist = bCoords ? getDistanceKm(userLat, userLng, bCoords.lat, bCoords.lng) : 99999;
+      if (aDist !== bDist) return aDist - bDist;
+      // Within same state, sort by date
+      return (a.date||'').localeCompare(b.date||'');
+    }
+    if (sort === 'nearest') {
+      // No location — fall back to date
+      return (a.date||'').localeCompare(b.date||'');
+    }
     if (sort === 'featured-date') {
       if (a.featured && !b.featured) return -1;
       if (!a.featured && b.featured) return 1;
@@ -1771,6 +2008,9 @@ function clearFilters() {
   document.getElementById('dateTo').value = '';
   // Clear location filter too
   if (userLat !== null) clearLocation();
+  autoLocationActive = false;
+  dismissLocationBanner();
+  document.getElementById('manualLocation').value = '';
   document.getElementById('sortSelect').value = 'featured-date';
   activeSport = 'all';
   activeSubtype = 'all';
