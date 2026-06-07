@@ -1158,8 +1158,9 @@
           Use my location
         </button>
         <select id="radiusSelect" onchange="applyFilters()" style="display:none">
+          <option value="any" selected>Any distance</option>
           <option value="25">Within 25km</option>
-          <option value="50" selected>Within 50km</option>
+          <option value="50">Within 50km</option>
           <option value="100">Within 100km</option>
           <option value="200">Within 200km</option>
           <option value="500">Within 500km</option>
@@ -1947,9 +1948,10 @@ function applyFilters() {
     return true;
   });
 
-  // Location radius filter
-  if (userLat !== null && userLng !== null) {
-    const radius = parseInt(document.getElementById('radiusSelect')?.value || '50');
+  // Location radius filter — only applies when a specific radius is chosen ("any" = no limit)
+  const radiusVal = document.getElementById('radiusSelect')?.value || 'any';
+  if (userLat !== null && userLng !== null && radiusVal !== 'any') {
+    const radius = parseInt(radiusVal);
     filtered = filtered.filter(e => {
       // Use real event coords if available, fall back to state capital proxy
       const eLat = (e.lat && !isNaN(e.lat)) ? e.lat : (STATE_COORDS[e.state]?.lat ?? null);
