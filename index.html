@@ -1974,9 +1974,9 @@ function applyFilters() {
       const bLng = (b.lng && !isNaN(b.lng)) ? b.lng : (STATE_COORDS[b.state]?.lng ?? null);
       const aDist = (aLat !== null && aLng !== null) ? getDistanceKm(userLat, userLng, aLat, aLng) : 99999;
       const bDist = (bLat !== null && bLng !== null) ? getDistanceKm(userLat, userLng, bLat, bLng) : 99999;
-      // Band by distance (25km rings), then sort by date within each band.
+      // Band by distance (75km rings), then sort by date within each band.
       // Closest ring shows first (soonest-first inside it), then the next ring out, all the way to the furthest event.
-      const BAND_KM = 25;
+      const BAND_KM = 75;
       const aBand = Math.floor(aDist / BAND_KM);
       const bBand = Math.floor(bDist / BAND_KM);
       if (aBand !== bBand) return aBand - bBand;
