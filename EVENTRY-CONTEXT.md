@@ -25,7 +25,8 @@ From Fernbay (Newcastle area), the site showed "0 events" / wrong sort order. Ro
   1. `loadLiveEvents()` now maps `lat: e.event_lat ? parseFloat(e.event_lat) : null` and same for lng.
   2. Radius filter uses real `e.lat`/`e.lng` with `!isNaN` guard, falls back to `STATE_COORDS`.
   3. Nearest sort same pattern.
-- **Distance-banded sort:** changed nearest sort from pure-distance to **25km bands, soonest-first within each band**. Closest ring shows first (by date), then next ring out, all the way to the furthest event — nothing is dropped. `const BAND_KM = 25;` — one-line tunable. Confirmed working from Fernbay (Hunter cluster top, in date order).
+- **Distance-banded sort:** changed nearest sort from pure-distance to **75km bands, soonest-first within each band**. Closest ring shows first (by date), then next ring out, all the way to the furthest event — nothing is dropped. `const BAND_KM = 75;` — one-line tunable (trialled 25/150, settled on 75: keeps Hunter/Newcastle/Central Coast cluster grouped in the first band while Sydney ~160km sits a couple of bands lower). Confirmed working from Fernbay.
+- **Radius filter now opt-in:** the radius dropdown previously defaulted to "Within 50km" and auto-applied the moment GPS was granted — which silently cut the list to ~10 nearby events. Added an **"Any distance"** option as the new default, and guarded the filter to skip when `radiusVal === 'any'`. Granting location now sorts by distance without filtering anything out; the user can still pick a specific radius to narrow. (This was the same class of bug as the original "0 events" — GPS permission should never impose a radius limit by itself.)
 
 ## Sheet data fixes
 
@@ -91,7 +92,7 @@ Location-based sorting, Google Places autocomplete, coord backfill for all exist
 1. ✅ **Now** — state capital coords as proxy (all existing events). Distance sort works at state level.
 2. ✅ **New submissions** — Google Places captures real lat/lng from today onwards.
 3. ✅ **Backfill** — all existing events geocoded and coords written to sheet.
-4. ✅ **Done (Session 26)** — doGet exposes `event_lat`/`event_lng` (with coalesce across discipline rows); index.html reads real coords with state-capital fallback. Distance sort is now precise for all events. Sort is distance-banded (25km rings), soonest-first within each band.
+4. ✅ **Done (Session 26)** — doGet exposes `event_lat`/`event_lng` (with coalesce across discipline rows); index.html reads real coords with state-capital fallback. Distance sort is now precise for all events. Sort is distance-banded (75km rings), soonest-first within each band. Radius filter is opt-in (defaults to "Any distance"; granting GPS sorts but does not filter).
 5. **Future** — Google Places autocomplete keeps improving coord quality for new submissions automatically. Coord monitor in markPastEvents flags any approved event missing coords (daily email, subject `📍 COORD CHECK`).
 
 ---
