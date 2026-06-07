@@ -2,9 +2,48 @@
 
 Session Handover Document
 
-*Last updated: 6 June 2026 (Session 25)*
+*Last updated: 7 June 2026 (Session 26)*
 
 *For the full project backstory (Sessions 1–22), see EVENTRY-HISTORY.md — the narrative archive. This document is the working handover: current state, live to-do queue, active outreach.*
+
+---
+
+# Session 26 Summary (7 June 2026)
+
+Location sort debugged end to end — the "0 events / not sorting by distance" problem traced to coords never reaching the frontend, plus data issues in the sheet. All fixed.
+
+## The core bug
+
+From Fernbay (Newcastle area), the site showed "0 events" / wrong sort order. Root cause was a chain:
+1. **doGet never exposed coords** — the event object built in `doGet` had no `event_lat`/`event_lng` fields at all, so index.html's `e.event_lat` was always `undefined` → every event fell back to state-capital coords → 50km radius from Fernbay measured to Sydney CBD (~160km) → everything filtered out.
+2. **index.html wasn't reading coords** — the deployed `loadLiveEvents()` mapped no lat/lng either; both radius filter and nearest sort used `STATE_COORDS` only.
+
+## Fixes deployed this session
+
+- **doGet patch (Apps Script, deployed new version):** added `event_lat`/`event_lng` to the event object, plus a coalesce block (`if (!events[id].event_lat && obj.event_lat) ...`) that pulls coords from a later discipline row when the first row is blank. Fixed the 5 Max Adventure events whose coords sat on the last discipline row.
+- **index.html (3 fixes, deployed to GitHub via upload/replace):**
+  1. `loadLiveEvents()` now maps `lat: e.event_lat ? parseFloat(e.event_lat) : null` and same for lng.
+  2. Radius filter uses real `e.lat`/`e.lng` with `!isNaN` guard, falls back to `STATE_COORDS`.
+  3. Nearest sort same pattern.
+- **Distance-banded sort:** changed nearest sort from pure-distance to **25km bands, soonest-first within each band**. Closest ring shows first (by date), then next ring out, all the way to the furthest event — nothing is dropped. `const BAND_KM = 25;` — one-line tunable. Confirmed working from Fernbay (Hunter cluster top, in date order).
+
+## Sheet data fixes
+
+- **HEZ coordinate corruption:** both `EVT-NHCC-HEZ-2026` (past) and `EVT-1780755377352-R` (live recurring row) had `event_lat`/`event_lng` showing as 1899/1900 date-time junk (a time value Excel reinterpreted as a date). Corrected both to `-32.902916, 151.472208` (cells set to Number format first). The recurring row had inherited the corruption via `row.slice()` after markPastEvents auto-generated it — it was NOT in the pasteCoords CSV, which is why it slipped through.
+- **Multi-row coord consistency:** ran a one-off `fixMultiRowCoords()` (since deleted) that propagated each event's coords across ALL its discipline rows. Filled 9 blank rows (Max Adventure SC/BM/LM/BNE × discipline rows, + Point2Pub). Sheet now internally consistent: every discipline row of every event carries the same coords.
+
+## Coord monitor added (markPastEvents)
+
+- New daily safety net inside `markPastEvents`: flags any approved event where NONE of its rows has valid numeric coords (coalesce-aware, deduped by submission_id via `coordedIds`/`coordlessById`). Sends one summary email with distinct subject **`📍 COORD CHECK — N event(s) missing coordinates`**.
+- Standalone `checkCoordsNow()` added — read-only, event-level, same logic, for manual testing from the editor (no side effects).
+- Catches both manual sheet additions without coords AND post-hoc corruption like the HEZ recurring row. Fires daily until fixed (no dedup key — intentional nag).
+
+## Key learnings this session
+
+- **doGet only copies top-level fields on first sighting of a submission_id** (`if (!events[id])`). Anything that can live on a non-first discipline row (like coords pasted to one row) needs an explicit coalesce, or it's lost. This is why the coalesce block matters.
+- **pasteCoords/geocoding ran BEFORE markPastEvents auto-generated the HEZ recurring row** — so the new row inherited whatever was in the source row at copy time. Auto-generated recurring rows can carry forward bad data; the coord monitor now catches this.
+- **Numbers pasted into time-formatted cells get reinterpreted as 1899/1900 dates.** Always set AW/AX to Number format before entering coords. The `!isNaN(parseFloat())` guard in both index.html and the monitor catches these safely (they fall back to state coords rather than breaking).
+- **New submissions are safe** — doPost writes `event_lat`/`event_lng` from the Google Places hidden fields, so the form path always carries coords. The fallback/monitor only matters for manual sheet additions.
 
 ---
 
@@ -51,9 +90,9 @@ Location-based sorting, Google Places autocomplete, coord backfill for all exist
 
 1. ✅ **Now** — state capital coords as proxy (all existing events). Distance sort works at state level.
 2. ✅ **New submissions** — Google Places captures real lat/lng from today onwards.
-3. ✅ **Backfill** — all 136 existing events geocoded and coords written to sheet.
-4. **Next** — update `getDistanceKm()` in index.html to use `event_lat`/`event_lng` from API response when available, fall back to state capitals when not. This makes distance sort precise for all events.
-5. **Future** — Google Places autocomplete will keep improving coord quality for new submissions automatically.
+3. ✅ **Backfill** — all existing events geocoded and coords written to sheet.
+4. ✅ **Done (Session 26)** — doGet exposes `event_lat`/`event_lng` (with coalesce across discipline rows); index.html reads real coords with state-capital fallback. Distance sort is now precise for all events. Sort is distance-banded (25km rings), soonest-first within each band.
+5. **Future** — Google Places autocomplete keeps improving coord quality for new submissions automatically. Coord monitor in markPastEvents flags any approved event missing coords (daily email, subject `📍 COORD CHECK`).
 
 ---
 
