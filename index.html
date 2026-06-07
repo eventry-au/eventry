@@ -1786,6 +1786,8 @@ async function loadLiveEvents() {
           event_image_url: e.event_image_url || '',
           event_logo_enabled: e.event_logo_enabled || false,
           event_logo_url: e.event_logo_url || '',
+          lat: e.event_lat ? parseFloat(e.event_lat) : null,
+          lng: e.event_lng ? parseFloat(e.event_lng) : null,
           disciplines: (e.disciplines || []).map(d => ({
             name: d.disc_name || '',
             dist: d.dist_display || '',
@@ -1949,9 +1951,11 @@ function applyFilters() {
   if (userLat !== null && userLng !== null) {
     const radius = parseInt(document.getElementById('radiusSelect')?.value || '50');
     filtered = filtered.filter(e => {
-      const stateCoords = STATE_COORDS[e.state];
-      if (!stateCoords) return true;
-      const dist = getDistanceKm(userLat, userLng, stateCoords.lat, stateCoords.lng);
+      // Use real event coords if available, fall back to state capital proxy
+      const eLat = (e.lat && !isNaN(e.lat)) ? e.lat : (STATE_COORDS[e.state]?.lat ?? null);
+      const eLng = (e.lng && !isNaN(e.lng)) ? e.lng : (STATE_COORDS[e.state]?.lng ?? null);
+      if (eLat === null || eLng === null) return true;
+      const dist = getDistanceKm(userLat, userLng, eLat, eLng);
       return dist <= radius;
     });
   }
@@ -1964,12 +1968,13 @@ function applyFilters() {
     if (!aInactive && bInactive) return -1;
 
     if (sort === 'nearest' && userLat !== null && userLng !== null) {
-      const aCoords = STATE_COORDS[a.state];
-      const bCoords = STATE_COORDS[b.state];
-      const aDist = aCoords ? getDistanceKm(userLat, userLng, aCoords.lat, aCoords.lng) : 99999;
-      const bDist = bCoords ? getDistanceKm(userLat, userLng, bCoords.lat, bCoords.lng) : 99999;
+      const aLat = (a.lat && !isNaN(a.lat)) ? a.lat : (STATE_COORDS[a.state]?.lat ?? null);
+      const aLng = (a.lng && !isNaN(a.lng)) ? a.lng : (STATE_COORDS[a.state]?.lng ?? null);
+      const bLat = (b.lat && !isNaN(b.lat)) ? b.lat : (STATE_COORDS[b.state]?.lat ?? null);
+      const bLng = (b.lng && !isNaN(b.lng)) ? b.lng : (STATE_COORDS[b.state]?.lng ?? null);
+      const aDist = (aLat !== null && aLng !== null) ? getDistanceKm(userLat, userLng, aLat, aLng) : 99999;
+      const bDist = (bLat !== null && bLng !== null) ? getDistanceKm(userLat, userLng, bLat, bLng) : 99999;
       if (aDist !== bDist) return aDist - bDist;
-      // Within same state, sort by date
       return (a.date||'').localeCompare(b.date||'');
     }
     if (sort === 'nearest') {
