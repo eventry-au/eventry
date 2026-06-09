@@ -1283,6 +1283,15 @@ function initPlacesAutocomplete() {
     }
   });
 }
+
+// Auto-prepend https:// on blur for all url-type inputs (static + dynamically added)
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('.form-wrap').addEventListener('blur', function(e) {
+    if (e.target.type === 'url' && e.target.value && !/^https?:\/\//i.test(e.target.value)) {
+      e.target.value = 'https://' + e.target.value;
+    }
+  }, true);
+});
 </script>
 </body>
 </html>
