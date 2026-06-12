@@ -2085,7 +2085,6 @@ function shareEvent(id, name, btn) {
 
 function renderEvents(list) {
   const grid = document.getElementById('eventsGrid');
-  // Count only events (not partners) for the header
   const eventCount = list.filter(e => e.type !== 'partner').length;
   const eventWord = eventCount === 1 ? 'event' : 'events';
   document.querySelector('.results-count').innerHTML = `Showing <span id="resultCount">${eventCount}</span> ${eventWord}`;
@@ -2095,12 +2094,9 @@ function renderEvents(list) {
     return;
   }
 
-  // Filter partners by state and sport
   const activeState = document.getElementById('stateFilter')?.value || '';
   const partners = (window._allPartners || []).filter(p => {
-    // State filter
     if (activeState && p.state && p.state !== activeState) return false;
-    // Sport filter — blank partner_sports means show for all sports
     if (activeSport !== 'all' && p.sports) {
       const partnerSports = p.sports.split(',').map(s => s.trim().toLowerCase());
       if (!partnerSports.includes(activeSport.toLowerCase())) return false;
@@ -2111,18 +2107,45 @@ function renderEvents(list) {
   let partnerIdx = 0;
   let eventIdx = 0;
   const cards = [];
-
-  list.forEach((e, i) => {
+  list.forEach((e) => {
     cards.push({ type: 'event', data: e });
     eventIdx++;
-    // Insert partner card after every 6th event
     if (eventIdx % 6 === 0 && partnerIdx < partners.length) {
       cards.push({ type: 'partner', data: partners[partnerIdx++] });
     }
   });
 
-  grid.innerHTML = cards.map((item, i) => {
+  const sort = document.getElementById('sortSelect')?.value || '';
+  const showBands = sort === 'nearest' && userLat !== null && userLng !== null;
+  const BAND_KM = 75;
+
+  function getBandLabel(bandIndex) {
+    const lo = bandIndex * BAND_KM;
+    const hi = lo + BAND_KM;
+    return bandIndex === 0 ? `Within ${BAND_KM}km` : `${lo}–${hi}km away`;
+  }
+
+  function getEventBand(e) {
+    const eLat = (e.lat && !isNaN(e.lat)) ? e.lat : (STATE_COORDS[e.state]?.lat ?? null);
+    const eLng = (e.lng && !isNaN(e.lng)) ? e.lng : (STATE_COORDS[e.state]?.lng ?? null);
+    if (eLat === null || eLng === null) return null;
+    return Math.floor(getDistanceKm(userLat, userLng, eLat, eLng) / BAND_KM);
+  }
+
+  let lastBand = null;
+  let html = '';
+
+  cards.forEach((item, i) => {
     const delay = Math.min(i * 0.04, 0.4);
+
+    // Band divider — only for event cards in nearest sort
+    if (showBands && item.type === 'event') {
+      const band = getEventBand(item.data);
+      if (band !== null && band !== lastBand) {
+        lastBand = band;
+        html += `<div class="band-label" style="grid-column:1/-1;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);padding:0.5rem 0 0.25rem;border-top:1px solid var(--border);margin-top:0.5rem">${getBandLabel(band)}</div>`;
+      }
+    }
 
     if (item.type === 'partner') {
       const p = item.data;
@@ -2130,11 +2153,9 @@ function renderEvents(list) {
         .map(s => `<span class="partner-sport-tag">${s}</span>`).join('');
       const initials = orgInitials(p.name);
       const locationDisplay = p.location_display || p.location || '';
-      const bgImage = p.event_image_enabled
-        ? (p.event_image_url || null)
-        : null;
+      const bgImage = p.event_image_enabled ? (p.event_image_url || null) : null;
       const showLogo = p.event_logo_enabled && p.event_logo_url;
-      return `
+      html += `
       <div class="partner-card" style="animation-delay:${delay}s">
         ${bgImage ? `
         <div class="card-image">
@@ -2158,6 +2179,7 @@ function renderEvents(list) {
           <a href="${p.website || '#'}" target="_blank" class="partner-btn">Learn more →</a>
         </div>
       </div>`;
+      return;
     }
 
     const e = item.data;
@@ -2166,26 +2188,22 @@ function renderEvents(list) {
     const rawPrices = e.disciplines.map(d => d.price);
     const hasVaries = rawPrices.some(p => isNaN(parseFloat(p)) || p === null);
     const minPrice = hasVaries ? NaN : Math.min(...rawPrices);
-    const maxPrice = hasVaries ? NaN : Math.max(...rawPrices);    const discCount = e.disciplines.length;
+    const maxPrice = hasVaries ? NaN : Math.max(...rawPrices);
+    const discCount = e.disciplines.length;
     const badgeLabel = e.subtype
       ? `${e.sport} · ${e.subtype}`
-      : e.sport === 'other' || e.sport === 'Other'
-        ? `Other / Custom`
-        : e.sport;
+      : e.sport === 'other' || e.sport === 'Other' ? `Other / Custom` : e.sport;
     const priceDisplay = hasVaries
-  ? '<span class="price-tag">Varies</span>'
-  : minPrice === 0 && maxPrice === 0
-    ? '<span class="price-tag free">Free</span>'
-    : minPrice === 0
-      ? '<span class="price-tag">Free – <span style="font-size:13px">$' + maxPrice + '</span></span>'
-      : '<span class="price-tag">From $' + minPrice + '</span>';
-
-    const bgImage = e.event_image_enabled
-      ? (e.event_image_url || SPORT_BACKGROUNDS[e.sport] || null)
-      : null;
+      ? '<span class="price-tag">Varies</span>'
+      : minPrice === 0 && maxPrice === 0
+        ? '<span class="price-tag free">Free</span>'
+        : minPrice === 0
+          ? '<span class="price-tag">Free – <span style="font-size:13px">$' + maxPrice + '</span></span>'
+          : '<span class="price-tag">From $' + minPrice + '</span>';
+    const bgImage = e.event_image_enabled ? (e.event_image_url || SPORT_BACKGROUNDS[e.sport] || null) : null;
     const showLogo = e.event_logo_enabled && e.event_logo_url;
 
-    return `
+    html += `
     <div class="event-card${e.featured ? ' featured' : ''}${e.status === 'cancelled' ? ' is-cancelled' : e.status === 'postponed' ? ' is-postponed' : ''}" style="animation-delay:${delay}s">
       ${e.status === 'cancelled' ? '<div class="status-banner cancelled">Cancelled</div>' : ''}
       ${e.status === 'postponed' ? '<div class="status-banner postponed">Postponed</div>' : ''}
@@ -2234,8 +2252,9 @@ function renderEvents(list) {
       </div>
       <p class="card-disclaimer">Always confirm with organiser before registering</p>
     </div>`;
-    
-  }).join('');
+  });
+
+  grid.innerHTML = html;
 }
 
 // NEWSLETTER SIGNUP

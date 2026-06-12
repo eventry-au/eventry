@@ -778,7 +778,7 @@ function removeLogo() {
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5LNMivIm3qrjOkLsGfmBZI2jb35SU3RQYMQ_EqJQfinbxZIC-EHcIHclv_lfzaLFgfw/exec';
 
-function collectDisciplines() {
+function collectDisciplines(fallbackUrl) {
   const disciplines = [];
   document.querySelectorAll('.discipline-card').forEach(card => {
     const idx = card.id.replace('disc_', '');
@@ -873,7 +873,7 @@ function collectDisciplines() {
       dist_value, dist_unit, dist_display, legs,
       price: isFree ? 0 : (parseFloat(get(`${p}_price`)) || 0),
       free_entry: isFree ? 'TRUE' : 'FALSE',
-      reg_link: get(`${p}_reg_link`),
+      reg_link: get(`${p}_reg_link`) || fallbackUrl || '',
       age_group: get(`${p}_age`)
     });
   });
@@ -972,7 +972,7 @@ async function handleSubmit(e) {
     notes:                (fd.get('notes') || '').trim(),
     series_name:          (fd.get('series_name') || '').trim(),
     championship_pending: (fd.get('championship_pending') || '').trim(),
-    disciplines:          collectDisciplines()
+    disciplines:          collectDisciplines((fd.get('event_url') || '').trim())
   };
   try {
     await fetch(SCRIPT_URL, {
@@ -1114,7 +1114,9 @@ function addRound() {
       </div>
       <div class="field">
         <label>Venue / Address</label>
-        <input type="text" name="round_${idx}_venue" class="round-venue" placeholder="e.g. Lane Cove National Park" />
+        <input type="text" name="round_${idx}_venue" class="round-venue" id="roundVenue_${idx}" placeholder="e.g. Lane Cove National Park" autocomplete="off" />
+        <input type="hidden" name="round_${idx}_lat" class="round-lat" />
+        <input type="hidden" name="round_${idx}_lng" class="round-lng" />
       </div>
       <div class="field col-span-2">
         <label>Registration URL <span class="req">*</span></label>
@@ -1126,6 +1128,22 @@ function addRound() {
   renumberRounds();
   const di = div.querySelector('.round-date');
   if (di) di.min = new Date().toISOString().split('T')[0];
+
+  // Wire up Places autocomplete for this round's venue
+  const venueInput = document.getElementById(`roundVenue_${idx}`);
+  if (venueInput && window.google && google.maps && google.maps.places) {
+    const ac = new google.maps.places.Autocomplete(venueInput, {
+      componentRestrictions: { country: 'au' },
+      fields: ['address_components', 'geometry', 'name', 'formatted_address'],
+      types: ['establishment', 'geocode']
+    });
+    ac.addListener('place_changed', () => {
+      const place = ac.getPlace();
+      if (!place.geometry) return;
+      div.querySelector('.round-lat').value = place.geometry.location.lat().toFixed(6);
+      div.querySelector('.round-lng').value = place.geometry.location.lng().toFixed(6);
+    });
+  }
 }
 
 function removeRound(idx) {
@@ -1147,7 +1165,9 @@ function collectRounds() {
     const date = card.querySelector('.round-date')?.value || '';
     const venue = (card.querySelector('.round-venue')?.value || '').trim();
     const url = (card.querySelector('.round-url')?.value || '').trim();
-    if (date && isValidDateValue(date)) rounds.push({ date, venue, event_url: url });
+    const lat = (card.querySelector('.round-lat')?.value || '').trim();
+    const lng = (card.querySelector('.round-lng')?.value || '').trim();
+    if (date && isValidDateValue(date)) rounds.push({ date, venue, event_url: url, event_lat: lat, event_lng: lng });
   });
   return rounds;
 }
