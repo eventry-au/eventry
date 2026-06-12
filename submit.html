@@ -406,7 +406,7 @@ const SPORT_SUBTYPES = {
   'running': ['Road','Trail','Ultra','Track','Cross Country','Fun Run','Vertical/Vert km'],
   'cycling_road': ['Road','Gravel','Criterium','Cyclocross','Track'],
   'cycling_mtb': ['XCO','XCM','Downhill','Enduro','4X','E-MTB'],
-  'triathlon': ['Sprint','Olympic','70.3 Half','Full Ironman','Aquathlon','SwimRun','Xterra'],
+  'triathlon': ['Sprint','Olympic','70.3 Half','Full Ironman','Aquabike','Aquathlon','SwimRun','Xterra'],
   'duathlon': ['Sprint','Standard','Long'],
   'openwater': ['Ocean','River','Lake','Pool Open Water'],
   'paddling': ['Kayak','Canoe','SUP','Outrigger','Dragon Boat','Surfski','Rafting'],
@@ -496,10 +496,10 @@ function sportFields(sport, dIdx) {
 
     case 'triathlon':
       return `<div style="margin-top:10px">
-        <div class="form-grid thirds">
-          ${distanceField('Swim <span class="req">*</span>', `${p}_swim`, 'm', ['m', 'km'])}
-          ${distanceField('Bike <span class="req">*</span>', `${p}_bike`, 'km', ['km', 'miles'])}
-          ${distanceField('Run <span class="req">*</span>', `${p}_run`, 'km', ['km', 'miles'])}
+        <div class="form-grid thirds" id="tri_dist_${p}">
+          <div id="tri_swim_${p}">${distanceField('Swim <span class="req">*</span>', `${p}_swim`, 'm', ['m', 'km'])}</div>
+          <div id="tri_bike_${p}">${distanceField('Bike <span class="req">*</span>', `${p}_bike`, 'km', ['km', 'miles'])}</div>
+          <div id="tri_run_${p}">${distanceField('Run <span class="req">*</span>', `${p}_run`, 'km', ['km', 'miles'])}</div>
         </div>
         <div class="form-grid" style="margin-top:8px">
           <div class="field"><label>Category name</label><input type="text" name="${p}_cat_name" placeholder="e.g. Sprint, Olympic, Ironman 70.3" /></div>
@@ -740,6 +740,34 @@ function updateSportFields(idx) {
     subtypeWrap.style.display = 'none';
     subtypeSelect.innerHTML = '';
   }
+
+  // For triathlon: show/hide bike and run fields based on subtype
+  if (sport === 'triathlon') {
+    subtypeSelect.addEventListener('change', () => {
+      updateTriFields(idx, subtypeSelect.value);
+    });
+  }
+}
+
+function updateTriFields(idx, subtype) {
+  const p = `d${idx}`;
+  const bikeWrap = document.getElementById(`tri_bike_${p}`);
+  const runWrap  = document.getElementById(`tri_run_${p}`);
+  if (!bikeWrap || !runWrap) return;
+  // Aquathlon = swim + run only (no bike)
+  // Aquabike  = swim + bike only (no run)
+  // SwimRun   = swim + run only (no bike)
+  // All others = swim + bike + run
+  if (subtype === 'Aquathlon' || subtype === 'SwimRun') {
+    bikeWrap.style.display = 'none';
+    runWrap.style.display  = '';
+  } else if (subtype === 'Aquabike') {
+    bikeWrap.style.display = '';
+    runWrap.style.display  = 'none';
+  } else {
+    bikeWrap.style.display = '';
+    runWrap.style.display  = '';
+  }
 }
 
 function handleFreeToggle(idx) {
@@ -801,10 +829,17 @@ function collectDisciplines(fallbackUrl) {
       dist_value = get(`${p}_mtb_dist_val`);
       dist_unit = get(`${p}_mtb_dist_unit`) || 'km';
     } else if (sport === 'triathlon') {
+      const subtype = card.querySelector(`[name="d${idx}_subtype"]`)?.value || '';
       const swim = get(`${p}_swim_val`) + (get(`${p}_swim_unit`) || 'm');
       const bike = get(`${p}_bike_val`) + (get(`${p}_bike_unit`) || 'km');
-      const run = get(`${p}_run_val`) + (get(`${p}_run_unit`) || 'km');
-      dist_display = `${swim} / ${bike} / ${run}`;
+      const run  = get(`${p}_run_val`)  + (get(`${p}_run_unit`)  || 'km');
+      if (subtype === 'Aquathlon' || subtype === 'SwimRun') {
+        dist_display = `${swim} / ${run}`;
+      } else if (subtype === 'Aquabike') {
+        dist_display = `${swim} / ${bike}`;
+      } else {
+        dist_display = `${swim} / ${bike} / ${run}`;
+      }
     } else if (sport === 'duathlon') {
       const r1 = get(`${p}_run1_val`) + (get(`${p}_run1_unit`) || 'km');
       const bk = get(`${p}_bike_val`) + (get(`${p}_bike_unit`) || 'km');
