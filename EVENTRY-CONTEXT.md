@@ -2,147 +2,104 @@
 
 Session Handover Document
 
-*Last updated: 11 June 2026 (Session 31)*
+*Last updated: 12 June 2026 (Session 32)*
 
 *For the full project backstory (Sessions 1–22), see EVENTRY-HISTORY.md — the narrative archive. This document is the working handover: current state, live to-do queue, active outreach.*
 
 ---
 
-# Session 31 Summary (11 June 2026)
+# Session 32 Summary (12 June 2026)
 
-Big listing session + outreach housekeeping. 8 new events added across Sri Chinmoy (Sydney, Canberra, Melbourne) and Wheels & Wattle. Bloody Long Walk images and logos applied proactively to all 9 listings. All 4 overdue partner follow-ups actioned via personal SMS/calls.
+Big dev + events + notes capture session. Four bugs fixed and deployed (band labels, series venue autocomplete, reg_link fallback, partner website button). Three H Events listings added (Island Tri Festival, Haze Sunrise Run, Lake Mac Tri 2027). Tom Scott / PB Running outreach email sent. Massive notes backlog from 1 Notes chat processed — 16 new events queued. Notes system moving to Google Doc going forward.
+
+## Code Shipped This Session ✅
+
+- **index.html**: 75km band labels on Nearest first sort — dividers between distance rings
+- **index.html**: Partner Learn more button fixed — was reading wrong field (p.org_website vs p.website)
+- **submit.html**: Series round venue field — Google Places autocomplete + lat/lng coord capture added
+- **submit.html**: reg_link fallback — discipline reg_link now falls back to Section 2 event URL when blank
+- **submit.html**: Aquabike added as triathlon subtype
+- **submit.html**: Conditional Bike/Run fields for Aquabike (no run), Aquathlon/SwimRun (no bike)
+- **submit.html**: dist_display builder updated to exclude hidden fields based on subtype
+- **Apps Script doPost**: Series, weekly, monthly, one-off rowSpecs all updated with spec.lat/spec.lng — coords now write correctly per round for series events
+- **Apps Script doGet**: Partner object now returns event_image_enabled, event_image_url, event_logo_enabled, event_logo_url — partner card images now work
 
 ## Events Added This Session ✅
 
-### Sri Chinmoy Dolls Point (12 Jul 2026)
-- Organiser: Sri Chinmoy Marathon Team — Sydney (sydney@srichinmoyraces.org)
-- Location: Peter Depena Reserve, Dolls Point NSW | Coords: -33.995959, 151.145369
-- Disciplines: 21.1km / 10km / 5km road running
-- reg_link: au.srichinmoyraces.org/sydneyraces (manually set)
-- Series: Sri Chinmoy Sydney Series (col AG set manually)
+### Island Triathlon Festival (27 Sep 2026)
+- Organiser: H Events (admin@hevents.com.au) — go-live auto-sent ✅
+- Location: Stockton Foreshore, Newcastle NSW | Coords: -32.916123, 151.784389
+- Disciplines: Standard / Sprint / Super Sprint / Aquabike / Aquathlon
+- reg_link: hevents.com.au/events/island-triathlon
 - event_image_enabled: TRUE ✅
 
-### Sri Chinmoy Aranda Meander (19 Jul 2026)
-- Organiser: Sri Chinmoy Marathon Team — Canberra (canberra@srichinmoyraces.org)
-- Location: Aranda Bushland Nature Reserve, ACT | Coords: -35.26801, 149.079783
-- Disciplines: 21.1km / 10.6km / 3.6km trail running
-- reg_link: au.srichinmoyraces.org/canberratrailruns (manually set)
-- Series: Sri Chinmoy Canberra Trail Series (col AG set manually)
+### Haze Stockton Sunrise Run (26 Sep 2026)
+- Organiser: H Events (admin@hevents.com.au) — go-live auto-sent ✅
+- Location: Stockton Foreshore, Newcastle NSW | Coords: -32.916123, 151.784389
+- Disciplines: 21km / 14km / 7km / 2km road running
+- reg_link: hevents.com.au/events/island-triathlon
 - event_image_enabled: TRUE ✅
 
-### Sri Chinmoy Mara-Fun Relays (18 Oct 2026)
-- Organiser: Sri Chinmoy Marathon Team — Sydney (sydney@srichinmoyraces.org)
-- Location: Centennial Park, Sydney NSW | Coords: -33.899618, 151.224172
-- Disciplines: Solo Marathon 42.2km / Relay (2-4 person) 42.2km
-- reg_link: au.srichinmoyraces.org/marathonrelay (manually set)
-- Series: None (explicitly not part of the Sydney Series)
+### Lake Macquarie Triathlon 2027 (7 Feb 2027)
+- Organiser: H Events — org_email set to eventry.au@gmail.com (suppress go-live)
+- Location: Speers Point Park, Lake Macquarie NSW | Coords: -32.962277, 151.61752
+- Disciplines: Standard / Sprint / Super Sprint / Aquabike / Aquathlon
 - event_image_enabled: TRUE ✅
+- Note in col AE: "Entries open 1 Jul 2026 — populate admin@hevents.com.au + send personal intro then"
 
-### Sri Chinmoy Royal National Park (1 Nov 2026)
-- Organiser: Sri Chinmoy Marathon Team — Sydney (sydney@srichinmoyraces.org)
-- Location: Royal National Park, Audley NSW | Coords: -34.064181, 151.057563
-- Disciplines: 42.2km / 21.1km / 10km / 5km trail running
-- reg_link: au.srichinmoyraces.org/sydneyraces (manually set)
-- Series: Sri Chinmoy Sydney Series (col AG set manually)
-- event_image_enabled: TRUE ✅
-
-### Sri Chinmoy Princes Park Winter Running Festival (9 Aug 2026)
-- Organiser: Sri Chinmoy Marathon Team — Melbourne (melbourne@srichinmoyraces.org)
-- Location: Princes Park, Carlton VIC | Coords: -37.784982, 144.961376
-- Disciplines: 42.2km / 30km / 21.1km / 10km / 5km road running
-- reg_link: au.srichinmoyraces.org/sri-chinmoy-princes-park-30k (manually set)
-- Series: None (Melbourne events are standalone)
-- event_image_enabled: TRUE ✅
-
-### Sri Chinmoy Yarra Boulevard Half Marathon (13 Sep 2026)
-- Organiser: Sri Chinmoy Marathon Team — Melbourne (melbourne@srichinmoyraces.org)
-- Location: Kevin Bartlett Reserve, Yarra Boulevard, Richmond VIC | Coords: -37.830703, 145.023055
-- Disciplines: 21.1km / 10km / 5km road running
-- reg_link: au.srichinmoyraces.org/sri-chinmoy-yarra-boulevard-half-marathon (manually set)
-- Series: None
-- event_image_enabled: TRUE ✅
-
-### Sri Chinmoy Tan Team Relays (8 Nov 2026)
-- Organiser: Sri Chinmoy Marathon Team — Melbourne (melbourne@srichinmoyraces.org)
-- Location: Pillars of Wisdom, Alexandra Avenue, Melbourne VIC | Coords: -37.824361, 144.97702
-- Disciplines: Team Relay 4-person 42.1km / Solo Marathon 42.2km / 3-Lap 11.49km / 1-Lap 3.83km
-- reg_link: au.srichinmoyraces.org/sri-chinmoy-running-fitness-festival (manually set)
-- Series: None
-- event_image_enabled: TRUE ✅
-
-### Wheels & Wattle (25–26 Sep 2026)
-- Organiser: Rotary Club of Maryborough (org_email blanked — go-live suppressed)
-- Location: Princes Park, 8 Lake Road, Maryborough VIC | Coords: -37.044167, 143.742222
-- Disciplines: King of Mountain 87km / Maldon 83km / Baringhup 64km / Carisbrook 19km (road) + Daisy Hill 77km / Paddys Ranges 40km / Craigie Forest 18.5km (gravel)
-- reg_link: events.humanitix.com/wheels-and-wattle (manually set)
-- event_image_enabled: TRUE ✅
-- Note: No contact email found yet — need Peter Haywood's email for personal intro
-
-## Bloody Long Walk — Images & Logos Applied ✅
-
-All 9 BLW listings updated this session:
-- Col AR (event_image_enabled) → TRUE
-- Col AT (event_logo_enabled) → TRUE
-- Col AU (event_logo_url) → https://www.mito.org.au/wp-content/uploads/2018/06/BLW-Logo-300.png
-- Col AS (event_image_url) → location-specific images per event (see session notes)
-- org_email corrected: info@bloodylongwalk.com.au → bloodylongwalk@mito.org.au
-- Perry Slater email sent confirming listing correct + noting images applied
-- Status: Converted ✅
-
-## Sri Chinmoy Coverage Summary
-
-### Sydney Series 2026
-- Race 1: Centennial Park (6 Apr) — past
-- Race 2: Iron Cove (7 Jun) — past
-- Race 3: Dolls Point (12 Jul) — ✅ listed
-- Race 4: Mara-Fun Relays (18 Oct) — ✅ listed (not part of series)
-- Race 5: Royal National Park (1 Nov) — ✅ listed
-
-### Canberra Trail Series 2026
-- Race 1: Cooleman Clip (26 Apr) — past
-- Race 2: Tidbinbilla Thriller (10 May) — past
-- Race 3: Red Hill Ramble (1 Jun) — past
-- Race 4: Ainslie Amble (28 Jun) — ✅ listed (Session 29)
-- Race 5: Aranda Meander (19 Jul) — ✅ listed
-
-### Melbourne 2026
-- Albert Park (7 Jun) — past
-- Princes Park Winter Festival (9 Aug) — ✅ listed
-- Yarra Boulevard (13 Sep) — ✅ listed
-- Tan Team Relays (8 Nov) — ✅ listed
-
-## Key Discoveries This Session
-
-- **Series form bug**: Series round venue field missing Google Places autocomplete + no coord capture. Workaround: submit as standalone one-off event, then manually set series_name (col AG) in sheet after submission.
-- **reg_link fallback bug**: When discipline reg_link left blank in form (hint says "if different to the above"), it does NOT auto-populate from Section 2 URL. Must manually set col Z on all discipline rows.
-- **Coords DO auto-capture** correctly for standalone one-off submissions via Places autocomplete ✅
-- **BLW org_email was bouncing** — info@bloodylongwalk.com.au → correct is bloodylongwalk@mito.org.au
-- **Max Adventure Race org_email bouncing** — info@maxadventurerace.com.au is dead. Need to find correct contact.
+## H Events — Full Status
+- Winery Run 19 Jul ✅ listed
+- Fernleigh 15 19 Oct ✅ listed
+- Maitland River Run — past ✅
+- Island Tri Festival 27 Sep ✅ listed this session
+- Haze Stockton Sunrise Run 26 Sep ✅ listed this session
+- Lake Mac Tri 7 Feb 2027 ✅ listed this session — entries open 1 Jul
+- Newcastle City Triathlon — NOT listed (confirmed 32-year run ended after 2025)
+- Status: Converted ✅ — follow-up 1 Jul when entries open
 
 ## Outreach Actions This Session
+- **Tom Scott / PB Running** — cold outreach email sent 12 Jun (coach@pbrunning.com.au) → follow-up 26 Jun
+- **H Events** — auto go-live fired to admin@hevents.com.au for Island Tri + Haze (12 Jun)
 
-- **FlowiTri (Lucas)** — Personal SMS sent (shared NTC history) → Status: Hot, follow-up 16 Jun
-- **Warners Bay Physio (Jeandre)** — Personal SMS in Afrikaans (shared Convict 100 history) → Status: Hot, follow-up 16 Jun. Hunter Physio on hold until 16 Jun.
-- **Mauro Swim Team** — Called, spoke to Liz, will check with Peter → Status: Hot, follow-up 16 Jun
-- **Newcastle Orienteering** — Resent to enquiry@newcastleorienteering.asn.au as second channel → follow-up 18 Jun
-- **Wheels & Wattle** — Listed, org_email blanked. Need Peter Haywood contact.
+## Partner Images Applied This Session
+- **FlowiTri** — event_image_url set to hosted OG image ✅
+- **Warners Bay Physio** — reverted (favicon too small, clean card better until Jeandre responds)
+- **CFN / Tailwind / Mauro** — pending partner confirmation
+
+## Top 20 Events — Image/Logo Research Completed
+See full table in Session 32 notes. Sheet updates needed (apply next session):
+- Melbourne Marathon: AS = melbournemarathon.com.au/wp-content/uploads/2025/06/Melbourne_Marathon_Logo.png
+- City2Surf: AS = city2surf.com.au/assets/Uploads/Gallery/City2Surf-start-crowd-hero-content.jpg
+- Noosa Tri: AS = noosatri.com.au/assets/Uploads/Noosa-Tri-FB.jpg
+- Perth City to Surf: AS = perthcitytosurf.com/wp-content/uploads/2026/01/CTS-Logo-RGB-Reverse-4.png
+- Run Melbourne: AS = runmelbourne.com.au/wp-content/uploads/2022/01/RM22-HalfMarathon-1.jpg
+- Cape to Cape MTB: AS = capetocapemtb.com/assets/Uploads/C2C-FB.jpg
+- Blackall 100: AS = static.wixstatic.com/media/d9e3e8_ceb8957e01784f7a81fdeafa13bc6490~mv2_d_3000_2000_s_2.jpg/v1/fill/w_2500,h_1666,al_c/d9e3e8_ceb8957e01784f7a81fdeafa13bc6490~mv2_d_3000_2000_s_2.jpg
+- Sea Otter Australia: AS = seaotter.au/wp-content/uploads/2026/03/2025_Expo_HangingRock_2-e1774395262726-1024x370.png | AU = seaotter.au/wp-content/uploads/2024/02/cropped-sea-otter-icon-full-sold-bg-300x300.png
+- Surf Coast Trail Marathon: AS = files.manuscdn.com/user_upload_by_module/session_file/310419663031276848/mzIdlHROyMQbmPJV.png
+- Coast to Kosciuszko: AU (logo only) = coasttokosci.com/wp-content/uploads/2021/07/cropped-coast-to-kosci-favicon-270x270.png
+- Six Inch Trail Marathon: AU (logo only) = runningforbeginners.com/6inch/wp-content/uploads/2015/11/6-Inch-Trail-Marathon-Event-Logo-300.jpg
+- All others (Sydney Marathon, GC Marathon, Cairns, Perth RF, Barossa, BTU, Noosa Enduro, Grampians, Bowral): AR=TRUE, no image URL — sport bg will show
 
 ---
 
-# Immediate To-Do Queue (Session 32)
+# Immediate To-Do Queue (Session 33)
 
 ## 🔴 Do First
 
-- **Tom Scott / PB Running** — draft outreach email (coach@pbrunning.com.au, Newcastle trail/ultra coach)
-- **Max Adventure Race** — find correct contact email (website/socials)
-- **Wheels & Wattle** — find Peter Haywood / Rotary Maryborough email for personal intro
+- **Max Adventure Race** — update org_email on ALL rows: info@maxadventurerace.com.au → **info@maxadventure.com.au** (confirmed correct address found this session)
+- **Run Port Douglas** — update org_email to info@runportdouglas.com.au if blank
+- **Cooks River Fun Run** — verify reg_link = raceroster.com/events/2026/111812/cooks-river-fun-run-2026
+- **Apply top 20 event images** — see table above, set cols AR/AS/AT/AU per event
+- **Puffing Billy Running Festival** — LIST BEFORE 18 JUN (entries open Thursday) — race@pbr.org.au
+- **AMBC XCM 8Hr/4Hr** — LIST BEFORE 21 JUN (9 days away) — committee@ambc.asn.au
 
-## 🟡 Follow-ups Due This Week
+## 🟡 Follow-ups Due
 
 | Contact | Due | Status |
 |---|---|---|
-| FlowiTri (Lucas) | 16 Jun | Hot — personal SMS sent 11 Jun |
-| Warners Bay Physio (Jeandre) | 16 Jun | Hot — personal SMS sent 11 Jun |
+| FlowiTri (Lucas) | 16 Jun | Hot — personal SMS 11 Jun |
+| Warners Bay Physio (Jeandre) | 16 Jun | Hot — personal SMS 11 Jun |
 | Mauro Swim Team (Peter) | 16 Jun | Hot — called Liz 11 Jun |
 | Sole Motive / Run Melbourne | 16 Jun | HOT — 2 opens |
 | Cycle Fitness Nutrition (Glen) | 15 Jun | Opened — no reply |
@@ -155,41 +112,90 @@ All 9 BLW listings updated this session:
 | Pace Athletic | 16 Jun | No response |
 | Bourkes Bicycles | 18 Jun | No response |
 | Newcastle Orienteering | 18 Jun | Resent to enquiry@ 11 Jun |
+| Kowen Winter Trails | ~18 Jun | Opened 11 Jun |
+| Tom Scott / PB Running | 26 Jun | Cold email sent 12 Jun |
 
 ## 🟡 Organiser Follow-ups Due
 
 | Organisation | Due | Status |
 |---|---|---|
-| H Events | 19 Jun | Intro sent |
+| H Events | 1 Jul | Converted — entries open 1 Jul for Lake Mac Tri |
+| Coffs Trail Runners | 19 Jun | HOT — opened+clicked <1 min |
+| SingleTrack Events (Colin) | 19 Jun | HOT — clicked submit link |
+| Tour De Trails (Peri) | 19 Jun | Chris OOO Japan — escalate to simon@ if nothing |
+| H Events (other) | 19 Jun | Intro sent |
 | Kokoda Youth Foundation | 19 Jun | Intro sent |
 | Run Queensland | 19 Jun | Intro sent |
 | The Event Team WA | 19 Jun | Intro sent |
 | Rapid Ascent | 19 Jun | Intro sent |
-| Coffs Trail Runners | 19 Jun | HOT — opened+clicked <1 min |
 | Race Hub (Sara) | 19 Jun | Intro sent |
-| SingleTrack Events (Colin) | 19 Jun | HOT — clicked submit link |
 | Pedalheads Inc | 19 Jun | Intro sent |
-| Tour De Trails (Peri) | 19 Jun | Awaiting — escalate to Simon if nothing |
 | Brisbane Trail Ultra | 22 Jun | Intro sent |
 | Terrigal Trotters / GNW | 22 Jun | Intro sent |
-| Outer Limits Adventure | 24 Jun | Intro sent — 3 events live + logos |
-| Cycling Classics | 24 Jun | Intro sent — Bowral Classic live |
+| Outer Limits Adventure | 24 Jun | 3 events live + logos |
+| Cycling Classics (Bowral) | 24 Jun | Bowral Classic live |
 
-## 🟢 Events to Add
+## 🟢 Events to Add (Queued from Notes)
 
-- **Tour De Trails 6 events** — research before listing: hut2hut.oscars.com.au, warburtontrailfest.com, goldrushrun.net, beerrun.com.au, greatoceanultra.com, afterglowtrailrun.com
-- **Outer Limits standalone events** — wait for Sam to self-submit or list after 24 Jun follow-up
-- **USM Events** — HOKA Runaway Sydney entries open 23 Jun 2027 — nothing to list yet, but add as organiser outreach target
+Priority order — urgent ones first:
 
-## 🟢 Dev / Platform
+| Event | Date | Location | Contact | Notes |
+|---|---|---|---|---|
+| Puffing Billy Running Festival | 12–13 Sep 2026 | Belgrave VIC | race@pbr.org.au | ⚠️ Entries open 18 Jun — list NOW |
+| AMBC XCM 8Hr/4Hr | 21 Jun 2026 | Adelaide Hills SA | committee@ambc.asn.au | ⚠️ 9 days away |
+| Jetty 2 Jetty Marathon | 19 Jul 2026 | Clontarf QLD | info@j2j.com.au | 40th anniversary. 42.2/21.1/10/5km |
+| Run Echuca Moama | 2 Aug 2026 | Moama NSW | clrs.org.au | Charity event. 21.1/10/5km |
+| TAC Great Victorian Bike Ride | 23–27 Nov 2026 | Goldfields VIC | bicyclenetwork.com.au | Multi-day tour. Social/Mixed type |
+| United Energy Around the Bay | 18 Oct 2026 | Melbourne VIC | bicyclenetwork.com.au | 6 ride options incl 220km |
+| Mt Coot-tha Trail Festival | 22–23 Aug 2026 | Brisbane QLD | hello@runvault.com.au | Run Vault — organiser + partner |
+| Lake Mac Run | 13 Sep 2026 | Warners Bay NSW | enquiries@lakemacrunning.com | Footmotion naming sponsor — warm angle |
+| City-Bay Fun Run | 20 Sep 2026 | Adelaide SA | city-bay.org.au | Flagship SA event. 21.1/12/6/3km |
+| Run Prix | 20 Sep 2026 | Albert Park VIC | runprix.com.au | F1 GP circuit, $12k prize money |
+| Geelong Running Festival | 20 Sep 2026 | Geelong VIC | geelongrunningfestival.com.au | 42.2/21.1/6.5km |
+| Swimrun Australia Sydney North | 10 Oct 2026 | Sydney NSW | swimrun.com.au | New sport type — list under triathlon for now |
+| Sue Bell Memorial Triathlon | 9 Aug 2026 | Townsville QLD | townsvilletriclub.com.au | Pool + river swim options |
+| AMBC Multirace | 18–20 Sep 2026 | Adelaide Hills SA | committee@ambc.asn.au | 3-day MTB event |
+| AMBC XCO | 18 Oct 2026 | Adelaide Hills SA | committee@ambc.asn.au | Venue TBA |
+| AMBC XCO State Champs | 8 Nov 2026 | Adelaide Hills SA | committee@ambc.asn.au | Venue TBA |
+| Tour De Trails (6 events) | Various | VIC | peri@tourdetrails.com | hut2hut, warburtontrailfest, goldrushrun, beerrun, greatoceanultra, afterglowtrailrun |
+| Outer Limits standalones | TBC | NSW | sam@outerlimitsadventure.com.au | Wait for Sam or list after 24 Jun follow-up |
 
-- **Series round venue bug** — Google Places autocomplete not firing on series round venue field; no coord capture
-- **reg_link fallback bug** — discipline reg_link not falling back to Section 2 URL when left blank
-- **Partner website fix** — "Learn more" button reads wrong field; remove deprecated col AP
-- **Partner card layout** — half-size, two-across (compact layout)
-- **Submit form: image/logo URL fields** — sheet cols exist; form doesn't expose them yet
-- **CrossFit & HYROX as sport types** — add to normaliseSport() and sport pills
-- **GCP cleanup** — delete "My First Project" + Maps Platform API Key (33 APIs)
+## 🟢 New Organiser Outreach Targets
+
+| Organisation | Type | Contact | Notes |
+|---|---|---|---|
+| Bicycle Network | Organiser | bicyclenetwork.com.au | 2 events listed — Around the Bay + Great Vic Bike Ride |
+| Run Vault (Jamie Hunter) | Organiser + Partner | hello@runvault.com.au | Events + running store — dual pitch |
+| Adelaide Mountain Bike Club | Organiser | committee@ambc.asn.au | 4 upcoming SA events, warm via Andre Potgieter |
+| Jetty 2 Jetty | Organiser | info@j2j.com.au | List then reach out |
+| Puffing Billy Railway | Organiser | race@pbr.org.au | List then reach out |
+
+## 🟢 Data Fixes Needed in Sheet
+
+- **Max Adventure Race** — org_email ALL rows → info@maxadventure.com.au (was bouncing on info@maxadventurerace.com.au)
+- **Run Port Douglas** — org_email → info@runportdouglas.com.au if blank
+- **Cooks River Fun Run** — verify reg_link = raceroster.com/events/2026/111812/cooks-river-fun-run-2026
+
+## 🟢 Social Media
+- Post upcoming events to Facebook + Instagram — carried since Session 30
+
+## 🔧 Dev / Platform
+
+### Bugs Still Open
+- **Series round venue** — autocomplete + coord capture ✅ FIXED this session (deployed)
+- **reg_link fallback** ✅ FIXED this session (deployed)
+- **Partner website button** ✅ FIXED this session (deployed)
+- **Triathlon conditional fields (Aquabike/Aquathlon)** ✅ FIXED this session (deployed)
+
+### Near-term Builds
+- **submit.html image/logo URL fields** — sheet cols exist; form doesn't expose them
+- **CrossFit & HYROX as sport types** — add to normaliseSport() + pills
+- **Swimrun as sport type** — add to normaliseSport() (currently list under triathlon as workaround)
+- **Partner cards: half-size, two-across**
+- **GCP cleanup** — delete "My First Project" + Maps Platform API Key
+- **Top 5 sport pills + "More sports ▾" dropdown**
+- **Admin dashboard**
+- **Report a problem link**
 
 ---
 
@@ -237,6 +243,7 @@ All 9 BLW listings updated this session:
 - Destination Sport Experiences (Tessa) — inbound
 - Sport 3 (Adam Goodger) — GC50 live
 - Mito Foundation / Bloody Long Walk (Perry Slater) — confirmed 9 listings correct. Images + logos applied. 11 Jun.
+- H Events (Paul Humphreys) — auto go-live fired Island Tri + Haze Sunrise Run. 12 Jun. Lake Mac Tri 2027 listed, follow-up 1 Jul.
 
 ---
 
@@ -245,8 +252,8 @@ All 9 BLW listings updated this session:
 - **"List it, then reach out"** — add with org_email populated (fires auto go-live), send personal intro same day or next day
 - **Logo trick** — find publicly hosted badge/logo URL, set event_logo_enabled TRUE + event_logo_url. Proactive, no permission needed. Mention in personal email as done thing.
 - **event_image_enabled (col AR) must be set manually TRUE** after every form submission
-- **reg_link (col Z) must be set manually** — form does NOT auto-populate from Section 2 URL when discipline reg_link left blank
-- **Series form bug** — venue field in series rounds has no Places autocomplete and no coord capture. Submit as standalone one-off, manually set col AG (series_name) after.
+- **reg_link (col Z) must be set manually** — form does NOT auto-populate from Section 2 URL when discipline reg_link left blank (FIXED in submit.html Session 32 but manual fallback still good practice)
+- **Series form bug** — venue field in series rounds has no Places autocomplete and no coord capture. Submit as standalone one-off, manually set col AG (series_name) after. (FIXED in submit.html Session 32 ✅)
 - **Contact name field is mandatory** on submit form — use "Team" or org name if no individual contact
 - **Go-live dedup key**: 'live:' + submission_id — multi-discipline rows fire only once per event
 - **Go-live email quota**: 100/day Apps Script limit — spread large batches across days
@@ -261,10 +268,16 @@ All 9 BLW listings updated this session:
 - **Outer Limits Adventure** runs Trail Run Series (6 events) + standalone events
 - **Cycling Classics**: Snowy Classic cancelled 2026, Noosa on hold, Mudgee past (May), Clare TBC — only Bowral active
 - **BLW correct email**: bloodylongwalk@mito.org.au (NOT info@bloodylongwalk.com.au — bounces)
-- **Max Adventure Race email** dead — info@maxadventurerace.com.au hard bounces
-- **Wheels & Wattle** — Rotary Club of Maryborough VIC. No email found yet. Contact form via Humanitix or find Peter Haywood directly.
+- **Max Adventure Race correct email**: info@maxadventure.com.au (NOT info@maxadventurerace.com.au — bounces)
+- **Wheels & Wattle** — Rotary Club of Maryborough VIC. secretary@rotarymaryboroughvic.org is placeholder only — find real contact.
 - **Personal SMS/call outreach** very effective for warm local contacts (Lucas/FlowiTri, Jeandre/Warners Bay, Liz/Mauro)
 - **DNS issues**: restart Starlink router; permanent fix: Cloudflare 1.1.1.1 on desktop adapter
+- **Aquabike** = swim + bike only (no run). **Aquathlon/SwimRun** = swim + run only (no bike). Conditional fields now implemented in submit.html.
+- **Partner cards need image enabled in doGet** — event_image_enabled/url/logo_enabled/logo_url now returned for partners (FIXED Session 32 ✅)
+- **Swimrun** is not yet a sport type in normaliseSport() — list under triathlon for now, add in next dev sprint
+- **Outreach email sign-off**: always "Adriaan" (not "Adriaaan")
+- **Partner pricing**: use "free to join right now" not "it's free" — avoids implying permanent free tier
+- **Notes between sessions**: moving to Google Doc in Drive (set up Session 33) — more reliable than 1 Notes chat which has summary lag
 
 ---
 
@@ -276,8 +289,8 @@ All 9 BLW listings updated this session:
 - **GitHub**: large files (>500 lines) → upload/replace, not web editor
 - **Local geocoder tool**: geocoder_corrections.html on OneDrive Desktop
 - **Social media**: Facebook Page + Instagram @eventry.au — live Session 27
-- **Notes chat**: active notes capture. Current: "1 Notes"
-- **Outreach Tracker**: Outreach_Tracker_v2.xlsx (updated Session 31) — Drive file ID: 1OJcTkIcD8ahp1Z8SidE4JNuKLefltdGz
+- **Notes system**: moving to Google Doc in Drive (Session 33). Previous: "1 Notes" chat (has summary lag — unreliable for same-day notes)
+- **Outreach Tracker**: Outreach_Tracker_v2.xlsx (updated Session 32) — Drive file ID: 1OJcTkIcD8ahp1Z8SidE4JNuKLefltdGz
 - **Claude account**: adriaanmoore@gmail.com with Gmail MCP (eventry.au@gmail.com) + Google Drive MCP
 
 ---
@@ -320,22 +333,22 @@ Roadmap: NOW: Australia's sports events directory. SOON: Featured listings and p
 | Real lat/lng captured on new submissions → sheet cols AW/AX | 25 |
 | Distance sort: 75km bands, soonest-first within band | 26 |
 | Facebook Page + Instagram @eventry.au created | 27 |
-
-## ⏳ Bugs to Fix
-
-- **Series round venue**: no Places autocomplete, no coord capture
-- **reg_link fallback**: discipline reg_link not falling back to Section 2 URL
-- **Partner website**: "Learn more" button reads deprecated col AP
+| 75km band labels on Nearest first sort | 32 |
+| Series round venue — Places autocomplete + coord capture | 32 |
+| reg_link fallback to Section 2 URL | 32 |
+| Aquabike subtype + conditional Bike/Run fields for Aquabike/Aquathlon/SwimRun | 32 |
+| Partner cards return image/logo fields from doGet | 32 |
+| Partner Learn more button fixed (p.website mapping) | 32 |
 
 ## ❌ Not Yet Built
 
 ### Near-term
 - **submit.html image/logo URL fields** — sheet cols exist; form doesn't expose them
 - **CrossFit & HYROX as sport types**
+- **Swimrun as sport type** — currently workaround: list under triathlon
 - **Partner cards: half-size, two-across**
 - **GCP cleanup** — delete "My First Project" + Maps Platform API Key
 - **Top 5 sport pills + "More sports ▾" dropdown**
-- **75km band label**
 - **Admin dashboard**
 - **Report a problem link**
 
