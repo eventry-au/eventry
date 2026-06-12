@@ -1758,7 +1758,7 @@ async function loadLiveEvents() {
           location: `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           location_display: p.partner_location_display || `${p.location || ''}, ${p.state || ''}`.replace(/^,\s*/, ''),
           state: p.state,
-          website: p.org_website || p.partner_website,
+          website: p.website || p.org_website || '',
           event_image_enabled: p.event_image_enabled || false,
           event_image_url: p.event_image_url || '',
           event_logo_enabled: p.event_logo_enabled || false,
