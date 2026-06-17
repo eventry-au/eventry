@@ -568,7 +568,18 @@ function renderEvent(event) {
               <td><span class="disc-price ${isFree ? 'free' : ''}">${isFree ? 'Free' : '$' + d.price}</span></td>
               <td>${event.status === 'cancelled' || event.status === 'postponed'
                 ? `<a href="${event.org_website || event.event_url || '#'}" target="_blank" class="register-btn btn-check">Check organiser site →</a>`
-                : `<a href="${regLink}" target="_blank" class="register-btn">Register →</a>`
+                : (() => {
+                  const openDate = event.entries_open_date ? new Date(event.entries_open_date) : null;
+                  const today = new Date(); today.setHours(0,0,0,0);
+                  if (openDate) openDate.setHours(0,0,0,0);
+                  if (openDate && openDate > today) {
+                    return `<span style="font-size:12px;color:var(--ink-faint)">Entries open ${openDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}</span>`;
+                  }
+                  if (!event.entries_open_date) {
+                    return `<a href="${event.event_url || '#'}" target="_blank" class="register-btn">Visit event website →</a>`;
+                  }
+                  return `<a href="${regLink}" target="_blank" class="register-btn">Register →</a>`;
+                })()
               }</td>
             </tr>`;
           }).join('')}
