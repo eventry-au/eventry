@@ -356,6 +356,11 @@
       <label>Event website / Registration URL <span class="req">*</span></label>
       <input type="url" name="event_url" id="eventUrlInput" placeholder="https://youreventregistration.com" required />
     </div>
+    <div class="field col-span-2" id="entriesOpenWrap">
+      <label>Entries open date</label>
+      <input type="date" name="entries_open_date" id="entriesOpenDateInput" />
+      <span class="field-hint">If entries aren't open yet, enter the date they open. Leave blank if entries are open now — your listing will show "Entries opening soon" until this date passes.</span>
+    </div>
 
     <!-- NOTES -->
     <div class="field col-span-2">
@@ -996,6 +1001,7 @@ async function handleSubmit(e) {
     event_lat:            (fd.get('event_lat') || '').trim(),
     event_lng:            (fd.get('event_lng') || '').trim(),
     event_url:            topUrl,
+    entries_open_date:    fd.get('entries_open_date') || '',
     description:          (fd.get('description') || '').trim(),
     recurring,
     recurring_end_date:   recurringEndDate,    // weekly only — date string
