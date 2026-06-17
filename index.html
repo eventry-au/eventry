@@ -704,6 +704,17 @@
   }
 
   /* SERIES / CHAMPIONSHIP RIBBON */
+  .entries-soon-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+  }
   .event-ribbon {
     display: flex;
     align-items: center;
@@ -1785,6 +1796,7 @@ async function loadLiveEvents() {
           featured: e.featured || false,           series_name: e.series_name || '',           championship_name: e.championship_name || '',           recurring: e.recurring || '',
           event_image_enabled: e.event_image_enabled || false,
           event_image_url: e.event_image_url || '',
+          entries_open_date: e.entries_open_date || '',
           event_logo_enabled: e.event_logo_enabled || false,
           event_logo_url: e.event_logo_url || '',
           lat: e.event_lat ? parseFloat(e.event_lat) : null,
@@ -2210,6 +2222,16 @@ function renderEvents(list) {
       ${e.featured ? '<div class="featured-badge">Featured</div>' : ''}
       ${e.series_name ? `<div class="event-ribbon series">🔗 ${e.series_name}</div>` : ''}
       ${e.championship_name ? `<div class="event-ribbon championship">🏆 ${e.championship_name}</div>` : ''}
+      ${(() => {
+        if (!e.entries_open_date) return '<div class="entries-soon-badge">🔒 Entries opening soon</div>';
+        const openDate = new Date(e.entries_open_date);
+        openDate.setHours(0,0,0,0);
+        const today = new Date(); today.setHours(0,0,0,0);
+        if (openDate > today) {
+          return `<div class="entries-soon-badge">🔒 Entries open ${openDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}</div>`;
+        }
+        return '';
+      })()}
       ${bgImage ? `
       <div class="card-image">
         <img class="bg" src="${bgImage}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
