@@ -2223,7 +2223,7 @@ function renderEvents(list) {
       ${e.series_name ? `<div class="event-ribbon series">🔗 ${e.series_name}</div>` : ''}
       ${e.championship_name ? `<div class="event-ribbon championship">🏆 ${e.championship_name}</div>` : ''}
       ${(() => {
-        if (!e.entries_open_date) return '<div class="entries-soon-badge">🔒 Entries opening soon</div>';
+        if (!e.entries_open_date) return '';
         const openDate = new Date(e.entries_open_date);
         openDate.setHours(0,0,0,0);
         const today = new Date(); today.setHours(0,0,0,0);
