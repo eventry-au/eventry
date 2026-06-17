@@ -576,7 +576,7 @@ function renderEvent(event) {
                     return `<span style="font-size:12px;color:var(--ink-faint)">Entries open ${openDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}</span>`;
                   }
                   if (!event.entries_open_date) {
-                    return `<a href="${event.event_url || '#'}" target="_blank" class="register-btn">Visit event website →</a>`;
+                    return `<a href="${regLink}" target="_blank" class="register-btn">Register →</a>`;
                   }
                   return `<a href="${regLink}" target="_blank" class="register-btn">Register →</a>`;
                 })()
