@@ -701,7 +701,7 @@ function addDiscipline() {
       <div class="price-row">
         <div class="field">
           <label>Entry fee (AUD)</label>
-          <input type="number" name="d${idx}_price" id="price_${idx}" placeholder="0.00" min="0" step="0.01" />
+          <input type="number" name="d${idx}_price" id="price_${idx}" placeholder="Varies" min="0" step="0.01" />
         </div>
         <div class="field">
           <label style="opacity:0">.</label>
@@ -911,7 +911,7 @@ function collectDisciplines(fallbackUrl) {
       subtype: document.getElementById(`subtype_${idx}`)?.value || '',
       disc_name: get(`${p}_cat_name`),
       dist_value, dist_unit, dist_display, legs,
-      price: isFree ? 0 : (parseFloat(get(`${p}_price`)) || 0),
+      price: isFree ? 0 : (parseFloat(get(`${p}_price`)) || ''),
       free_entry: isFree ? 'TRUE' : 'FALSE',
       reg_link: get(`${p}_reg_link`) || fallbackUrl || '',
       age_group: get(`${p}_age`)
