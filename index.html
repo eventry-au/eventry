@@ -1847,11 +1847,13 @@ function changeLocationFilter() {
   section?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// Auto-detect location silently on page load
+// Auto-detect location silently on page load — but only ask once per browser
 function autoDetectLocation() {
   if (!navigator.geolocation) return;
+  if (localStorage.getItem('eventry_location_prompted')) return; // already asked before — don't ask again
   navigator.geolocation.getCurrentPosition(
     pos => {
+      localStorage.setItem('eventry_location_prompted', 'true');
       userLat = pos.coords.latitude;
       userLng = pos.coords.longitude;
       autoLocationActive = true;
@@ -1860,7 +1862,7 @@ function autoDetectLocation() {
       showLocationBanner(true);
       applyFilters();
     },
-    () => { /* silently fail — user denied or unavailable */ },
+    () => { localStorage.setItem('eventry_location_prompted', 'true'); /* silently fail — user denied or unavailable */ },
     { timeout: 5000, maximumAge: 300000 }
   );
 }
