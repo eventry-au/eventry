@@ -835,21 +835,44 @@ function collectDisciplines(fallbackUrl) {
       dist_unit = get(`${p}_mtb_dist_unit`) || 'km';
     } else if (sport === 'triathlon') {
       const subtype = card.querySelector(`[name="d${idx}_subtype"]`)?.value || '';
-      const swim = get(`${p}_swim_val`) + (get(`${p}_swim_unit`) || 'm');
-      const bike = get(`${p}_bike_val`) + (get(`${p}_bike_unit`) || 'km');
-      const run  = get(`${p}_run_val`)  + (get(`${p}_run_unit`)  || 'km');
+      const swimVal = get(`${p}_swim_val`), swimUnit = get(`${p}_swim_unit`) || 'm';
+      const bikeVal = get(`${p}_bike_val`), bikeUnit = get(`${p}_bike_unit`) || 'km';
+      const runVal  = get(`${p}_run_val`),  runUnit  = get(`${p}_run_unit`)  || 'km';
+      const swim = swimVal + swimUnit, bike = bikeVal + bikeUnit, run = runVal + runUnit;
+
+      let legArr = [];
       if (subtype === 'Aquathlon' || subtype === 'SwimRun') {
         dist_display = `${swim} / ${run}`;
+        legArr = [
+          { activity: 'Swim', dist_value: swimVal, dist_unit: swimUnit },
+          { activity: 'Run',  dist_value: runVal,  dist_unit: runUnit }
+        ];
       } else if (subtype === 'Aquabike') {
         dist_display = `${swim} / ${bike}`;
+        legArr = [
+          { activity: 'Swim', dist_value: swimVal, dist_unit: swimUnit },
+          { activity: 'Bike', dist_value: bikeVal, dist_unit: bikeUnit }
+        ];
       } else {
         dist_display = `${swim} / ${bike} / ${run}`;
+        legArr = [
+          { activity: 'Swim', dist_value: swimVal, dist_unit: swimUnit },
+          { activity: 'Bike', dist_value: bikeVal, dist_unit: bikeUnit },
+          { activity: 'Run',  dist_value: runVal,  dist_unit: runUnit }
+        ];
       }
+      legs = JSON.stringify(legArr);
+
     } else if (sport === 'duathlon') {
-      const r1 = get(`${p}_run1_val`) + (get(`${p}_run1_unit`) || 'km');
-      const bk = get(`${p}_bike_val`) + (get(`${p}_bike_unit`) || 'km');
-      const r2 = get(`${p}_run2_val`) + (get(`${p}_run2_unit`) || 'km');
-      dist_display = `${r1} / ${bk} / ${r2}`;
+      const r1Val = get(`${p}_run1_val`), r1Unit = get(`${p}_run1_unit`) || 'km';
+      const bkVal = get(`${p}_bike_val`), bkUnit = get(`${p}_bike_unit`) || 'km';
+      const r2Val = get(`${p}_run2_val`), r2Unit = get(`${p}_run2_unit`) || 'km';
+      dist_display = `${r1Val}${r1Unit} / ${bkVal}${bkUnit} / ${r2Val}${r2Unit}`;
+      legs = JSON.stringify([
+        { activity: 'Run 1', dist_value: r1Val, dist_unit: r1Unit },
+        { activity: 'Bike',  dist_value: bkVal, dist_unit: bkUnit },
+        { activity: 'Run 2', dist_value: r2Val, dist_unit: r2Unit }
+      ]);
     } else if (sport === 'openwater') {
       dist_value = get(`${p}_ow_dist_val`);
       dist_unit = get(`${p}_ow_dist_unit`) || 'm';
