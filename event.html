@@ -588,7 +588,7 @@ function renderEvent(event) {
     </div>
 
     ${(() => {
-      const cleanNotes = (event.notes || '').replace(/\[(RECURRING|DUPLICATE)[^\]]*\]/gi, '').replace(/\|/g, ' ').replace(/\s+/g, ' ').trim();
+      const cleanNotes = (event.notes || '').replace(/\[(RECURRING|DUPLICATE|GEOCODE)[^\]]*\]/gi, '').replace(/\|/g, ' ').replace(/\s+/g, ' ').trim();
       return cleanNotes ? `
     <div class="section-card">
       <div class="section-title"><span class="section-title-icon">📌</span> Additional information</div>
