@@ -1790,6 +1790,7 @@ async function loadLiveEvents() {
           location: `${e.location}, ${e.state}`,
           state: e.state,
           organiser: e.org_name,
+          venue: e.venue || '',
           link: e.event_url || '#',
           status: e.status || '',
           event_type: e.event_type || '',
@@ -1958,7 +1959,13 @@ function applyFilters() {
     if (price === 'under200' && Math.min(...e.disciplines.map(d=>d.price)) >= 200) return false;
     if (dateFrom && e.date < dateFrom) return false;
     if (dateTo && e.date > dateTo) return false;
-    if (search && !e.name.toLowerCase().includes(search) && !e.location.toLowerCase().includes(search) && !e.sport.toLowerCase().includes(search)) return false;
+    if (search) {
+      const haystack = [
+        e.name, e.location, e.sport, e.organiser, e.venue, e.series_name,
+        ...(e.disciplines || []).map(d => d.name)
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
     return true;
   });
 
