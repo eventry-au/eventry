@@ -780,6 +780,23 @@ position: relative;
 }
 .partner-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
 .partner-badge { background: #f0f0f0; color: #666; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: var(--pill-radius); display: inline-block; }
+/* Badge overlays the image (no separate header row) — reclaims vertical space for the picture,
+   since partner cards carry little text and the image should dominate. */
+.partner-badge-overlay {
+position: absolute;
+top: 10px;
+left: 10px;
+z-index: 3;
+background: #f0f0f0;
+color: #666;
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+padding: 3px 10px;
+border-radius: var(--pill-radius);
+}
+.partner-badge-inline { margin-bottom: 6px; }
 .partner-card.featured-partner { border-color: var(--accent); border-width: 2px; }
 .partner-card .featured-partner-badge {
 position: absolute;
@@ -794,8 +811,7 @@ text-transform: uppercase;
 padding: 3px 10px;
 border-radius: 0 0 8px 8px;
 }
-.partner-card .card-header { padding: 1rem 1.25rem 0.5rem; display: flex; align-items: center; justify-content: space-between; }
-.partner-card .card-body { padding: 0 1.25rem 0.75rem; flex: 1; }
+.partner-card .card-body { padding: 0.75rem 1.25rem 0.75rem; flex: 1; }
 .partner-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
 .partner-tagline { font-size: 13px; color: var(--ink-muted); margin-bottom: 0.5rem; }
 .partner-sports { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
@@ -804,17 +820,24 @@ border-radius: 0 0 8px 8px;
 .partner-btn { background: var(--surface); border: 1px solid var(--border-strong); color: var(--ink); border-radius: var(--pill-radius); padding: 7px 14px; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.15s; }
 .partner-btn:hover { background: var(--ink); color: var(--white); }
 
-/* PARTNER IMAGE PANEL — light background, unmodified logo shown via contain (not cropped/cover) */
+/* PARTNER IMAGE PANEL — blends into the card (no boxed-in pale rectangle) so the logo
+   reads as part of the card, not a small graphic lost in empty space. The image sizes
+   by height (auto width) so it renders as large as the panel allows. Maximised since
+   partner cards carry little text — the picture should be the dominant element. */
 .partner-card .card-image {
-background: var(--surface);
-height: 140px;
+background: var(--white);
+height: 230px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 14px 0;
 }
 .partner-card .card-image img.contain-img {
-width: 100%;
+width: auto;
 height: 100%;
+max-width: 100%;
 object-fit: contain;
-padding: 8px;
-box-sizing: border-box;
+padding: 0;
 display: block;
 }
 
@@ -828,18 +851,18 @@ gap: 1.25rem;
 flex: 1;
 min-height: 0;
 }
-.partner-pair .partner-card .card-image { height: 95px; }
-.partner-pair .partner-card .card-header { padding: 0.75rem 1rem 0.35rem; }
-.partner-pair .partner-card .card-body { padding: 0 1rem 0.5rem; }
+.partner-pair .partner-card .card-image { height: 120px; padding: 8px 0; }
+.partner-pair .partner-card .card-body { padding: 0.5rem 1rem 0.5rem; }
 .partner-pair .partner-card .partner-name { font-size: 14px; margin-bottom: 2px; }
 .partner-pair .partner-card .partner-tagline {
 font-size: 12px;
-margin-bottom: 0.35rem;
+margin-bottom: 0;
 display: -webkit-box;
--webkit-line-clamp: 2;
+-webkit-line-clamp: 1;
 -webkit-box-orient: vertical;
 overflow: hidden;
 }
+.partner-pair .partner-card .partner-sports { display: none; }
 .partner-pair .partner-card .card-footer { padding: 0.5rem 1rem; }
 
 /* SHARE BUTTON */
@@ -2184,15 +2207,14 @@ const locationDisplay = p.location_display || p.location || '';
 const imgUrl = getPartnerImageUrl(p);
 return `
 <div class="partner-card${featured ? ' featured-partner' : ''}" style="animation-delay:${delay}s">
+${imgUrl ? '<span class="partner-badge-overlay">Partner</span>' : ''}
 ${featured ? '<div class="featured-partner-badge">Featured Partner</div>' : ''}
 ${imgUrl ? `
 <div class="card-image">
 <img class="contain-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
 </div>` : ''}
-<div class="card-header">
-<span class="partner-badge">Partner</span>
-</div>
 <div class="card-body">
+${!imgUrl ? '<span class="partner-badge partner-badge-inline">Partner</span>' : ''}
 <div class="partner-name">${p.name}</div>
 <div class="partner-tagline">${p.tagline || ''}</div>
 <div class="partner-sports">${sportTags || '<span class="partner-sport-tag">All sports</span>'}</div>
