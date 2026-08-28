@@ -2178,10 +2178,10 @@ function renderEvents(list) {
       const showLogo = p.event_logo_enabled && p.event_logo_url;
       html += `
       <div class="partner-card" style="animation-delay:${delay}s">
-        ${bgImage ? `
+        ${(bgImage || showLogo) ? `
         <div class="card-image">
-          <img class="bg" src="${bgImage}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
-          <div class="bg-overlay"></div>
+          ${bgImage ? `<img class="bg" src="${bgImage}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
+          <div class="bg-overlay"></div>` : ''}
           ${showLogo ? `<img class="event-logo" src="${p.event_logo_url}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
         </div>` : ''}
         <div class="card-header">
@@ -2241,10 +2241,10 @@ function renderEvents(list) {
         }
         return '';
       })()}
-      ${bgImage ? `
+      ${(bgImage || showLogo) ? `
       <div class="card-image">
-        <img class="bg" src="${bgImage}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
-        <div class="bg-overlay"></div>
+        ${bgImage ? `<img class="bg" src="${bgImage}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">
+        <div class="bg-overlay"></div>` : ''}
         ${showLogo ? `<img class="event-logo" src="${e.event_logo_url}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
       </div>` : ''}
       <div class="card-header">
