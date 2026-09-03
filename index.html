@@ -2235,20 +2235,25 @@ const eventCount = list.filter(e => e.type !== 'partner').length;
 const eventWord = eventCount === 1 ? 'event' : 'events';
 document.querySelector('.results-count').innerHTML = `Showing <span id="resultCount">${eventCount}</span> ${eventWord}`;
 
-if (list.length === 0) {
-grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No events found</h3><p>Try adjusting your filters or search term</p></div>`;
-return;
-}
-
 const activeState = document.getElementById('stateFilter')?.value || '';
+const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 const partners = (window._allPartners || []).filter(p => {
 if (activeState && p.state && p.state !== activeState) return false;
 if (activeSport !== 'all' && p.sports) {
 const partnerSports = p.sports.split(',').map(s => s.trim().toLowerCase());
 if (!partnerSports.includes(activeSport.toLowerCase())) return false;
 }
+if (searchTerm) {
+const haystack = [p.name, p.tagline, p.location_display, p.sports].filter(Boolean).join(' ').toLowerCase();
+if (!haystack.includes(searchTerm)) return false;
+}
 return true;
 });
+
+if (list.length === 0 && partners.length === 0) {
+grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No events found</h3><p>Try adjusting your filters or search term</p></div>`;
+return;
+}
 
 // Featured partners (paid tier, once enabled) get a full solo card and jump the queue ahead
 // of regular partners. Regular partners pair up two-to-a-slot, in the already-randomised order.
@@ -2258,6 +2263,11 @@ let featuredIdx = 0;
 let regularIdx = 0;
 let eventIdx = 0;
 const cards = [];
+
+if (list.length === 0) {
+cards.push({ type: 'notice', html: `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><h3>No matching events</h3><p>But we found a partner that matches your search:</p></div>` });
+}
+
 list.forEach((e) => {
 cards.push({ type: 'event', data: e });
 eventIdx++;
@@ -2274,6 +2284,20 @@ cards.push({ type: 'partner', data: regularPartners[regularIdx++] });
 }
 }
 });
+
+// Short or empty result lists never reach the every-6th-card injection point above —
+// top up with any remaining matched partners so they always get shown.
+while (featuredIdx < featuredPartners.length) {
+cards.push({ type: 'partner', data: featuredPartners[featuredIdx++], featured: true });
+}
+if (regularIdx < regularPartners.length) {
+const remaining = regularPartners.length - regularIdx;
+if (remaining >= 2) {
+cards.push({ type: 'partner-pair', data: [regularPartners[regularIdx++], regularPartners[regularIdx++]] });
+} else {
+cards.push({ type: 'partner', data: regularPartners[regularIdx++] });
+}
+}
 
 const sort = document.getElementById('sortSelect')?.value || '';
 const showBands = sort === 'nearest' && userLat !== null && userLng !== null;
@@ -2305,6 +2329,11 @@ if (band !== null && band !== lastBand) {
 lastBand = band;
 html += `<div class="band-label" style="grid-column:1/-1;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);padding:0.5rem 0 0.25rem;border-top:1px solid var(--border);margin-top:0.5rem">${getBandLabel(band)}</div>`;
 }
+}
+
+if (item.type === 'notice') {
+html += item.html;
+return;
 }
 
 if (item.type === 'partner') {
