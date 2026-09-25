@@ -2,14 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FM7R4KLD57"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-FM7R4KLD57");
-</script>
+<!-- Google Analytics + cookie consent + click tracking (shared) -->
+<script src="assets/eventry-analytics.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Event Details — Eventry</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
@@ -345,6 +339,7 @@ function icalLink(name, dateStr, endDateStr, location, description) {
 
 function shareEvent(name, id) {
   const url = `${window.location.origin}/event.html?id=${id}`;
+  eventryTrack('share', { listing_id: id, event_name: name, method: navigator.share ? 'native' : 'copy_link' });
   if (navigator.share) {
     navigator.share({ title: name, text: `Check out ${name} on Eventry!`, url });
   } else {
@@ -402,6 +397,10 @@ function renderLegs(legsStr) {
   } catch(e) { return ''; }
 }
 
+function escAttr(v) {
+  return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
 function renderEvent(event) {
   const sport = normaliseSport(event.disciplines?.[0]?.sport || 'other');
   const subtype = event.disciplines?.[0]?.subtype || '';
@@ -418,6 +417,7 @@ function renderEvent(event) {
   const venueOrLocation = event.venue || `${event.location}, ${event.state}`;
   const mapsUrl = mapsLink(venueOrLocation, `${event.location}, ${event.state}`);
   const gcalUrl = googleCalLink(event.event_name, event.event_date, event.event_end_date, venueOrLocation, event.event_description);
+  const trackBase = `data-listing-id="${escAttr(event.submission_id)}" data-event-name="${escAttr(event.event_name)}"`;
 
   document.title = `${event.event_name} — Eventry`;
 
@@ -444,7 +444,7 @@ function renderEvent(event) {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share
           </button>
-          <a href="${event.event_url || '#'}" target="_blank" class="action-btn" style="background:var(--ink);color:white;border-color:var(--ink)">
+          <a href="${event.event_url || '#'}" target="_blank" data-track="official_site_click" ${trackBase} class="action-btn" style="background:var(--ink);color:white;border-color:var(--ink)">
             Official site →
           </a>
         </div>
@@ -506,11 +506,11 @@ function renderEvent(event) {
       <div style="margin-top:1.25rem">
         <div class="meta-label" style="margin-bottom:8px">Add to calendar</div>
         <div class="calendar-btns">
-          <a href="${gcalUrl}" target="_blank" class="cal-btn">
+          <a href="${gcalUrl}" target="_blank" data-track="add_to_calendar" data-method="google" ${trackBase} class="cal-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             Google Calendar
           </a>
-          <a href="#" onclick="addToICal('${event.event_name.replace(/'/g,"\\'")}','${event.event_date}','${event.event_end_date}','${venueOrLocation.replace(/'/g,"\\'")}'); return false;" class="cal-btn">
+          <a href="#" onclick="addToICal('${event.event_name.replace(/'/g,"\\'")}','${event.event_date}','${event.event_end_date}','${venueOrLocation.replace(/'/g,"\\'")}'); return false;" data-track="add_to_calendar" data-method="ical" ${trackBase} class="cal-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             Apple / iCal
           </a>
@@ -567,7 +567,7 @@ function renderEvent(event) {
               <td><span class="disc-dist">${d.dist_display || '—'}</span></td>
               <td><span class="disc-price ${isFree ? 'free' : ''}">${isFree ? 'Free' : '$' + d.price}</span></td>
               <td>${event.status === 'cancelled' || event.status === 'postponed'
-                ? `<a href="${event.org_website || event.event_url || '#'}" target="_blank" class="register-btn btn-check">Check organiser site →</a>`
+                ? `<a href="${event.org_website || event.event_url || '#'}" target="_blank" data-track="organiser_site_click" ${trackBase} class="register-btn btn-check">Check organiser site →</a>`
                 : (() => {
                   const openDate = event.entries_open_date ? new Date(event.entries_open_date) : null;
                   const today = new Date(); today.setHours(0,0,0,0);
@@ -576,9 +576,9 @@ function renderEvent(event) {
                     return `<span style="font-size:12px;color:var(--ink-faint)">Entries open ${openDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}</span>`;
                   }
                   if (!event.entries_open_date) {
-                    return `<a href="${regLink}" target="_blank" class="register-btn">Register →</a>`;
+                    return `<a href="${regLink}" target="_blank" data-track="register_click" ${trackBase} data-discipline="${escAttr(d.disc_name || 'General Entry')}" class="register-btn">Register →</a>`;
                   }
-                  return `<a href="${regLink}" target="_blank" class="register-btn">Register →</a>`;
+                  return `<a href="${regLink}" target="_blank" data-track="register_click" ${trackBase} data-discipline="${escAttr(d.disc_name || 'General Entry')}" class="register-btn">Register →</a>`;
                 })()
               }</td>
             </tr>`;
@@ -690,6 +690,13 @@ async function init() {
   }
 
   document.getElementById('pageContent').innerHTML = renderEvent(event);
+  eventryTrack('view_listing', {
+    listing_id: String(event.submission_id),
+    event_name: event.event_name,
+    sport: normaliseSport(event.disciplines?.[0]?.sport || 'other'),
+    state: event.state || '',
+    organiser: event.org_name || ''
+  });
 }
 
 init();
